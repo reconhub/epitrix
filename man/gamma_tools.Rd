@@ -3,14 +3,14 @@
 \name{gamma_shapescale2mucv}
 \alias{gamma_shapescale2mucv}
 \alias{gamma_mucv2shapescale}
-\alias{log_likelihood_gamma}
+\alias{gamma_log_likelihood}
 \title{Reparameterise Gamma distributions}
 \usage{
 gamma_shapescale2mucv(shape, scale)
 
 gamma_mucv2shapescale(mu, cv)
 
-log_likelihood_gamma(x, mu, cv)
+gamma_log_likelihood(x, mu, cv)
 }
 \arguments{
 \item{shape}{The shape parameter of the Gamma distribution.}
@@ -26,7 +26,7 @@ standard deviation divided by the mean.}
 distribution, for which the likelihood is to be computed.}
 }
 \value{
-A named vector containing 'shape' and 'scale', or mean ('mean') and
+A named list containing 'shape' and 'scale', or mean ('mean') and
 coefficient of variation ('cv').
 }
 \description{
@@ -57,7 +57,8 @@ cv <- 1
 
 
 ## transoform into shape scale
-#' tmp <- gamma_mucv2shapescale (mu, cv)
+
+tmp <- gamma_mucv2shapescale (mu, cv)
 shape <- tmp$shape
 scale <- tmp$scale
 

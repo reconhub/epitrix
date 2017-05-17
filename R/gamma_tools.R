@@ -36,8 +36,8 @@
 #'
 #' 
 #' ## transoform into shape scale
-
-#' #' tmp <- gamma_mucv2shapescale (mu, cv)
+#' 
+#' tmp <- gamma_mucv2shapescale (mu, cv)
 #' shape <- tmp$shape
 #' scale <- tmp$scale
 #'
@@ -57,11 +57,10 @@
 
 
 
-
-
-
 #' @export
-#' @rdname gamma_tools 
+#' @rdname gamma_tools
+#' @aliases gamma_shapescale2mucv
+#' 
 #' @param shape The shape parameter of the Gamma distribution.
 #' @param scale The scale parameter of the Gamma distribution.
 
@@ -77,7 +76,9 @@ gamma_shapescale2mucv <- function(shape, scale) {
 
 
 #' @export
-#' @rdname gamma_tools 
+#' @rdname gamma_tools
+#' @aliases gamma_mucv2shapescale
+#' 
 #' @param mu The mean of the Gamma distribution.
 #' @param cv The coefficient of variation of the Gamma distribution, i.e. the
 #' standard deviation divided by the mean.
@@ -91,19 +92,20 @@ gamma_mucv2shapescale <- function(mu, cv) {
 
 
 
-###############################################################################
-# Log-likelihood function
-###############################################################################
 
-## 
-## mu and cv are the parameters of the Gamma distribution to be estimated
+
 #' @export
 #' @rdname gamma_tools
+#' @aliases gamma_log_likelihood
 #' 
 #' @param x A vector of data treated as observations drawn from a Gamma
 #' distribution, for which the likelihood is to be computed.
-#'
-log_likelihood_gamma <- function(x, mu, cv) {
-    tmp <- gamma_mucv2shapescale (mu, cv)
-    return( sum(  dgamma(x, shape=tmp$shape, scale = scale, log = TRUE) ) )
+
+gamma_log_likelihood <- function(x, mu, cv) {
+    tmp <- gamma_mucv2shapescale(mu, cv)
+    log_dens <- stats::dgamma(x,
+                              shape = tmp$shape,
+                              scale = tmp$scale,
+                              log = TRUE)
+    return(sum(log_dens))
 }

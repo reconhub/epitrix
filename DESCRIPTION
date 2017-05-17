@@ -1,13 +1,18 @@
 Package: epitrix
-Title: An expressive Title in Titlecase
-Version: 0.0.1.9000
-Authors@R: person("Your", "Name", email = "your.name@localhost", role = c("aut", "cre"))
-Description: Please add a description.
+Title: Utilitary Functions for Epidemics Analysis
+Version: 0.0.1
+Authors@R: c(person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut", "cre")), person("Anne", "Cori", email = "a.cori@imperial.ac.uk", role = c("aut"))) 
+Description: A collection of small functions useful for epidemics analysis and infectious disease modelling.
 Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Suggests: testthat, roxygen2,
+Suggests: 
+    testthat,
+    roxygen2, 
+    distcrete, 
+    outbreaks, 
+    incidence,
     knitr,
     rmarkdown
 RoxygenNote: 6.0.1

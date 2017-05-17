@@ -1,80 +1,129 @@
-###############################################################################
-# Author: annecori
-###############################################################################
 
-#######################################################################################################################
-### function to transform a growth rate into a reproduction number estimate, given a serial interval distribution
-#######################################################################################################################
-r2R0_point_estimates <- function(r, w) # assumes the growth rate r is measured in the same time unit as the serial interval (w is the SI distribution, starting at time 0)
-{
-  if(sum(w) != 1)
-  {
-    warning("rescaling the serial interval distribution to sum to 1")
-    w <- w / sum(w)
-  }
-  
-  R0 <- r
+#' Transform a growth rate into a reproduction number
+#'
+#' The function \code{r2R0} can be used to transform a growth rate into a
+#' reproduction number estimate, given an serial interval distribution. The
+#' function \code{lm2R0_sample} generates a sample of R0 values from a
+#' log-linear regression of incidence data stored in a \code{lm} object.
+#'
+#' @details It is assumed that the growth rate ('r') is measured in the same
+#' time unit as the serial interval ('w' is the SI distribution, starting at
+#' time 0).
+#'
+#' 
+#' @author Code by Anne Cori \email{a.cori@@imperial.ac.uk}, packaging by
+#' Thibaut Jombart \email{thibautjombart@@gmail.com}
+#'
+#'
+#' @examples
+#' 
+#' ## Ebola estimates of the SI distribution from the first 9 months of
+#' ## West-African Ebola oubtreak
+#' 
+#' mu <- 15.3 # days
+#' sigma <- 9.3 # days
+#' param <- gamma_mucv2shapescale(mu, sigma/mu)
+#' 
+#' if (require(distcrete)) {
+#'   w <- distcrete("gamma", interval = 1,
+#'                  shape = param$shape,
+#'                  scale = param$scale, w = 0)
+#' 
+#'   r2R0(c(-1, -0.001, 0, 0.001, 1), w)
+#'
+#' 
+#' ## Use simulated Ebola outbreak and 'incidence' to get a log-linear
+#' ## model of daily incidence.
+#' 
+#'   if (require(outbreaks) && require(incidence)) {
+#'     i <- incidence(ebola_sim$linelist$date_of_onset)
+#'     plot(i)
+#'     f <- fit(i[1:100])
+#'     f
+#'     plot(i[1:150], fit = f)
+#'
+#'     R0 <- lm2R0_sample(f$lm, w)
+#'     hist(R0, col = "grey", border = "white", main = "Distribution of R0")
+#'     summary(R0)   
+#'   }
+#' }
+#'
 
-  R0[r %in% 0] <- 1
-  
-  # Wallinga and Lipsitch formula
-  get_R0_from_r <- function(r) 
-  {
-    t <- c(0, seq(0.5, length(w) - 0.5, 1)) # the time steps corresponding to the serial interval distribution
-    if(exp(-r*t[length(t)]) == Inf)
-    {
-      R0 <- 0
-    }else
-    {
-      denom <- - ( w * diff(exp(-r*t)) / diff(t) )
-      R0 <- r / sum(denom)
+
+
+#' @rdname r2R0
+#' @export
+#' @aliases r2R0
+#' 
+#' @param r A vector of growth rate values.
+#'
+#' @param w The serial interval distribution, either provided as a
+#' \code{distcrete} object, or as a \code{numeric} vector containing
+#' probabilities of the mass functions.
+#'
+#' @param trunc The number of time units (most often, days), used for truncating
+#' \code{w}, whenever a \code{distcrete} object is provided. Defaults to 1000.
+
+r2R0 <- function(r, w, trunc = 1000) {
+
+    if (inherits(w, "distcrete")) {
+        w <- w$d(0:trunc)
     }
-  }
-  
-  R0[!(r %in% 0)] <- sapply(r[!(r %in% 0)], get_R0_from_r)
-  
-  return (R0)
+    w <- w / sum(w)
+    
+    out <- r
+    near_0 <- 1e-14
+    r_is_0 <- abs(r) < near_0
+    
+    out[r_is_0] <- 1
+
+    
+    ## Wallinga and Lipsitch formula
+    
+    get_R0_from_r <- function(r) {
+        ## t: the time steps corresponding to the serial interval distribution
+        
+        t <- c(0, seq(0.5, length(w) - 0.5, 1)) 
+        if (exp(-r*t[length(t)]) == Inf) {
+            R0 <- 0
+        } else {
+            denom <- - ( w * diff(exp(-r*t)) / diff(t) )
+            R0 <- r / sum(denom)
+        }
+        return(R0)
+    }
+    
+    out[!r_is_0] <- vapply(r[!r_is_0], get_R0_from_r, NA_real_)
+    
+    return(out)
 }
 
-### examples
-## Ebola estimates of the SI distribution from our first NEJM paper # note later estimates are a bit different
-# mu <- 15.3 # days
-# sigma <- 9.3 # days
-# w <- sapply(0:50, function(k) EpiEstim::DiscrSI(k, mu, sigma) ) # the serial interval distribution, in days, starting on day 0
 
-# R0_point_estimate <- r2R0_point_estimates(c(-1, -0.001, 0, 0.001, 1), w)
 
-#######################################################################################################################
-### function to transform the output of the linear regression in a sample of R0 from which median but also CI can be derived, given a serial interval distribution
-#######################################################################################################################
-r2R0_sample <- function(lm_res, w, n = 1000) # assumes lm_res is the output of the linear model used to estimate the growth rate r, measured in the same time unit as the serial interval (w is the SI distribution, starting at time 0)
-{
-  # n is used for numerical sampling from the t distribution of the estimated slope of the linear regression
-  df <- nrow(lm.res$model) - 2 # degrees of freedom of t distribution
+
+
+#' @rdname r2R0
+#' @export
+#' @aliases r2R0_sample
+#' 
+#' @param x A \code{lm} object storing a a linear regression of log-incidence over time.
+#'
+#' @param n The number of draws of R0 values, defaulting to 1000.
+
+lm2R0_sample <- function(x, w, n = 1000) {
+
+    ## The strategy here is simple:
+    ##
+    ## 'r' estimates follow a Student t distribution, so that we can draw values
+    ## of 'r' from it, and then convert them to R0 using r2R0.
+    
+    df <- nrow(x$model) - 2 # degrees of freedom of t distribution
+    r <- x$coefficients[2]
+    std_r <- stats::coef(summary(x))[, "Std. Error"][2]
   
-  # central estimate of r and estimate of std of r
-  r <- lm_res$coefficients[2]
-  std_r <- coef(summary(lm_res))[, "Std. Error"][2]
-  
-  r_sample <- r + std_r*rt(n, df)
-  
-  return(r2R0_point_estimates(r_sample, w)) 
+    r_sample <- r + std_r * stats::rt(n, df)
+
+    out <- r2R0(r_sample, w) 
+    return(out) 
 }
-
-### examples
-
-## mock incidence data
-# I <- c(3,4,6,12,20,20,25,35,34,30,20,15,14,2)
-
-## linear regression on the log scale at the maximum slope
-# delta <- diff(log(I))
-# idx <- which.max(delta)
-# tmp_dat <- data.frame(t = 1:3, logI = log(I[(idx-1):(idx+1)]))
-# lm_res <- lm(logI~t,data=tmp_dat)
-
-## use result of linear regression to derive not only central estimate but also 95%CI
-# R0_point_estimate <- r2R0_point_estimates(r = lm_res$coefficients[2], w)
-# R0_sample <- r2R0_sample(lm_res, w, n = 1000)
-# median(R0_sample) # compare with R0_point_estimate
-# quantile(R0_sample, c(0.025, 0.975))
 
