@@ -100,12 +100,27 @@ gamma_mucv2shapescale <- function(mu, cv) {
 #' 
 #' @param x A vector of data treated as observations drawn from a Gamma
 #' distribution, for which the likelihood is to be computed.
+#'
+#' @param discrete A logical indicating if the distribution should be
+#' discretised; TRUE by default.
+#'
+#' @param interval The interval used for discretisation; see \code{\link{distcrete}}.
+#' 
+#' @param w The centering of the interval used for discretisation; see \code{\link{distcrete}}.
+#' 
 
-gamma_log_likelihood <- function(x, mu, cv) {
+gamma_log_likelihood <- function(x, mu, cv, discrete = TRUE, interval = 1, w = 0) {
     tmp <- gamma_mucv2shapescale(mu, cv)
-    log_dens <- stats::dgamma(x,
+
+    if (discrete) {
+        d <- distcrete::distcrete("gamma", interval = interval, w = w,
+                                  shape = tmp$shape, scale = tmp$scale)$d
+        log_dens <- d(x, log = TRUE)
+    } else {
+        log_dens <- stats::dgamma(x,
                               shape = tmp$shape,
                               scale = tmp$scale,
                               log = TRUE)
+    }
     return(sum(log_dens))
 }
