@@ -24,7 +24,7 @@
 #'
 #' @aliases gamma_shapescale2mucv
 #' 
-#' @return A named vector containing 'shape' and 'scale', or mean ('mean') and
+#' @return A named list containing 'shape' and 'scale', or mean ('mean') and
 #' coefficient of variation ('cv').
 #'
 #' @examples
@@ -68,7 +68,7 @@
 gamma_shapescale2mucv <- function(shape, scale) {
     mu <- shape * scale
     cv <- 1 / sqrt(shape)
-    return(c(mu = mu, cv = cv))
+    return(list(mu = mu, cv = cv))
 }
 
 
@@ -85,7 +85,7 @@ gamma_shapescale2mucv <- function(shape, scale) {
 gamma_mucv2shapescale <- function(mu, cv) {
     shape <- 1 / (cv^2)
     scale <- mu * cv^2
-    return(c(shape = shape, scale = scale))
+    return(list(shape = shape, scale = scale))
 }
 
 
