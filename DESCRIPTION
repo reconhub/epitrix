@@ -10,11 +10,11 @@ LazyData: true
 Suggests: 
     testthat,
     roxygen2, 
-    distcrete, 
     outbreaks, 
     incidence,
     knitr,
     rmarkdown
+Imports: distcrete
 RoxygenNote: 6.0.1
 URL: https://localhost/epitrix
 BugReports: https://localhost/bugtracker/epitrix

@@ -38,6 +38,8 @@ The main features of the package include:
 
 -   **`lm2R0_sample`**: generates a distribution of R0 from a log-incidence linear model
 
+-   **`fit_disc_gamma`**: fits a discretised Gamma distribution to data (typically useful for describing delays)
+
 Resources
 =========
 

@@ -35,7 +35,7 @@
 #' cv <- 1
 #'
 #' 
-#' ## transoform into shape scale
+#' ## transform into shape scale
 #' 
 #' tmp <- gamma_mucv2shapescale (mu, cv)
 #' shape <- tmp$shape
