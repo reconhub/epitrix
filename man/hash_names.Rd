@@ -19,7 +19,17 @@ hash.}
 This function uses SHA1 algorithm to anonymise data, based on pre-specified
 data fields. Data fields are concatenated first, then each entry is
 hashed. The function can either return a full detailed output, or short
-anonymous labels.
+anonymous labels. \cr
+}
+\details{
+Once concatenated (using "_" as a separator), the labels are modified as
+follows:
+
+\itemize{
+ \item all spaces and non-alphanumeric characters are removed
+ \item all non-ascii characters are removed
+ \item all characters are set to lower case
+}
 }
 \examples{
 

@@ -3,12 +3,21 @@
 #' This function uses SHA1 algorithm to anonymise data, based on pre-specified
 #' data fields. Data fields are concatenated first, then each entry is
 #' hashed. The function can either return a full detailed output, or short
-#' anonymous labels.
+#' anonymous labels. \cr
+#'
+#' Once concatenated (using "_" as a separator), the labels are modified as
+#' follows:
+#'
+#' \itemize{
+#'  \item all spaces and non-alphanumeric characters are removed
+#'  \item all non-ascii characters are removed
+#'  \item all characters are set to lower case
+#' }
+#'
 #'
 #' @author Thibaut Jombart \email{thibautjombart@@gmail.com}
 #'
 #' @export
-#'
 #'
 #' @param ... Data fields to be hashed.
 #'
@@ -33,7 +42,16 @@
 hash_names <- function(..., size = 6, full = TRUE) {
   x <- list(...)
 
-  lab <- do.call(paste, x)
+  ## On the processing of the input:
+
+  ## - we remove blanks and special characters
+  ## - coercion to lower case
+
+  paste_ <- function(...) paste(..., sep = "_")
+  lab <- do.call(paste_, x)
+  lab <- tolower(lab)
+  lab <- gsub("[^a-z0-9]", "", lab)
+
   hash <- vapply(lab, digest::sha1, NA_character_)
   hash_short <- substr(hash, 1, size)
 
@@ -41,6 +59,7 @@ hash_names <- function(..., size = 6, full = TRUE) {
     out <- data.frame(label = lab,
                       hash_short = hash_short,
                       hash = hash)
+    row.names(out) <- NULL
   } else {
     out <- unname(hash_short)
   }
