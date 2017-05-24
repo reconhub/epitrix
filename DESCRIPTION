@@ -14,7 +14,7 @@ Suggests:
     incidence,
     knitr,
     rmarkdown
-Imports: distcrete
+Imports: distcrete, digest
 RoxygenNote: 6.0.1
 URL: https://localhost/epitrix
 BugReports: https://localhost/bugtracker/epitrix
