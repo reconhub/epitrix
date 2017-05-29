@@ -93,7 +93,8 @@ si <- distcrete::distcrete("gamma", interval = 1,
                shape = param$shape,
                scale = param$scale, w = 0)
 si
-x <- si$r(100)
+set.seed(1)
+x <- si$r(50)
 head(x, 10)
 hist(x, col = "grey", border = "white",
      xlab = "Days between primary and secondary onset",
@@ -113,13 +114,70 @@ si_fit
 ```
 
 
-### Converting a growth rate (r) to a reproduction number (R)
+### Converting a growth rate (r) to a reproduction number (R0)
 
+The package [*incidence*](https://github.com/reconhub/incidence) can fit a
+log-linear model to incidence curves (function `fit`), which produces a growth
+rate (r). This growth rate can in turn be translated into a basic reproduction
+number (R0) using `r2R0`. We illustrate this using simulated Ebola data from the
+[*outbreaks*](https://github.com/reconhub/outbreaks) package, and using the
+serial interval from the previous example:
+
+```{r fit_i}
+
+library(outbreaks)
+library(incidence)
+i <- incidence(ebola_sim$linelist$date_of_onset)
+i
+f <- fit(i[1:150]) # fit on first 150 days
+plot(i[1:200], fit = f)
+
+
+r2R0(f$info$r, si$d(1:100))
+r2R0(f$info$r.conf, si$d(1:100))
+
+```
+
+In addition, we can also use the function `lm2R0_sample` to generate samples of R0 values compatible with a model fit:
+
+```{r sample_R0}
+
+R0_val <- lm2R0_sample(f$lm, si$d(1:100), n = 100)
+head(R0_val)
+hist(R0_val, col = "grey", border = "white")
+
+```
 
 
 ### Anonymising data
 
+`hash_names` can be used to generate hashed labels from linelist data. Based on pre-defined fields, it will generate anonymous labels. This system has the following desirable features:
 
+- given the same input, the output will always be the same, so this encoding
+  system generates labels which can be used by different people and
+  organisations
+
+- given different inputs, the output will always be different; even minor
+  differences in input will result in entirely different outputs
+
+- given an output, it is very hard to infer the input (it requires hacking
+  skills); if security is challenged, the hashing algorithm can be 'salted' to
+  strengthen security
+
+```{r}
+
+first_name <- c("Jane", "Joe", "Raoul", "Raoul")
+last_name <- c("Doe", "Smith", "Dupont", "Dupond")
+age <- c(25, 69, 36, 36)
+
+## detailed output by default
+hash_names(first_name, last_name, age)
+
+## short labels for practical use
+hash_names(first_name, last_name, age,
+           size = 8, full = FALSE)
+
+```
 
 
 ## Vignettes

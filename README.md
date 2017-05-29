@@ -120,12 +120,13 @@ si
 ```
 
 ```r
-x <- si$r(100)
+set.seed(1)
+x <- si$r(50)
 head(x, 10)
 ```
 
 ```
-##  [1] 12  1 73 32  0  9  0 36  5 50
+##  [1]  0  2  7 46  0 43 62 12 10  0
 ```
 
 ```r
@@ -148,29 +149,142 @@ si_fit
 
 ```
 ## $mu
-## [1] 12.57519
+## [1] 14.87893
 ## 
 ## $cv
-## [1] 1.518508
+## [1] 1.465899
 ## 
 ## $sd
-## [1] 19.09553
+## [1] 21.811
 ## 
 ## $ll
-## [1] -332.3606
+## [1] -176.0429
 ## 
 ## $converged
 ## [1] TRUE
 ```
 
 
-### Converting a growth rate (r) to a reproduction number (R)
+### Converting a growth rate (r) to a reproduction number (R0)
 
+The package [*incidence*](https://github.com/reconhub/incidence) can fit a
+log-linear model to incidence curves (function `fit`), which produces a growth
+rate (r). This growth rate can in turn be translated into a basic reproduction
+number (R0) using `r2R0`. We illustrate this using simulated Ebola data from the
+[*outbreaks*](https://github.com/reconhub/outbreaks) package, and using the
+serial interval from the previous example:
+
+
+```r
+library(outbreaks)
+library(incidence)
+i <- incidence(ebola_sim$linelist$date_of_onset)
+i
+```
+
+```
+## <incidence object>
+## [5888 cases from days 2014-04-07 to 2015-04-30]
+## 
+## $counts: matrix with 389 rows and 1 columns
+## $n: 5888 cases in total
+## $dates: 389 dates marking the left-side of bins
+## $interval: 1 day
+## $timespan: 389 days
+```
+
+```r
+f <- fit(i[1:150]) # fit on first 150 days
+```
+
+```
+## Warning in fit(i[1:150]): 22 dates with incidence of 0 ignored for fitting
+```
+
+```r
+plot(i[1:200], fit = f)
+```
+
+![plot of chunk fit_i](figure/fit_i-1.png)
+
+```r
+r2R0(f$info$r, si$d(1:100))
+```
+
+```
+## [1] 1.358887
+```
+
+```r
+r2R0(f$info$r.conf, si$d(1:100))
+```
+
+```
+##         2.5 %   97.5 %
+## [1,] 1.328372 1.388925
+```
+
+In addition, we can also use the function `lm2R0_sample` to generate samples of R0 values compatible with a model fit:
+
+
+```r
+R0_val <- lm2R0_sample(f$lm, si$d(1:100), n = 100)
+head(R0_val)
+```
+
+```
+## [1] 1.358016 1.339114 1.355134 1.364852 1.375463 1.352759
+```
+
+```r
+hist(R0_val, col = "grey", border = "white")
+```
+
+![plot of chunk sample_R0](figure/sample_R0-1.png)
 
 
 ### Anonymising data
 
+`hash_names` can be used to generate hashed labels from linelist data. Based on pre-defined fields, it will generate anonymous labels. This system has the following desirable features:
 
+- given the same input, the output will always be the same, so this encoding
+  system generates labels which can be used by different people and
+  organisations
+
+- given different inputs, the output will always be different; even minor
+  differences in input will result in entirely different outputs
+
+- given an output, it is very hard to infer the input (it requires hacking
+  skills); if security is challenged, the hashing algorithm can be 'salted' to
+  strengthen security
+
+
+```r
+first_name <- c("Jane", "Joe", "Raoul", "Raoul")
+last_name <- c("Doe", "Smith", "Dupont", "Dupond")
+age <- c(25, 69, 36, 36)
+
+## detailed output by default
+hash_names(first_name, last_name, age)
+```
+
+```
+##           label hash_short                                     hash
+## 1     janedoe25     274be0 274be0e34366ab2b8798adb31ad161ea8441c410
+## 2    joesmith69     4c20ad 4c20ad4911e4941eaa3c12023440da406eaf3353
+## 3 raouldupont36     4573ee 4573ee25d7f395d94a89c2fea71bfed27933b6d9
+## 4 raouldupond36     d0e0f4 d0e0f421e546c7902c30faefe58be41aa4ed01d3
+```
+
+```r
+## short labels for practical use
+hash_names(first_name, last_name, age,
+           size = 8, full = FALSE)
+```
+
+```
+## [1] "274be0e3" "4c20ad49" "4573ee25" "d0e0f421"
+```
 
 
 ## Vignettes
