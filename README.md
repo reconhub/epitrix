@@ -101,7 +101,7 @@ param
 The *shape* and *scale* are parameters of a Gamma distribution we can use to
 generate delays. However, delays are typically reported per days, which implies
 a discretisation (from continuous time to discrete numbers). We use the package
-[*distcrete*](https://github.com/reconhub/distcrete) to achieve this discretisation. It generates a list of functions, including one to simulate data (`$r`), which we use to simulate 100 delays:
+[*distcrete*](https://github.com/reconhub/distcrete) to achieve this discretisation. It generates a list of functions, including one to simulate data (`$r`), which we use to simulate 500 delays:
 
 
 ```r
@@ -121,7 +121,7 @@ si
 
 ```r
 set.seed(1)
-x <- si$r(50)
+x <- si$r(500)
 head(x, 10)
 ```
 
@@ -149,16 +149,16 @@ si_fit
 
 ```
 ## $mu
-## [1] 14.87893
+## [1] 15.01017
 ## 
 ## $cv
-## [1] 1.465899
+## [1] 1.656824
 ## 
 ## $sd
-## [1] 21.811
+## [1] 24.8692
 ## 
 ## $ll
-## [1] -176.0429
+## [1] -1689.073
 ## 
 ## $converged
 ## [1] TRUE
@@ -202,7 +202,7 @@ f <- fit(i[1:150]) # fit on first 150 days
 ```
 
 ```r
-plot(i[1:200], fit = f)
+plot(i[1:200], fit = f, color = "#9fc2fc")
 ```
 
 ![plot of chunk fit_i](figure/fit_i-1.png)
@@ -233,7 +233,7 @@ head(R0_val)
 ```
 
 ```
-## [1] 1.358016 1.339114 1.355134 1.364852 1.375463 1.352759
+## [1] 1.360925 1.357800 1.360150 1.367461 1.352716 1.352790
 ```
 
 ```r
