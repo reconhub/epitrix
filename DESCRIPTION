@@ -3,7 +3,7 @@ Title: Utilitary Functions for Epidemics Analysis
 Version: 0.0.1
 Authors@R: c(person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut", "cre")), person("Anne", "Cori", email = "a.cori@imperial.ac.uk", role = c("aut"))) 
 Description: A collection of small functions useful for epidemics analysis and infectious disease modelling.
-Depends: R (>= 3.4.0)
+Depends: R (>= 3.3.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -14,8 +14,9 @@ Suggests:
     incidence,
     knitr,
     rmarkdown
-Imports: distcrete, digest
+Imports: digest, distcrete
+Remotes: reconhub/distcrete
 RoxygenNote: 6.0.1
-URL: https://localhost/epitrix
-BugReports: https://localhost/bugtracker/epitrix
+URL: https://github.com/reconhub/epitrix/
+BugReports: https://github.com/reconhub/epitrix/issues
 VignetteBuilder: knitr
