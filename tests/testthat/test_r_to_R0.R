@@ -16,7 +16,7 @@ test_that("r to R0 gives expected results", {
 
   w <- c(0, 1)
   x <- 1:20
-  y <- x^0.213
+  y <- log(x^2.213)
   lm1 <- lm(y ~ x)
 
   set.seed(1)
