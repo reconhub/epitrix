@@ -12,6 +12,9 @@
 #'
 #' \item all spaces and non-alphanumeric characters are removed
 #'
+#' \item all diacritics are replaced with their non-accentuated equivalents,
+#' e.g. 'é', 'ê' and 'è' become 'e', 'ö' becomes 'o', etc.
+#'
 #' \item all non-ascii characters are removed
 #'
 #' \item all characters are set to lower case
@@ -55,21 +58,17 @@ hash_names <- function(..., size = 6, full = TRUE) {
 
   paste_ <- function(...) paste(..., sep = "_")
   lab <- do.call(paste_, x)
+
+
+  ## replace accentuated characters by closest matches, set lower case, remove
+  ## non-alphanumeric characters
+
+  lab <- stringi::stri_trans_general(lab, "latin-ASCII")
   lab <- tolower(lab)
-
-  ## replace accentuated characters by closest matches
-  replace_expr <- list(
-    a = "[áàâä]", e = "[éèêë]", i = "[íìîï]",
-    o = "[óòôö]", u = "[úùûü]", y = "[ýỳŷÿ]", c = "[ç]")
-
-  for (i in seq_along(replace_expr)) {
-    lab <- gsub(replace_expr[[i]],
-                names(replace_expr)[i],
-                lab)
-  }
-
-  ## remove non ascii characters
   lab <- gsub("[^a-z0-9]", "", lab)
+
+
+  ## hash it all
 
   hash <- vapply(lab, digest::sha1, NA_character_)
   hash_short <- substr(hash, 1, size)

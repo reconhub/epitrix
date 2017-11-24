@@ -29,6 +29,9 @@ follows:
 
 \item all spaces and non-alphanumeric characters are removed
 
+\item all diacritics are replaced with their non-accentuated equivalents,
+e.g. 'é', 'ê' and 'è' become 'e', 'ö' becomes 'o', etc.
+
 \item all non-ascii characters are removed
 
 \item all characters are set to lower case
