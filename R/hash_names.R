@@ -1,19 +1,25 @@
 #' Anonymise data using SHA1
 #'
-#' This function uses SHA1 algorithm to anonymise data, based on pre-specified
+#' This function uses SHA1 algorithm to anonymise data, based on user-indicated
 #' data fields. Data fields are concatenated first, then each entry is
 #' hashed. The function can either return a full detailed output, or short
-#' anonymous labels. \cr
+#' labels ready to use for 'anonymised data'. \cr
 #'
 #' Once concatenated (using "_" as a separator), the labels are modified as
 #' follows:
 #'
 #' \itemize{
-#'  \item all spaces and non-alphanumeric characters are removed
-#'  \item all non-ascii characters are removed
-#'  \item all characters are set to lower case
+#'
+#' \item all spaces and non-alphanumeric characters are removed
+#'
+#' \item all non-ascii characters are removed
+#'
+#' \item all characters are set to lower case
+#'
 #' }
 #'
+#' Note that the algorithm is not 'salted'. This can be done by tweaking the
+#' input characters before the hashing.
 #'
 #' @author Thibaut Jombart \email{thibautjombart@@gmail.com}
 #'

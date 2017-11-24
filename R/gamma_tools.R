@@ -23,44 +23,45 @@
 #' @rdname gamma_tools
 #'
 #' @aliases gamma_shapescale2mucv
-#' 
+#'
 #' @return A named list containing 'shape' and 'scale', or mean ('mean') and
 #' coefficient of variation ('cv').
 #'
 #' @examples
 #'
 #' ## set up some parameters
-#' 
+#'
 #' mu <- 10
 #' cv <- 1
 #'
-#' 
+#'
 #' ## transform into shape scale
-#' 
+#'
 #' tmp <- gamma_mucv2shapescale (mu, cv)
 #' shape <- tmp$shape
 #' scale <- tmp$scale
 #'
-#' 
-#' ## do we recover the original parameters when applying the revert function?
 #'
-#' #' gamma_shapescale2mucv(shape, scale) # compare with mu, cv
-#' 
+#' ## recover original parameters when applying the revert function
 #'
-#' ## and do we get the correct mean / cv of a sample if we use rgamma with
-#' ## shape and scale computed from mu and cv?
-#' 
+#' gamma_shapescale2mucv(shape, scale) # compare with mu, cv
+#'
+#'
+#' ## empirical validation:
+#' ## check mean / cv of a sample derived using rgamma with
+#' ## shape and scale computed from mu and cv
+#'
 #' gamma_sample <- rgamma(n = 10000, shape = shape, scale = scale)
 #' mean(gamma_sample) # compare to mu
 #' sd(gamma_sample) / mean(gamma_sample) # compare to cv
-#' 
+#'
 
 
 
 #' @export
 #' @rdname gamma_tools
 #' @aliases gamma_shapescale2mucv
-#' 
+#'
 #' @param shape The shape parameter of the Gamma distribution.
 #' @param scale The scale parameter of the Gamma distribution.
 
@@ -78,7 +79,7 @@ gamma_shapescale2mucv <- function(shape, scale) {
 #' @export
 #' @rdname gamma_tools
 #' @aliases gamma_mucv2shapescale
-#' 
+#'
 #' @param mu The mean of the Gamma distribution.
 #' @param cv The coefficient of variation of the Gamma distribution, i.e. the
 #' standard deviation divided by the mean.
@@ -97,19 +98,25 @@ gamma_mucv2shapescale <- function(mu, cv) {
 #' @export
 #' @rdname gamma_tools
 #' @aliases gamma_log_likelihood
-#' 
+#'
 #' @param x A vector of data treated as observations drawn from a Gamma
-#' distribution, for which the likelihood is to be computed.
+#'   distribution, for which the likelihood is to be computed.
 #'
 #' @param discrete A logical indicating if the distribution should be
-#' discretised; TRUE by default.
+#'   discretised; TRUE by default.
 #'
-#' @param interval The interval used for discretisation; see \code{\link{distcrete}}.
-#' 
-#' @param w The centering of the interval used for discretisation; see \code{\link{distcrete}}.
-#' 
+#' @param interval The interval used for discretisation; see
+#'   \code{\link{distcrete}}.
+#'
+#' @param w The centering of the interval used for discretisation, defaulting to
+#'   0; see \code{\link{distcrete}}.
+#'
+#' @param anchor The anchor used for discretisation, i.e. starting point of the
+#'   discretisation process; defaults to 0; see \code{\link{distcrete}}.
+#'
 
-gamma_log_likelihood <- function(x, mu, cv, discrete = TRUE, interval = 1, w = 0) {
+gamma_log_likelihood <- function(x, mu, cv, discrete = TRUE,
+                                 interval = 1, w = 0, anchor = 0.5) {
     tmp <- gamma_mucv2shapescale(mu, cv)
 
     if (discrete) {

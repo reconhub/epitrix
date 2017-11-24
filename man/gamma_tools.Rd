@@ -10,7 +10,8 @@ gamma_shapescale2mucv(shape, scale)
 
 gamma_mucv2shapescale(mu, cv)
 
-gamma_log_likelihood(x, mu, cv, discrete = TRUE, interval = 1, w = 0)
+gamma_log_likelihood(x, mu, cv, discrete = TRUE, interval = 1, w = 0,
+  anchor = 0.5)
 }
 \arguments{
 \item{shape}{The shape parameter of the Gamma distribution.}
@@ -28,9 +29,14 @@ distribution, for which the likelihood is to be computed.}
 \item{discrete}{A logical indicating if the distribution should be
 discretised; TRUE by default.}
 
-\item{interval}{The interval used for discretisation; see \code{\link{distcrete}}.}
+\item{interval}{The interval used for discretisation; see
+\code{\link{distcrete}}.}
 
-\item{w}{The centering of the interval used for discretisation; see \code{\link{distcrete}}.}
+\item{w}{The centering of the interval used for discretisation, defaulting to
+0; see \code{\link{distcrete}}.}
+
+\item{anchor}{The anchor used for discretisation, i.e. starting point of the
+discretisation process; defaults to 0; see \code{\link{distcrete}}.}
 }
 \value{
 A named list containing 'shape' and 'scale', or mean ('mean') and
@@ -70,13 +76,14 @@ shape <- tmp$shape
 scale <- tmp$scale
 
 
-## do we recover the original parameters when applying the revert function?
+## recover original parameters when applying the revert function
 
-#' gamma_shapescale2mucv(shape, scale) # compare with mu, cv
+gamma_shapescale2mucv(shape, scale) # compare with mu, cv
 
 
-## and do we get the correct mean / cv of a sample if we use rgamma with
-## shape and scale computed from mu and cv?
+## empirical validation:
+## check mean / cv of a sample derived using rgamma with
+## shape and scale computed from mu and cv
 
 gamma_sample <- rgamma(n = 10000, shape = shape, scale = scale)
 mean(gamma_sample) # compare to mu

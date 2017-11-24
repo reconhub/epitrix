@@ -22,36 +22,39 @@
 #'
 #' @param cv_ini The initial value for the coefficient of variation 'cv',
 #' defaulting to 1.
-#' 
+#'
 #' @param interval The interval used for discretisation; see \code{\link{distcrete}}.
-#' 
+#'
 #' @param w The centering of the interval used for discretisation; see
 #' \code{\link{distcrete}}.
-#' 
+#'
 #' @param ... Further arguments passed to \code{\link{optim}}.
 #'
-#' 
+#'
 #' @examples
 #'
 #' ## generate data
-#' 
+#'
 #' mu <- 15.3 # days
 #' sigma <- 9.3 # days
 #' cv <- mu / sigma
 #' cv
 #' param <- gamma_mucv2shapescale(mu, cv)
-#' 
-#' w <- distcrete::distcrete("gamma", interval = 1,
+#'
+#' if (require(distcrete)) {
+#' w <- distcrete("gamma", interval = 1,
 #'                shape = param$shape,
 #'                scale = param$scale, w = 0)
-#' 
+#'
 #' x <- w$r(100)
 #' x
 #'
 #' fit_disc_gamma(x)
-#' 
+#' }
+#'
 
-fit_disc_gamma <- function(x, mu_ini = 1, cv_ini = 1, interval = 1, w = 0, ...) {
+fit_disc_gamma <- function(x, mu_ini = 1, cv_ini = 1, interval = 1,
+                           w = 0, ...) {
     ll <- function(param) {
         gamma_log_likelihood(x, param[1], param[2],
                              discrete = TRUE, interval = interval, w = w)

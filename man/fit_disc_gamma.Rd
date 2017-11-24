@@ -39,7 +39,8 @@ cv <- mu / sigma
 cv
 param <- gamma_mucv2shapescale(mu, cv)
 
-w <- distcrete::distcrete("gamma", interval = 1,
+if (require(distcrete)) {
+w <- distcrete("gamma", interval = 1,
                shape = param$shape,
                scale = param$scale, w = 0)
 
@@ -47,6 +48,7 @@ x <- w$r(100)
 x
 
 fit_disc_gamma(x)
+}
 
 }
 \seealso{

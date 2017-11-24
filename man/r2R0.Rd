@@ -3,12 +3,11 @@
 \name{r2R0}
 \alias{r2R0}
 \alias{lm2R0_sample}
-\alias{r2R0_sample}
 \title{Transform a growth rate into a reproduction number}
 \usage{
 r2R0(r, w, trunc = 1000)
 
-lm2R0_sample(x, w, n = 1000)
+lm2R0_sample(x, w, n = 100, trunc = 1000)
 }
 \arguments{
 \item{r}{A vector of growth rate values.}
@@ -20,15 +19,18 @@ probabilities of the mass functions.}
 \item{trunc}{The number of time units (most often, days), used for truncating
 \code{w}, whenever a \code{distcrete} object is provided. Defaults to 1000.}
 
-\item{x}{A \code{lm} object storing a a linear regression of log-incidence over time.}
+\item{x}{A \code{lm} object storing a a linear regression of log-incidence
+over time.}
 
-\item{n}{The number of draws of R0 values, defaulting to 1000.}
+\item{n}{The number of draws of R0 values, defaulting to 100.}
 }
 \description{
 The function \code{r2R0} can be used to transform a growth rate into a
-reproduction number estimate, given an serial interval distribution. The
-function \code{lm2R0_sample} generates a sample of R0 values from a
-log-linear regression of incidence data stored in a \code{lm} object.
+reproduction number estimate, given a generation time distribution. This uses
+the approach described in Wallinga and Lipsitch (2007, Proc Roy Soc B
+274:599–604) for empirical distributions. The function \code{lm2R0_sample}
+generates a sample of R0 values from a log-linear regression of incidence
+data stored in a \code{lm} object.
 }
 \details{
 It is assumed that the growth rate ('r') is measured in the same
@@ -42,7 +44,7 @@ time 0).
 
 mu <- 15.3 # days
 sigma <- 9.3 # days
-param <- gamma_mucv2shapescale(mu, sigma/mu)
+param <- gamma_mucv2shapescale(mu, sigma / mu)
 
 if (require(distcrete)) {
   w <- distcrete("gamma", interval = 1,
@@ -64,7 +66,7 @@ if (require(distcrete)) {
 
     R0 <- lm2R0_sample(f$lm, w)
     hist(R0, col = "grey", border = "white", main = "Distribution of R0")
-    summary(R0)   
+    summary(R0)
   }
 }
 
