@@ -85,7 +85,9 @@ param
 The *shape* and *scale* are parameters of a Gamma distribution we can use to
 generate delays. However, delays are typically reported per days, which implies
 a discretisation (from continuous time to discrete numbers). We use the package
-[*distcrete*](https://github.com/reconhub/distcrete) to achieve this discretisation. It generates a list of functions, including one to simulate data (`$r`), which we use to simulate 500 delays:
+[*distcrete*](https://github.com/reconhub/distcrete) to achieve this
+discretisation. It generates a list of functions, including one to simulate data
+(`$r`), which we use to simulate 500 delays:
 
 ```{r si}
 
@@ -137,7 +139,8 @@ r2R0(f$info$r.conf, si$d(1:100))
 
 ```
 
-In addition, we can also use the function `lm2R0_sample` to generate samples of R0 values compatible with a model fit:
+In addition, we can also use the function `lm2R0_sample` to generate samples of
+R0 values compatible with a model fit:
 
 ```{r sample_R0}
 
@@ -150,7 +153,9 @@ hist(R0_val, col = "grey", border = "white")
 
 ### Anonymising data
 
-`hash_names` can be used to generate hashed labels from linelist data. Based on pre-defined fields, it will generate anonymous labels. This system has the following desirable features:
+`hash_names` can be used to generate hashed labels from linelist data. Based on
+pre-defined fields, it will generate anonymous labels. This system has the
+following desirable features:
 
 - given the same input, the output will always be the same, so this encoding
   system generates labels which can be used by different people and
@@ -181,25 +186,29 @@ hash_names(first_name, last_name, age,
 
 ## Vignettes
 
-Vignettes are still in development.
+The [overview vignette](http://www.repidemicsconsortium.org/epitrix/articles/overview.html)
+essentially replicates the content of this `README`. To request or contribute
+other vignettes, see the section "*getting help, contributing*".
 
 
 ## Websites
 
-A dedicated website is still in development.
+Click [here](http://www.repidemicsconsortium.org/epitrix/) for the website
+dedicated to *epitrix*.
 
 
-
-## Getting help online
+## Getting help, contributing
 
 Bug reports and feature requests should be posted on *github* using the
 [*issue*](http://github.com/reconhub/epitrix/issues) system. All other questions
-should be posted on the **RECON forum**: <br>
+should be posted on the **RECON forum**: 
+
+<br>
 [http://www.repidemicsconsortium.org/forum/](http://www.repidemicsconsortium.org/forum/)
 
 Contributions are welcome via **pull requests**.
 
-Please note that this project is released with a [Contributor Code of
-Conduct](CONDUCT.md). By participating in this project you agree to abide by its
-terms.
+Please note that this project is released with a 
+[Contributor Code of Conduct](CONDUCT.md). 
+By participating in this project you agree to abide by its terms.
 

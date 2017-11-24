@@ -1,58 +1,179 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Overview of the epitrix package"
+author: "Thibaut Jombart"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+   rmarkdown::html_vignette:
+     toc: true
+     toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Overview}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
-
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>", 
+  fig.width=7, 
+  fig.height=5, 
+  fig.path="figs-overview/"
+)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+*epitrix* implements small helper functions usefull in infectious disease
+modelling and epidemics analysis. This vignette provides a quick overview of the
+package's features.
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
 
-## More Examples
 
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
+# What does it do?
 
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+The main features of the package include:
+
+- **`gamma_shapescale2mucv`**: convert shape and scale of a Gamma distribution
+    to mean and CV
+
+- **`gamma_mucv2shapescale`**: convert mean and CV of a Gamma distribution to
+    shape and scale
+
+- **`gamma_log_likelihood`**: Gamma log-likelihood using mean and CV
+
+- **`r2R0`**: convert growth rate into a reproduction number
+
+- **`lm2R0_sample`**: generates a distribution of R0 from a log-incidence linear
+    model
+
+- **`fit_disc_gamma`**: fits a discretised Gamma distribution to data (typically
+    useful for describing delays)
+
+- **`hash_names`**: generate unique, anonymised, reproducible labels from
+    various data fields (e.g. First name, Last name, Date of birth).
+
+
+
+# Fitting a gamma distribution to delay data
+
+In this example, we simulate data which replicate the serial interval (SI),
+i.e. the delays between primary and secondary symptom onsets, in Ebola Virus
+Disease (EVD). We start by converting previously estimates of the mean and
+standard deviation of the SI (WHO Ebola Response Team (2014) NEJM 371:1481–1495)
+to the parameters of a Gamma distribution:
+
+```{r generate_data}
+library(epitrix)
+
+mu <- 15.3 # mean in days days
+sigma <- 9.3 # standard deviation in days
+cv <- mu/sigma # coefficient of variation
+cv
+param <- gamma_mucv2shapescale(mu, cv) # convertion to Gamma parameters
+param
+
 ```
 
-Also a quote using `>`:
+The *shape* and *scale* are parameters of a Gamma distribution we can use to
+generate delays. However, delays are typically reported per days, which implies
+a discretisation (from continuous time to discrete numbers). We use the package
+[*distcrete*](https://github.com/reconhub/distcrete) to achieve this
+discretisation. It generates a list of functions, including one to simulate data
+(`$r`), which we use to simulate 500 delays:
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+```{r si}
+
+si <- distcrete::distcrete("gamma", interval = 1,
+               shape = param$shape,
+               scale = param$scale, w = 0)
+si
+set.seed(1)
+x <- si$r(500)
+head(x, 10)
+hist(x, col = "grey", border = "white",
+     xlab = "Days between primary and secondary onset",
+     main = "Simulated serial intervals")
+
+```
+
+`x` contains simulated data, for illustrative purpose. In practice, one would
+use real data from an ongoing outbreaks. Now we use `fit_disc_gamma` to estimate
+the parameters of a dicretised Gamma distribution from the data:
+
+```{r fit}
+
+si_fit <- fit_disc_gamma(x)
+si_fit
+
+```
+
+
+# Converting a growth rate (r) to a reproduction number (R0)
+
+The package [*incidence*](https://github.com/reconhub/incidence) can fit a
+log-linear model to incidence curves (function `fit`), which produces a growth
+rate (r). This growth rate can in turn be translated into a basic reproduction
+number (R0) using `r2R0`. We illustrate this using simulated Ebola data from the
+[*outbreaks*](https://github.com/reconhub/outbreaks) package, and using the
+serial interval from the previous example:
+
+```{r fit_i}
+
+library(outbreaks)
+library(incidence)
+i <- incidence(ebola_sim$linelist$date_of_onset)
+i
+f <- fit(i[1:150]) # fit on first 150 days
+plot(i[1:200], fit = f, color = "#9fc2fc")
+
+r2R0(f$info$r, si$d(1:100))
+r2R0(f$info$r.conf, si$d(1:100))
+
+```
+
+In addition, we can also use the function `lm2R0_sample` to generate samples of
+R0 values compatible with a model fit:
+
+```{r sample_R0}
+
+R0_val <- lm2R0_sample(f$lm, si$d(1:100), n = 100)
+head(R0_val)
+hist(R0_val, col = "grey", border = "white")
+
+```
+
+
+# Anonymising data
+
+`hash_names` can be used to generate hashed labels from linelist data. Based on
+pre-defined fields, it will generate anonymous labels. This system has the
+following desirable features:
+
+- given the same input, the output will always be the same, so this encoding
+  system generates labels which can be used by different people and
+  organisations
+
+- given different inputs, the output will always be different; even minor
+  differences in input will result in entirely different outputs
+
+- given an output, it is very hard to infer the input (it requires hacking
+  skills); if security is challenged, the hashing algorithm can be 'salted' to
+  strengthen security
+
+```{r}
+
+first_name <- c("Jane", "Joe", "Raoul", "Raoul")
+last_name <- c("Doe", "Smith", "Dupont", "Dupond")
+age <- c(25, 69, 36, 36)
+
+## detailed output by default
+hash_names(first_name, last_name, age)
+
+## short labels for practical use
+hash_names(first_name, last_name, age,
+           size = 8, full = FALSE)
+
+```
+
+	
