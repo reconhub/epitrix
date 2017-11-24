@@ -56,6 +56,19 @@ hash_names <- function(..., size = 6, full = TRUE) {
   paste_ <- function(...) paste(..., sep = "_")
   lab <- do.call(paste_, x)
   lab <- tolower(lab)
+
+  ## replace accentuated characters by closest matches
+  replace_expr <- list(
+    a = "[áàâä]", e = "[éèêë]", i = "[íìîï]",
+    o = "[óòôö]", u = "[úùûü]", y = "[ýỳŷÿ]", c = "[ç]")
+
+  for (i in seq_along(replace_expr)) {
+    lab <- gsub(replace_expr[[i]],
+                names(replace_expr)[i],
+                lab)
+  }
+
+  ## remove non ascii characters
   lab <- gsub("[^a-z0-9]", "", lab)
 
   hash <- vapply(lab, digest::sha1, NA_character_)
