@@ -19,4 +19,13 @@ test_that("Hashing outputs as expected", {
     expect_identical(hash_names("Pïôtr and ÿgòr"),
                      hash_names("píotr and YGÓR"))
 
+    expect_is(hash_names("klsdfsdndsnjs"), "data.frame")
+    expect_is(hash_names("klsdfsdndsnjs", full = FALSE), "character")
+    expect_equal(
+      nchar(hash_names("klsdfsdndsnjs", size = 6, full = FALSE)),
+      6L)
+    expect_equal(
+      nchar(hash_names("klsdfsdndsnjs", size = 10, full = FALSE)),
+      10L)
+
 })
