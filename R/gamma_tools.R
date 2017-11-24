@@ -125,9 +125,9 @@ gamma_log_likelihood <- function(x, mu, cv, discrete = TRUE,
         log_dens <- d(x, log = TRUE)
     } else {
         log_dens <- stats::dgamma(x,
-                              shape = tmp$shape,
-                              scale = tmp$scale,
-                              log = TRUE)
+                                  shape = tmp$shape,
+                                  scale = tmp$scale,
+                                  log = TRUE)
     }
     return(sum(log_dens))
 }
