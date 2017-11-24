@@ -188,7 +188,7 @@ hash_names(first_name, last_name, age,
 
 ## Vignettes
 
-The [overview vignette](http://www.repidemicsconsortium.org/epitrix/articles/overview.html)
+The [overview vignette](http://www.repidemicsconsortium.org/epitrix/articles/epitrix.html)
 essentially replicates the content of this `README`. To request or contribute
 other vignettes, see the section "*getting help, contributing*".
 
