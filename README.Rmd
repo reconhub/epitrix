@@ -203,10 +203,7 @@ dedicated to *epitrix*.
 
 Bug reports and feature requests should be posted on *github* using the
 [*issue*](http://github.com/reconhub/epitrix/issues) system. All other questions
-should be posted on the **RECON forum**: 
-
-<br>
-[http://www.repidemicsconsortium.org/forum/](http://www.repidemicsconsortium.org/forum/)
+should be posted on the [**RECON forum**](http://www.repidemicsconsortium.org/forum/).
 
 Contributions are welcome via **pull requests**.
 
