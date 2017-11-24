@@ -72,6 +72,7 @@ standard deviation of the SI (WHO Ebola Response Team (2014) NEJM 371:1481–149
 to the parameters of a Gamma distribution:
 
 ```{r generate_data}
+library(epitrix)
 
 mu <- 15.3 # mean in days days
 sigma <- 9.3 # standard deviation in days
@@ -129,6 +130,7 @@ serial interval from the previous example:
 
 library(outbreaks)
 library(incidence)
+
 i <- incidence(ebola_sim$linelist$date_of_onset)
 i
 f <- fit(i[1:150]) # fit on first 150 days
