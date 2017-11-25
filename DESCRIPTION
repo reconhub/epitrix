@@ -1,5 +1,5 @@
 Package: epitrix
-Title: Utilitary Functions for Epidemics Analysis
+Title: Small Helpers and Tricks for Epidemics Analysis
 Version: 0.1.0
 Authors@R: c(person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut", "cre")),
              person("Anne", "Cori", email = "a.cori@imperial.ac.uk", role = c("aut"))) 
