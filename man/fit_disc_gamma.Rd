@@ -22,6 +22,12 @@ defaulting to 1.}
 
 \item{...}{Further arguments passed to \code{\link{optim}}.}
 }
+\value{
+The function returns a list with human-readable parametrisation of
+  the discretised Gamma distibution (mean, sd, cv), convergence indicators,
+  and the discretised Gamma distribution itself as a \code{distcrete} object
+  (from the \code{distcrete} package).
+}
 \description{
 These functions performs maximum-likelihood (ML) fitting of a discretised
 distribution. This is typically useful for describing delays between

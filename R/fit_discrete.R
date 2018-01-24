@@ -30,6 +30,10 @@
 #'
 #' @param ... Further arguments passed to \code{\link{optim}}.
 #'
+#' @return The function returns a list with human-readable parametrisation of
+#'   the discretised Gamma distibution (mean, sd, cv), convergence indicators,
+#'   and the discretised Gamma distribution itself as a \code{distcrete} object
+#'   (from the \code{distcrete} package).
 #'
 #' @examples
 #'
@@ -55,20 +59,37 @@
 
 fit_disc_gamma <- function(x, mu_ini = 1, cv_ini = 1, interval = 1,
                            w = 0, ...) {
-    ll <- function(param) {
-        gamma_log_likelihood(x, param[1], param[2],
-                             discrete = TRUE, interval = interval, w = w)
-    }
-    deviance <- function(param) {
-        -2 * ll(param)
-    }
 
-    optim_res <- stats::optim(c(mu_ini, cv_ini), deviance, ...)
-    out <- list(mu = optim_res$par[1],
-                cv = optim_res$par[2],
-                sd = optim_res$par[2] * optim_res$par[1],
-                ll = - 0.5 * optim_res$value,
-                converged = (optim_res$convergence == 0))
-    return(out)
+  ## Fitting is achieved by minimizing the deviance. We return the a series of
+  ## outputs including human-readable parametrisation of the discretised gamma
+  ## distribution, the final log-likelihood, and the distcrete object itself,
+  ## which effectively is the fitted distribution.
+
+  ll <- function(param) {
+    gamma_log_likelihood(x, param[1], param[2],
+                         discrete = TRUE, interval = interval, w = w)
+  }
+  deviance <- function(param) {
+    -2 * ll(param)
+  }
+
+  optim_res <- stats::optim(c(mu_ini, cv_ini), deviance, ...)
+
+  gamma_params <- gamma_mucv2shapescale(mu = optim_res$par[1],
+                                        cv = optim_res$par[2])
+
+
+  distribution <- distcrete::distcrete("gamma", interval = interval,
+                                       shape = gamma_params$shape,
+                                       scale = gamma_params$scale,
+                                       w = w)
+  out <- list(mu = optim_res$par[1],
+              cv = optim_res$par[2],
+              sd = optim_res$par[2] * optim_res$par[1],
+              ll = - 0.5 * optim_res$value,
+              converged = (optim_res$convergence == 0),
+              distribution = distribution)
+
+  return(out)
 }
 
