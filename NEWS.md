@@ -1,3 +1,10 @@
+# epitrix 0.1.1
+
+- `fit_disc_gamma` now also returns the fitted discretised gamma distribution as
+  a `distcrete` object
+
+
+
 # epitrix 0.1.0
 
 First release of the package! This includes the following features:

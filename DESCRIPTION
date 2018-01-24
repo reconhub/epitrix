@@ -1,6 +1,6 @@
 Package: epitrix
 Title: Small Helpers and Tricks for Epidemics Analysis
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut", "cre")),
              person("Anne", "Cori", email = "a.cori@imperial.ac.uk", role = c("aut"))) 
 Description: A collection of small functions useful for epidemics analysis and infectious disease modelling. This includes computation of basic reproduction numbers from growth rates, generation of hashed labels to anonymise data, and fitting discretised Gamma distributions.
