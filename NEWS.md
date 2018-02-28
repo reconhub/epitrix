@@ -1,3 +1,11 @@
+# epitrix 0.1.2
+
+- added salting algorithm to `hash_names` (issue 1)
+
+- fixed bug happening when using `tibble` inputs in `hash_names` (issue 2)
+
+
+
 # epitrix 0.1.1
 
 - `fit_disc_gamma` now also returns the fitted discretised gamma distribution as
