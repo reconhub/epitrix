@@ -29,3 +29,22 @@ test_that("Hashing outputs as expected", {
       10L)
 
 })
+
+
+
+
+test_that("Hashing works with data.frame", {
+    skip_on_cran()
+
+    x <- data.frame(first = c("baba", "yaga"),
+                    last = c("john", "wick"))
+
+    expect_identical(hash_names(x$first, x$last),
+                     hash_names(x[, 1, drop = FALSE],
+                                x[, 2, drop = FALSE])
+                     )
+    expect_identical(hash_names(x$first),
+                     hash_names(x[, 1, drop = FALSE])
+                     )
+                   
+})

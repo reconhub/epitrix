@@ -5,8 +5,8 @@
 #' hashed. The function can either return a full detailed output, or short
 #' labels ready to use for 'anonymised data'. \cr
 #'
-#' Once concatenated (using "_" as a separator), the labels are modified as
-#' follows:
+#' Before concatenation (using "_" as a separator) to form labels, inputs are
+#' modified as follows:
 #'
 #' \itemize{
 #'
@@ -50,22 +50,24 @@
 
 hash_names <- function(..., size = 6, full = TRUE) {
   x <- list(...)
+  x <- lapply(x, function(e) paste(unlist(e)))
 
   ## On the processing of the input:
 
-  ## - we remove blanks and special characters
+  ## - replace accentuated characters by closest matches
+  ## - we remove blanks and non-alphanumeric characters
   ## - coercion to lower case
 
+  clean_txt <- function(lab) {
+    lab <- stringi::stri_trans_general(lab, "latin-ASCII")
+    lab <- tolower(lab)
+    lab <- gsub("[^a-z0-9]", "", lab)
+    lab
+  }
+  
+  x <- lapply(x, clean_txt)
   paste_ <- function(...) paste(..., sep = "_")
   lab <- do.call(paste_, x)
-
-
-  ## replace accentuated characters by closest matches, set lower case, remove
-  ## non-alphanumeric characters
-
-  lab <- stringi::stri_trans_general(lab, "latin-ASCII")
-  lab <- tolower(lab)
-  lab <- gsub("[^a-z0-9]", "", lab)
 
 
   ## hash it all
