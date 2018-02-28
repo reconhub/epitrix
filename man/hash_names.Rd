@@ -4,7 +4,7 @@
 \alias{hash_names}
 \title{Anonymise data using SHA1}
 \usage{
-hash_names(..., size = 6, full = TRUE)
+hash_names(..., size = 6, full = TRUE, salt = NULL)
 }
 \arguments{
 \item{...}{Data fields to be hashed.}
@@ -14,6 +14,9 @@ hash_names(..., size = 6, full = TRUE)
 \item{full}{A logical indicating if the a full output should be returned as a
 \code{data.frame}, including original labels, shortened hash, and full
 hash.}
+
+\item{salt}{An optional object to be used to 'salt' the hashing algorithm
+(see details). Ignored if \code{NULL} (default).}
 }
 \description{
 This function uses SHA1 algorithm to anonymise data, based on user-indicated
@@ -22,8 +25,8 @@ hashed. The function can either return a full detailed output, or short
 labels ready to use for 'anonymised data'. \cr
 }
 \details{
-Once concatenated (using "_" as a separator), the labels are modified as
-follows:
+Before concatenation (using "_" as a separator) to form labels, inputs are
+modified as follows:
 
 \itemize{
 
@@ -38,8 +41,11 @@ e.g. 'é', 'ê' and 'è' become 'e', 'ö' becomes 'o', etc.
 
 }
 
-Note that the algorithm is not 'salted'. This can be done by tweaking the
-input characters before the hashing.
+The argument \code{salt} can be used for salting the algorithm, i.e. adding
+an extra input to the input fields (the 'salt') to change the resulting hash
+and prevent identification of individuals via pre-computed hash
+tables. Objects provided as \code{salt} will themselves be hashed using SHA1
+algorithm, and the full hash is appended to the labels.
 }
 \examples{
 
@@ -52,6 +58,11 @@ hash_names(first_name, last_name, age)
 hash_names(first_name, last_name, age,
            size = 8, full = FALSE)
 
+
+## salting the hashing (more secure!)
+hash_names(first_name, last_name) # unsalted - less secure
+hash_names(first_name, last_name, salt = 123) # salted with an integer
+hash_names(first_name, last_name, salt = "foobar") # salted with an character
 }
 \author{
 Thibaut Jombart \email{thibautjombart@gmail.com}
