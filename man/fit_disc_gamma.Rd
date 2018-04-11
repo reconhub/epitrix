@@ -8,7 +8,7 @@
 fit_disc_gamma(x, mu_ini = 1, cv_ini = 1, interval = 1, w = 0, ...)
 }
 \arguments{
-\item{x}{A vector of numeric data to fit.}
+\item{x}{A vector of numeric data to fit; NAs will be removed with a warning.}
 
 \item{mu_ini}{The initial value for the mean 'mu', defaulting to 1.}
 

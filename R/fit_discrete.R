@@ -16,7 +16,7 @@
 #' \code{\link{optim}} for details on available optimisation procedures.
 #'
 #'
-#' @param x A vector of numeric data to fit.
+#' @param x A vector of numeric data to fit; NAs will be removed with a warning.
 #'
 #' @param mu_ini The initial value for the mean 'mu', defaulting to 1.
 #'
@@ -60,6 +60,15 @@
 fit_disc_gamma <- function(x, mu_ini = 1, cv_ini = 1, interval = 1,
                            w = 0, ...) {
 
+  ## Default policy: if 'x' includes NAs, we remove them and issue a warning.
+
+  if (any(is.na(x))) {
+    n_na <- sum(is.na(x))
+    x <- stats::na.omit(x)
+    warning(n_na, " NAs were removed from the data before fitting.")
+  }
+
+  
   ## Fitting is achieved by minimizing the deviance. We return the a series of
   ## outputs including human-readable parametrisation of the discretised gamma
   ## distribution, the final log-likelihood, and the distcrete object itself,
