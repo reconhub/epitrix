@@ -54,7 +54,7 @@ rename <- function(x, sep = "_") {
   out <- tolower(x)
   out <- stringi::stri_trans_general(out, "latin-ASCII")
   out <- gsub("[^a-z0-9]+", sep, out)
-  out <- sub("^[^a-z0-9]", "", out)
-  out <- sub("[^a-z0-9]$", "", out)
+  out <- sub("^[^a-z0-9]+", "", out)
+  out <- sub("[^a-z0-9]+$", "", out)
   out
 }

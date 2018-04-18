@@ -22,25 +22,10 @@ hash.}
 This function uses SHA1 algorithm to anonymise data, based on user-indicated
 data fields. Data fields are concatenated first, then each entry is
 hashed. The function can either return a full detailed output, or short
-labels ready to use for 'anonymised data'. \cr
+labels ready to use for 'anonymised data'. Before concatenation (using "_" as
+a separator) to form labels, inputs are modified using \code{\link{rename}}.
 }
 \details{
-Before concatenation (using "_" as a separator) to form labels, inputs are
-modified as follows:
-
-\itemize{
-
-\item all spaces and non-alphanumeric characters are removed
-
-\item all diacritics are replaced with their non-accentuated equivalents,
-e.g. 'é', 'ê' and 'è' become 'e', 'ö' becomes 'o', etc.
-
-\item all non-ascii characters are removed
-
-\item all characters are set to lower case
-
-}
-
 The argument \code{salt} can be used for salting the algorithm, i.e. adding
 an extra input to the input fields (the 'salt') to change the resulting hash
 and prevent identification of individuals via pre-computed hash
@@ -63,6 +48,9 @@ hash_names(first_name, last_name, age,
 hash_names(first_name, last_name) # unsalted - less secure
 hash_names(first_name, last_name, salt = 123) # salted with an integer
 hash_names(first_name, last_name, salt = "foobar") # salted with an character
+}
+\seealso{
+\code{\link{rename}}, used to clean labels prior to hashing.
 }
 \author{
 Thibaut Jombart \email{thibautjombart@gmail.com}

@@ -1,3 +1,11 @@
+# epitrix 0.2.0
+
+- added function `rename` which can be used to standardise labels in variables,
+  removing non-ascii characters, standardising separators, and more; now used in
+  `hash_names`
+  
+
+
 # epitrix 0.1.2
 
 - added salting algorithm to `hash_names` (issue 1)

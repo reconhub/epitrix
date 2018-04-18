@@ -3,30 +3,17 @@
 #' This function uses SHA1 algorithm to anonymise data, based on user-indicated
 #' data fields. Data fields are concatenated first, then each entry is
 #' hashed. The function can either return a full detailed output, or short
-#' labels ready to use for 'anonymised data'. \cr
-#'
-#' Before concatenation (using "_" as a separator) to form labels, inputs are
-#' modified as follows:
-#'
-#' \itemize{
-#'
-#' \item all spaces and non-alphanumeric characters are removed
-#'
-#' \item all diacritics are replaced with their non-accentuated equivalents,
-#' e.g. 'é', 'ê' and 'è' become 'e', 'ö' becomes 'o', etc.
-#'
-#' \item all non-ascii characters are removed
-#'
-#' \item all characters are set to lower case
-#'
-#' }
+#' labels ready to use for 'anonymised data'. Before concatenation (using "_" as
+#' a separator) to form labels, inputs are modified using \code{\link{rename}}.
 #'
 #' The argument \code{salt} can be used for salting the algorithm, i.e. adding
 #' an extra input to the input fields (the 'salt') to change the resulting hash
 #' and prevent identification of individuals via pre-computed hash
 #' tables. Objects provided as \code{salt} will themselves be hashed using SHA1
 #' algorithm, and the full hash is appended to the labels.
-#
+#'
+#' @seealso  \code{\link{rename}}, used to clean labels prior to hashing.
+#'
 #' @author Thibaut Jombart \email{thibautjombart@@gmail.com}
 #'
 #' @export
@@ -41,7 +28,7 @@
 #'
 #' @param salt An optional object to be used to 'salt' the hashing algorithm
 #'   (see details). Ignored if \code{NULL} (default).
-#' 
+#'
 #' @examples
 #'
 #' first_name <- c("Jane", "Joe", "Raoul")
@@ -63,20 +50,7 @@ hash_names <- function(..., size = 6, full = TRUE, salt = NULL) {
   x <- list(...)
   x <- lapply(x, function(e) paste(unlist(e)))
 
-  ## On the processing of the input:
-
-  ## - replace accentuated characters by closest matches
-  ## - we remove blanks and non-alphanumeric characters
-  ## - coercion to lower case
-
-  clean_txt <- function(lab) {
-    lab <- stringi::stri_trans_general(lab, "latin-ASCII")
-    lab <- tolower(lab)
-    lab <- gsub("[^a-z0-9]", "", lab)
-    lab
-  }
-  
-  x <- lapply(x, clean_txt)
+  x <- lapply(x, rename, sep = "")
   paste_ <- function(...) paste(..., sep = "_")
   lab <- do.call(paste_, x)
 

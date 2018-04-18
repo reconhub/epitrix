@@ -53,6 +53,10 @@ The main features of the package include:
 - **`fit_disc_gamma`**: fits a discretised Gamma distribution to data (typically
     useful for describing delays)
 
+- **`rename`**: generate portable labels by removing non-standard characters or
+  replacing them with their closest alphanumeric matches, standardising
+  separators, etc.
+
 - **`hash_names`**: generate unique, anonymised, reproducible labels from
     various data fields (e.g. First name, Last name, Date of birth).
 
@@ -153,6 +157,31 @@ hist(R0_val, col = "grey", border = "white")
 
 ```
 
+
+### Standardising labels
+
+If you want to use labels that will work across different computers, independent
+of local encoding and operating systems, `rename` will make your life
+easier. The function transforms character strings by replacing diacritic symbols
+with their closest alphanumeric matches, setting all characters to lower case,
+and replacing various separators with a single, consistent one.
+
+
+For instance:
+```{r rename}
+x <- " Thîs- is A   wêïrD LäBeL .."
+x
+rename(x)
+
+variables <- c("Date.of.ONSET ",
+               "/  date of hôspitalisation  /",
+               "-DäTÈ--OF___DîSCHARGE-",
+               "GEndèr/",
+               "  Location. ")
+variables
+rename(variables)
+
+```
 
 ### Anonymising data
 

@@ -144,6 +144,34 @@ hist(R0_val, col = "grey", border = "white")
 ```
 
 
+
+# Standardising labels
+
+If you want to use labels that will work across different computers, independent
+of local encoding and operating systems, `rename` will make your life
+easier. The function transforms character strings by replacing diacritic symbols
+with their closest alphanumeric matches, setting all characters to lower case,
+and replacing various separators with a single, consistent one.
+
+
+For instance:
+```{r rename}
+x <- " Thîs- is A   wêïrD LäBeL .."
+x
+rename(x)
+
+variables <- c("Date.of.ONSET ",
+               "/  date of hôspitalisation  /",
+               "-DäTÈ--OF___DîSCHARGE-",
+               "GEndèr/",
+               "  Location. ")
+variables
+rename(variables)
+
+```
+
+
+
 # Anonymising data
 
 `hash_names` can be used to generate hashed labels from linelist data. Based on

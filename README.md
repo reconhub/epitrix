@@ -55,6 +55,10 @@ The main features of the package include:
 - **`fit_disc_gamma`**: fits a discretised Gamma distribution to data (typically
     useful for describing delays)
 
+- **`rename`**: generate portable labels by removing non-standard characters or
+  replacing them with their closest alphanumeric matches, standardising
+  separators, etc.
+
 - **`hash_names`**: generate unique, anonymised, reproducible labels from
     various data fields (e.g. First name, Last name, Date of birth).
 
@@ -167,6 +171,13 @@ si_fit
 ## 
 ## $converged
 ## [1] TRUE
+## 
+## $distribution
+## A discrete distribution
+##   name: gamma
+##   parameters:
+##     shape: 0.364290092380669
+##     scale: 41.2038799853595
 ```
 
 
@@ -250,6 +261,59 @@ hist(R0_val, col = "grey", border = "white")
 ![plot of chunk sample_R0](figure/sample_R0-1.png)
 
 
+### Standardising labels
+
+If you want to use labels that will work across different computers, independent
+of local encoding and operating systems, `rename` will make your life
+easier. The function transforms character strings by replacing diacritic symbols
+with their closest alphanumeric matches, setting all characters to lower case,
+and replacing various separators with a single, consistent one.
+
+
+For instance:
+
+```r
+x <- " Thîs- is A   wêïrD LäBeL .."
+x
+```
+
+```
+## [1] " Thîs- is A   wêïrD LäBeL .."
+```
+
+```r
+rename(x)
+```
+
+```
+## [1] "this_is_a_weird_label"
+```
+
+```r
+variables <- c("Date.of.ONSET ",
+               "/  date of hôspitalisation  /",
+               "-DäTÈ--OF___DîSCHARGE-",
+               "GEndèr/",
+               "  Location. ")
+variables
+```
+
+```
+## [1] "Date.of.ONSET "                "/  date of hôspitalisation  /"
+## [3] "-DäTÈ--OF___DîSCHARGE-"        "GEndèr/"                      
+## [5] "  Location. "
+```
+
+```r
+rename(variables)
+```
+
+```
+## [1] "date_of_onset"           "date_of_hospitalisation"
+## [3] "date_of_discharge"       "gender"                 
+## [5] "location"
+```
+
 ### Anonymising data
 
 `hash_names` can be used to generate hashed labels from linelist data. Based on
@@ -278,11 +342,11 @@ hash_names(first_name, last_name, age)
 ```
 
 ```
-##           label hash_short                                     hash
-## 1     janedoe25     274be0 274be0e34366ab2b8798adb31ad161ea8441c410
-## 2    joesmith69     4c20ad 4c20ad4911e4941eaa3c12023440da406eaf3353
-## 3 raouldupont36     4573ee 4573ee25d7f395d94a89c2fea71bfed27933b6d9
-## 4 raouldupond36     d0e0f4 d0e0f421e546c7902c30faefe58be41aa4ed01d3
+##             label hash_short                                     hash
+## 1     jane_doe_25     4ea703 4ea703cdc94049fc649cd152faa5beed02858d69
+## 2    joe_smith_69     c76ee2 c76ee26d66438710023bb256a644ba9db9c2f6be
+## 3 raoul_dupont_36     abdf0b abdf0bf7990ce5127b406ca16fc1edd659ff51b3
+## 4 raoul_dupond_36     783fc2 783fc2dc44b496c3afd3b4546e997aea63f1e0df
 ```
 
 ```r
@@ -292,7 +356,7 @@ hash_names(first_name, last_name, age,
 ```
 
 ```
-## [1] "274be0e3" "4c20ad49" "4573ee25" "d0e0f421"
+## [1] "4ea703cd" "c76ee26d" "abdf0bf7" "783fc2dc"
 ```
 
 
