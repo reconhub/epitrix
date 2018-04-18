@@ -1,6 +1,6 @@
 # epitrix 0.2.0
 
-- added function `rename` which can be used to standardise labels in variables,
+- added function `clean_labels` which can be used to standardise labels in variables,
   removing non-ascii characters, standardising separators, and more; now used in
   `hash_names`
   

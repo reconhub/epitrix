@@ -34,14 +34,14 @@
 #'
 #' @examples
 #'
-#' rename("-_-This is; A    WeÏrD**./sêntënce...")
-#' rename("-_-This is; A    WeÏrD**./sêntënce...", sep = ".")
+#' clean_labels("-_-This is; A    WeÏrD**./sêntënce...")
+#' clean_labels("-_-This is; A    WeÏrD**./sêntënce...", sep = ".")
 #' input <- c("Peter and stëven", "peter-and.stëven", "pëtêr and stëven  _-")
 #' input
-#' rename(input)
+#' clean_labels(input)
 #'
 
-rename <- function(x, sep = "_") {
+clean_labels <- function(x, sep = "_") {
   x <- as.character(x)
   
   ## On the processing of the input:

@@ -4,7 +4,7 @@
 #' data fields. Data fields are concatenated first, then each entry is
 #' hashed. The function can either return a full detailed output, or short
 #' labels ready to use for 'anonymised data'. Before concatenation (using "_" as
-#' a separator) to form labels, inputs are modified using \code{\link{rename}}.
+#' a separator) to form labels, inputs are modified using \code{\link{clean_labels}}.
 #'
 #' The argument \code{salt} can be used for salting the algorithm, i.e. adding
 #' an extra input to the input fields (the 'salt') to change the resulting hash
@@ -12,7 +12,7 @@
 #' tables. Objects provided as \code{salt} will themselves be hashed using SHA1
 #' algorithm, and the full hash is appended to the labels.
 #'
-#' @seealso  \code{\link{rename}}, used to clean labels prior to hashing.
+#' @seealso  \code{\link{clean_labels}}, used to clean labels prior to hashing.
 #'
 #' @author Thibaut Jombart \email{thibautjombart@@gmail.com}
 #'
@@ -50,7 +50,7 @@ hash_names <- function(..., size = 6, full = TRUE, salt = NULL) {
   x <- list(...)
   x <- lapply(x, function(e) paste(unlist(e)))
 
-  x <- lapply(x, rename, sep = "")
+  x <- lapply(x, clean_labels, sep = "")
   paste_ <- function(...) paste(..., sep = "_")
   lab <- do.call(paste_, x)
 

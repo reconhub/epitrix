@@ -23,7 +23,7 @@ This function uses SHA1 algorithm to anonymise data, based on user-indicated
 data fields. Data fields are concatenated first, then each entry is
 hashed. The function can either return a full detailed output, or short
 labels ready to use for 'anonymised data'. Before concatenation (using "_" as
-a separator) to form labels, inputs are modified using \code{\link{rename}}.
+a separator) to form labels, inputs are modified using \code{\link{clean_labels}}.
 }
 \details{
 The argument \code{salt} can be used for salting the algorithm, i.e. adding
@@ -50,7 +50,7 @@ hash_names(first_name, last_name, salt = 123) # salted with an integer
 hash_names(first_name, last_name, salt = "foobar") # salted with an character
 }
 \seealso{
-\code{\link{rename}}, used to clean labels prior to hashing.
+\code{\link{clean_labels}}, used to clean labels prior to hashing.
 }
 \author{
 Thibaut Jombart \email{thibautjombart@gmail.com}

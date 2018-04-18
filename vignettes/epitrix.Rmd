@@ -148,17 +148,17 @@ hist(R0_val, col = "grey", border = "white")
 # Standardising labels
 
 If you want to use labels that will work across different computers, independent
-of local encoding and operating systems, `rename` will make your life
+of local encoding and operating systems, `clean_labels` will make your life
 easier. The function transforms character strings by replacing diacritic symbols
 with their closest alphanumeric matches, setting all characters to lower case,
 and replacing various separators with a single, consistent one.
 
 
 For instance:
-```{r rename}
+```{r clean_labels}
 x <- " Thîs- is A   wêïrD LäBeL .."
 x
-rename(x)
+clean_labels(x)
 
 variables <- c("Date.of.ONSET ",
                "/  date of hôspitalisation  /",
@@ -166,7 +166,7 @@ variables <- c("Date.of.ONSET ",
                "GEndèr/",
                "  Location. ")
 variables
-rename(variables)
+clean_labels(variables)
 
 ```
 

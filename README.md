@@ -55,7 +55,7 @@ The main features of the package include:
 - **`fit_disc_gamma`**: fits a discretised Gamma distribution to data (typically
     useful for describing delays)
 
-- **`rename`**: generate portable labels by removing non-standard characters or
+- **`clean_labels`**: generate portable labels by removing non-standard characters or
   replacing them with their closest alphanumeric matches, standardising
   separators, etc.
 
@@ -264,7 +264,7 @@ hist(R0_val, col = "grey", border = "white")
 ### Standardising labels
 
 If you want to use labels that will work across different computers, independent
-of local encoding and operating systems, `rename` will make your life
+of local encoding and operating systems, `clean_labels` will make your life
 easier. The function transforms character strings by replacing diacritic symbols
 with their closest alphanumeric matches, setting all characters to lower case,
 and replacing various separators with a single, consistent one.
@@ -282,7 +282,7 @@ x
 ```
 
 ```r
-rename(x)
+clean_labels(x)
 ```
 
 ```
@@ -305,7 +305,7 @@ variables
 ```
 
 ```r
-rename(variables)
+clean_labels(variables)
 ```
 
 ```
