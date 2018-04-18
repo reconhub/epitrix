@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • epitrix</title>
+<title>License • epitrix</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -22,10 +22,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
-<script src="../pkgdown.js"></script>
-<meta property="og:title" content="Changelog" />
+<link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script>
+<script src="pkgdown.js"></script>
+<meta property="og:title" content="License" />
 
 
 <!-- mathjax -->
@@ -42,7 +42,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-title-body">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -53,7 +53,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">epitrix</a>
+        <a class="navbar-link" href="index.html">epitrix</a>
         <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
       </span>
     </div>
@@ -61,19 +61,19 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
+  <a href="index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="../articles/epitrix.html">Get started</a>
+  <a href="articles/epitrix.html">Get started</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -94,68 +94,19 @@
       </header>
 
 <div class="row">
-  <div class="col-md-9 contents">
+  <div class="contents col-md-9">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/reconhub/epitrix//blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+      <h1>License</h1>
     </div>
 
-    <div id="epitrix-0-2-0" class="section level1">
-<h1 class="page-header">
-<a href="#epitrix-0-2-0" class="anchor"></a>epitrix 0.2.0<small> Unreleased </small>
-</h1>
-<ul>
-<li>added function <code>clean_labels</code> which can be used to standardise labels in variables, removing non-ascii characters, standardising separators, and more; now used in <code>hash_names</code>
-</li>
-</ul>
-</div>
-    <div id="epitrix-0-1-2" class="section level1">
-<h1 class="page-header">
-<a href="#epitrix-0-1-2" class="anchor"></a>epitrix 0.1.2<small> 2018-03-01 </small>
-</h1>
-<ul>
-<li><p>added salting algorithm to <code>hash_names</code> (issue 1)</p></li>
-<li><p>fixed bug happening when using <code>tibble</code> inputs in <code>hash_names</code> (issue 2)</p></li>
-</ul>
-</div>
-    <div id="epitrix-0-1-1" class="section level1">
-<h1 class="page-header">
-<a href="#epitrix-0-1-1" class="anchor"></a>epitrix 0.1.1<small> 2018-01-24 </small>
-</h1>
-<ul>
-<li>
-<code>fit_disc_gamma</code> now also returns the fitted discretised gamma distribution as a <code>distcrete</code> object</li>
-</ul>
-</div>
-    <div id="epitrix-0-1-0" class="section level1">
-<h1 class="page-header">
-<a href="#epitrix-0-1-0" class="anchor"></a>epitrix 0.1.0<small> 2017-11-26 </small>
-</h1>
-<p>First release of the package! This includes the following features:</p>
-<ul>
-<li><p><code>fit_disc_gamma</code>: fit discretised gamma distribution</p></li>
-<li><p><code>gamma_log_likelihood</code>: compute gamma log likelihood</p></li>
-<li><p><code>gamma_mucv2shapescale</code>/<code>gamma_shapescale2mucv</code>: convert between different parametrisation of gamma distributions.</p></li>
-<li><p><code>hash_names</code>: generate hashed (‘anonymised’) labels from individual data.</p></li>
-<li><p><code>r2R0</code>: compute R0 from r</p></li>
-<li><p><code>lm2R0_sample</code>: genrate samples of R0 from a log-linear regression</p></li>
-</ul>
-</div>
-  </div>
+<pre>YEAR: 2017
+COPYRIGHT HOLDER: Your name goes here
+</pre>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#epitrix-0-2-0">0.2.0</a></li>
-        <li><a href="#epitrix-0-1-2">0.1.2</a></li>
-        <li><a href="#epitrix-0-1-1">0.1.1</a></li>
-        <li><a href="#epitrix-0-1-0">0.1.0</a></li>
-      </ul>
-    </div>
   </div>
 
 </div>
+
 
       <footer>
       <div class="copyright">

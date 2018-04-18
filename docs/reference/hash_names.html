@@ -18,19 +18,32 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+<meta property="og:title" content="Anonymise data using SHA1 — hash_names" />
+
+<meta property="og:description" content="This function uses SHA1 algorithm to anonymise data, based on user-indicated
+data fields. Data fields are concatenated first, then each entry is
+hashed. The function can either return a full detailed output, or short
+labels ready to use for 'anonymised data'. Before concatenation (using "_" as
+a separator) to form labels, inputs are modified using clean_labels." />
+<meta name="twitter:card" content="summary" />
+
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -46,18 +59,28 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">epitrix</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">epitrix</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../articles/epitrix.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
-</li>
-<li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -69,6 +92,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -76,22 +100,25 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Anonymise data using SHA1</h1>
+    <small>Source: <a href='https://github.com/reconhub/epitrix//blob/master/R/hash_names.R'><code>R/hash_names.R</code></a></small>
+    <div class="hidden name"><code>hash_names.Rd</code></div>
     </div>
 
     
     <p>This function uses SHA1 algorithm to anonymise data, based on user-indicated
 data fields. Data fields are concatenated first, then each entry is
 hashed. The function can either return a full detailed output, or short
-labels ready to use for 'anonymised data'.</p>
+labels ready to use for 'anonymised data'. Before concatenation (using "_" as
+a separator) to form labels, inputs are modified using <code><a href='clean_labels.html'>clean_labels</a></code>.</p>
     
 
-    <pre><span class='fu'>hash_names</span>(<span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>hash_names</span>(<span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>salt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -108,20 +135,24 @@ labels ready to use for 'anonymised data'.</p>
 <code>data.frame</code>, including original labels, shortened hash, and full
 hash.</p></td>
     </tr>
+    <tr>
+      <th>salt</th>
+      <td><p>An optional object to be used to 'salt' the hashing algorithm
+(see details). Ignored if <code>NULL</code> (default).</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Once concatenated (using "_" as a separator), the labels are modified as
-follows:</p><ul>
-<li><p>all spaces and non-alphanumeric characters are removed</p></li>
-<li><p>all diacritics are replaced with their non-accentuated equivalents,
-e.g. 'é', 'ê' and 'è' become 'e', 'ö' becomes 'o', etc.</p></li>
-<li><p>all non-ascii characters are removed</p></li>
-<li><p>all characters are set to lower case</p></li>
-</ul>
-    <p>Note that the algorithm is not 'salted'. This can be done by tweaking the
-input characters before the hashing.</p>
+    <p>The argument <code>salt</code> can be used for salting the algorithm, i.e. adding
+an extra input to the input fields (the 'salt') to change the resulting hash
+and prevent identification of individuals via pre-computed hash
+tables. Objects provided as <code>salt</code> will themselves be hashed using SHA1
+algorithm, and the full hash is appended to the labels.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='clean_labels.html'>clean_labels</a></code>, used to clean labels prior to hashing.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -130,13 +161,24 @@ input characters before the hashing.</p>
 <span class='no'>last_name</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"Doe"</span>, <span class='st'>"Smith"</span>, <span class='st'>"Dupont"</span>)
 <span class='no'>age</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>25</span>, <span class='fl'>69</span>, <span class='fl'>36</span>)
 
-<span class='fu'>hash_names</span>(<span class='no'>first_name</span>, <span class='no'>last_name</span>, <span class='no'>age</span>)</div><div class='output co'>#&gt;           label hash_short                                     hash
-#&gt; 1     janedoe25     274be0 274be0e34366ab2b8798adb31ad161ea8441c410
-#&gt; 2    joesmith69     4c20ad 4c20ad4911e4941eaa3c12023440da406eaf3353
-#&gt; 3 raouldupont36     4573ee 4573ee25d7f395d94a89c2fea71bfed27933b6d9</div><div class='input'>
+<span class='fu'>hash_names</span>(<span class='no'>first_name</span>, <span class='no'>last_name</span>, <span class='no'>age</span>)</div><div class='output co'>#&gt;             label hash_short                                     hash
+#&gt; 1     jane_doe_25     4ea703 4ea703cdc94049fc649cd152faa5beed02858d69
+#&gt; 2    joe_smith_69     c76ee2 c76ee26d66438710023bb256a644ba9db9c2f6be
+#&gt; 3 raoul_dupont_36     abdf0b abdf0bf7990ce5127b406ca16fc1edd659ff51b3</div><div class='input'>
 <span class='fu'>hash_names</span>(<span class='no'>first_name</span>, <span class='no'>last_name</span>, <span class='no'>age</span>,
-           <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] "274be0e3" "4c20ad49" "4573ee25"</div><div class='input'>
-</div></pre>
+           <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] "4ea703cd" "c76ee26d" "abdf0bf7"</div><div class='input'>
+
+<span class='co'>## salting the hashing (more secure!)</span>
+<span class='fu'>hash_names</span>(<span class='no'>first_name</span>, <span class='no'>last_name</span>) <span class='co'># unsalted - less secure</span></div><div class='output co'>#&gt;          label hash_short                                     hash
+#&gt; 1     jane_doe     979145 979145053f9208e587138eede409df465ba59dfd
+#&gt; 2    joe_smith     d7cd9c d7cd9ca61ac89d6a91bba7d10d76138627580c72
+#&gt; 3 raoul_dupont     7aaaa6 7aaaa6fb319d92d8875f1d0805c9e5365fef1699</div><div class='input'><span class='fu'>hash_names</span>(<span class='no'>first_name</span>, <span class='no'>last_name</span>, <span class='kw'>salt</span> <span class='kw'>=</span> <span class='fl'>123</span>) <span class='co'># salted with an integer</span></div><div class='output co'>#&gt;          label hash_short                                     hash
+#&gt; 1     jane_doe     d7d9fd d7d9fdc9c0c40595ccb8c2bcadb3d31442b68f88
+#&gt; 2    joe_smith     86f115 86f115c5011d7ffd5bf701e7490fc37f0295e252
+#&gt; 3 raoul_dupont     97ceca 97cecafeb33f1c1f14ababf454fce2283f9395c2</div><div class='input'><span class='fu'>hash_names</span>(<span class='no'>first_name</span>, <span class='no'>last_name</span>, <span class='kw'>salt</span> <span class='kw'>=</span> <span class='st'>"foobar"</span>) <span class='co'># salted with an character</span></div><div class='output co'>#&gt;          label hash_short                                     hash
+#&gt; 1     jane_doe     1e4d58 1e4d582f239490fd161d35b15ff98394654eb501
+#&gt; 2    joe_smith     01688c 01688c1d85afd0b433ebcfbc26286b730b56ea1d
+#&gt; 3 raoul_dupont     e165c5 e165c59225b70cdef28564260d9175336050a40c</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -144,6 +186,8 @@ input characters before the hashing.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
@@ -161,11 +205,14 @@ Thibaut Jombart <a href='mailto:thibautjombart@gmail.com'>thibautjombart@gmail.c
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

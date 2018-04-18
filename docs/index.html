@@ -8,14 +8,17 @@
 <title>Small Helpers and Tricks for Epidemics Analysis • epitrix</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
-<!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><!-- mathjax --><script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="jquery.sticky-kit.min.js"></script><script src="pkgdown.js"></script><meta property="og:title" content="Small Helpers and Tricks for Epidemics Analysis">
+<meta property="og:description" content="A collection of small functions useful for epidemics analysis and infectious disease modelling. This includes computation of basic reproduction numbers from growth rates, generation of hashed labels to anonymise data, and fitting discretised Gamma distributions.">
+<meta name="twitter:card" content="summary">
+<!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -24,18 +27,28 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">epitrix</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">epitrix</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li>
+  <a href="index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="articles/epitrix.html">Get started</a>
+</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="articles/index.html">Articles</a>
-</li>
-<li>
-  <a href="news/index.html">News</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -55,12 +68,11 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     
 
     
     
-<div class="contents">
 
 <div id="welcome-to-the-epitrix-package" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
@@ -87,6 +99,7 @@
 <li><p><strong><code>r2R0</code></strong>: convert growth rate into a reproduction number</p></li>
 <li><p><strong><code>lm2R0_sample</code></strong>: generates a distribution of R0 from a log-incidence linear model</p></li>
 <li><p><strong><code>fit_disc_gamma</code></strong>: fits a discretised Gamma distribution to data (typically useful for describing delays)</p></li>
+<li><p><strong><code>clean_labels</code></strong>: generate portable labels by removing non-standard characters or replacing them with their closest alphanumeric matches, standardising separators, etc.</p></li>
 <li><p><strong><code>hash_names</code></strong>: generate unique, anonymised, reproducible labels from various data fields (e.g. First name, Last name, Date of birth).</p></li>
 </ul>
 </div>
@@ -131,7 +144,7 @@ x &lt;-<span class="st"> </span>si$<span class="kw">r</span>(<span class="dv">50
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(x, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">border =</span> <span class="st">"white"</span>,
      <span class="dt">xlab =</span> <span class="st">"Days between primary and secondary onset"</span>,
      <span class="dt">main =</span> <span class="st">"Simulated serial intervals"</span>)</code></pre></div>
-<p><img src="index_files/figure-html/si-1.png" width="672"></p>
+<p><img src="index_files/figure-html/si-1.png" width="700"></p>
 <p><code>x</code> contains simulated data, for illustrative purpose. In practice, one would use real data from an ongoing outbreaks. Now we use <code>fit_disc_gamma</code> to estimate the parameters of a dicretised Gamma distribution from the data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">si_fit &lt;-<span class="st"> </span><span class="kw"><a href="reference/fit_disc_gamma.html">fit_disc_gamma</a></span>(x)
 si_fit</code></pre></div>
@@ -148,7 +161,14 @@ si_fit</code></pre></div>
 ## [1] -1689.073
 ## 
 ## $converged
-## [1] TRUE</code></pre>
+## [1] TRUE
+## 
+## $distribution
+## A discrete distribution
+##   name: gamma
+##   parameters:
+##     shape: 0.364290092380669
+##     scale: 41.2038799853595</code></pre>
 </div>
 <div id="converting-a-growth-rate-r-to-a-reproduction-number-r0" class="section level3">
 <h3 class="hasAnchor">
@@ -157,7 +177,7 @@ si_fit</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(outbreaks)
 <span class="kw">library</span>(incidence)
 
-i &lt;-<span class="st"> </span><span class="kw">incidence</span>(ebola_sim$linelist$date_of_onset)
+i &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/incidence/topics/incidence">incidence</a></span>(ebola_sim$linelist$date_of_onset)
 i</code></pre></div>
 <pre><code>## &lt;incidence object&gt;
 ## [5888 cases from days 2014-04-07 to 2015-04-30]
@@ -167,10 +187,10 @@ i</code></pre></div>
 ## $dates: 389 dates marking the left-side of bins
 ## $interval: 1 day
 ## $timespan: 389 days</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="kw">fit</span>(i[<span class="dv">1</span>:<span class="dv">150</span>]) <span class="co"># fit on first 150 days</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="kw"><a href="http://www.rdocumentation.org/packages/incidence/topics/fit">fit</a></span>(i[<span class="dv">1</span>:<span class="dv">150</span>]) <span class="co"># fit on first 150 days</span></code></pre></div>
 <pre><code>## Warning in fit(i[1:150]): 22 dates with incidence of 0 ignored for fitting</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(i[<span class="dv">1</span>:<span class="dv">200</span>], <span class="dt">fit =</span> f, <span class="dt">color =</span> <span class="st">"#9fc2fc"</span>)</code></pre></div>
-<p><img src="index_files/figure-html/fit_i-1.png" width="672"></p>
+<p><img src="index_files/figure-html/fit_i-1.png" width="700"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/r2R0.html">r2R0</a></span>(f$info$r, si$<span class="kw">d</span>(<span class="dv">1</span>:<span class="dv">100</span>))</code></pre></div>
 <pre><code>## [1] 1.358887</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/r2R0.html">r2R0</a></span>(f$info$r.conf, si$<span class="kw">d</span>(<span class="dv">1</span>:<span class="dv">100</span>))</code></pre></div>
@@ -181,7 +201,31 @@ i</code></pre></div>
 <span class="kw">head</span>(R0_val)</code></pre></div>
 <pre><code>## [1] 1.360925 1.357800 1.360150 1.367461 1.352716 1.352790</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(R0_val, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">border =</span> <span class="st">"white"</span>)</code></pre></div>
-<p><img src="index_files/figure-html/sample_R0-1.png" width="672"></p>
+<p><img src="index_files/figure-html/sample_R0-1.png" width="700"></p>
+</div>
+<div id="standardising-labels" class="section level3">
+<h3 class="hasAnchor">
+<a href="#standardising-labels" class="anchor"></a>Standardising labels</h3>
+<p>If you want to use labels that will work across different computers, independent of local encoding and operating systems, <code>clean_labels</code> will make your life easier. The function transforms character strings by replacing diacritic symbols with their closest alphanumeric matches, setting all characters to lower case, and replacing various separators with a single, consistent one.</p>
+<p>For instance:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> " Thîs- is A   wêïrD LäBeL .."</span>
+x</code></pre></div>
+<pre><code>## [1] " Thîs- is A   wêïrD LäBeL .."</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/clean_labels.html">clean_labels</a></span>(x)</code></pre></div>
+<pre><code>## [1] "this_is_a_weird_label"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">variables &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">"Date.of.ONSET "</span>,
+               <span class="st">"/  date of hôspitalisation  /"</span>,
+               <span class="st">"-DäTÈ--OF___DîSCHARGE-"</span>,
+               <span class="st">"GEndèr/"</span>,
+               <span class="st">"  Location. "</span>)
+variables</code></pre></div>
+<pre><code>## [1] "Date.of.ONSET "                "/  date of hôspitalisation  /"
+## [3] "-DäTÈ--OF___DîSCHARGE-"        "GEndèr/"                      
+## [5] "  Location. "</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/clean_labels.html">clean_labels</a></span>(variables)</code></pre></div>
+<pre><code>## [1] "date_of_onset"           "date_of_hospitalisation"
+## [3] "date_of_discharge"       "gender"                 
+## [5] "location"</code></pre>
 </div>
 <div id="anonymising-data" class="section level3">
 <h3 class="hasAnchor">
@@ -198,15 +242,15 @@ age &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">25<
 
 ## detailed output by default
 <span class="kw"><a href="reference/hash_names.html">hash_names</a></span>(first_name, last_name, age)</code></pre></div>
-<pre><code>##           label hash_short                                     hash
-## 1     janedoe25     274be0 274be0e34366ab2b8798adb31ad161ea8441c410
-## 2    joesmith69     4c20ad 4c20ad4911e4941eaa3c12023440da406eaf3353
-## 3 raouldupont36     4573ee 4573ee25d7f395d94a89c2fea71bfed27933b6d9
-## 4 raouldupond36     d0e0f4 d0e0f421e546c7902c30faefe58be41aa4ed01d3</code></pre>
+<pre><code>##             label hash_short                                     hash
+## 1     jane_doe_25     4ea703 4ea703cdc94049fc649cd152faa5beed02858d69
+## 2    joe_smith_69     c76ee2 c76ee26d66438710023bb256a644ba9db9c2f6be
+## 3 raoul_dupont_36     abdf0b abdf0bf7990ce5127b406ca16fc1edd659ff51b3
+## 4 raoul_dupond_36     783fc2 783fc2dc44b496c3afd3b4546e997aea63f1e0df</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## short labels for practical use
 <span class="kw"><a href="reference/hash_names.html">hash_names</a></span>(first_name, last_name, age,
            <span class="dt">size =</span> <span class="dv">8</span>, <span class="dt">full =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<pre><code>## [1] "274be0e3" "4c20ad49" "4573ee25" "d0e0f421"</code></pre>
+<pre><code>## [1] "4ea703cd" "c76ee26d" "abdf0bf7" "783fc2dc"</code></pre>
 </div>
 </div>
 <div id="vignettes" class="section level2">
@@ -224,30 +268,40 @@ age &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">25<
 <a href="#getting-help-contributing" class="anchor"></a>Getting help, contributing</h2>
 <p>Bug reports and feature requests should be posted on <em>github</em> using the <a href="http://github.com/reconhub/epitrix/issues"><em>issue</em></a> system. All other questions should be posted on the <a href="http://www.repidemicsconsortium.org/forum/"><strong>RECON forum</strong></a>.</p>
 <p>Contributions are welcome via <strong>pull requests</strong>.</p>
-<p>Please note that this project is released with a <a href="CONDUCT.md">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
-</div>
+<p>Please note that this project is released with a <a href="CONDUCT.html">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Links</h2>
+    <div class="links">
+<h2>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cran.r-project.org/package=epitrix">https://​cran.r-project.org/​package=epitrix</a>
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=epitrix">https://​cloud.r-project.org/​package=epitrix</a>
 </li>
 <li>Browse source code at <br><a href="https://github.com/reconhub/epitrix/">https://​github.com/​reconhub/​epitrix/​</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/reconhub/epitrix/issues">https://​github.com/​reconhub/​epitrix/​issues</a>
 </li>
 </ul>
+</div>
+<div class="license">
 <h2>License</h2>
-<p><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE">LICENSE</a></p>
+<ul class="list-unstyled">
+<li>
+<a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+</li>
+</ul>
+</div>
+<div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Thibaut Jombart <br><small class="roles"> Author, maintainer </small> </li>
-<li>Anne Cori <br><small class="roles"> Author </small> </li>
+<li>Thibaut Jombart <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Anne Cori <br><small class="roles"> Author </small>  </li>
 </ul>
-<div>
+</div>
+
+      <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://ci.appveyor.com/project/thibautjombart/epitrix/branch/master"><img src="https://ci.appveyor.com/api/projects/status/0gb7evy0k4juox2b/branch/master?svg=true" alt="Build status"></a></li>
@@ -267,11 +321,13 @@ age &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">25<
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
 </div>
+
+  
 
   </body>
 </html>

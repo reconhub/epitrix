@@ -18,19 +18,32 @@
 <!-- Font Awesome icons -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
+<!-- clipboard.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
+<meta property="og:title" content="Fit discretised distributions using ML — fit_disc_gamma" />
+
+<meta property="og:description" content="These functions performs maximum-likelihood (ML) fitting of a discretised
+distribution. This is typically useful for describing delays between
+epidemiological events, such as incubation period (infection to onset) or
+serial intervals (primary to secondary onsets). The function
+optim is used internally for fitting." />
+<meta name="twitter:card" content="summary" />
+
 
 <!-- mathjax -->
-<script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
+<script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
 <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
+
 
 
   </head>
@@ -46,18 +59,28 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">epitrix</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">epitrix</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="../articles/epitrix.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../articles/index.html">Articles</a>
-</li>
-<li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -69,6 +92,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -76,10 +100,12 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Fit discretised distributions using ML</h1>
+    <small>Source: <a href='https://github.com/reconhub/epitrix//blob/master/R/fit_discrete.R'><code>R/fit_discrete.R</code></a></small>
+    <div class="hidden name"><code>fit_disc_gamma.Rd</code></div>
     </div>
 
     
@@ -90,14 +116,14 @@ serial intervals (primary to secondary onsets). The function
 <code>optim</code> is used internally for fitting.</p>
     
 
-    <pre><span class='fu'>fit_disc_gamma</span>(<span class='no'>x</span>, <span class='kw'>mu_ini</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>cv_ini</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>w</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>fit_disc_gamma</span>(<span class='no'>x</span>, <span class='kw'>mu_ini</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>cv_ini</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>w</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A vector of numeric data to fit.</p></td>
+      <td><p>A vector of numeric data to fit; NAs will be removed with a warning.</p></td>
     </tr>
     <tr>
       <th>mu_ini</th>
@@ -123,10 +149,17 @@ defaulting to 1.</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>The function returns a list with human-readable parametrisation of
+  the discretised Gamma distibution (mean, sd, cv), convergence indicators,
+  and the discretised Gamma distribution itself as a <code>distcrete</code> object
+  (from the <code>distcrete</code> package).</p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>The <code>distcrete</code> package for discretising distributions, and
-<code>optim</code> for details on available optimisation procedures.</p>
+    <div class='dont-index'><p>The <code>distcrete</code> package for discretising distributions, and
+<code>optim</code> for details on available optimisation procedures.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -139,7 +172,7 @@ defaulting to 1.</p></td>
 <span class='no'>cv</span></div><div class='output co'>#&gt; [1] 1.645161</div><div class='input'><span class='no'>param</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gamma_tools.html'>gamma_mucv2shapescale</a></span>(<span class='no'>mu</span>, <span class='no'>cv</span>)
 
 <span class='kw'>if</span> (<span class='fu'>require</span>(<span class='no'>distcrete</span>)) {
-<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'>distcrete</span>(<span class='st'>"gamma"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/distcrete/topics/distcrete'>distcrete</a></span>(<span class='st'>"gamma"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fl'>1</span>,
                <span class='kw'>shape</span> <span class='kw'>=</span> <span class='no'>param</span>$<span class='no'>shape</span>,
                <span class='kw'>scale</span> <span class='kw'>=</span> <span class='no'>param</span>$<span class='no'>scale</span>, <span class='kw'>w</span> <span class='kw'>=</span> <span class='fl'>0</span>)
 
@@ -147,7 +180,7 @@ defaulting to 1.</p></td>
 <span class='no'>x</span>
 
 <span class='fu'>fit_disc_gamma</span>(<span class='no'>x</span>)
-}</div><div class='output co'>#&gt; $mu
+}</div><div class='output co'>#&gt; <span class='message'>Loading required package: distcrete</span></div><div class='output co'>#&gt; $mu
 #&gt; [1] 13.79959
 #&gt; 
 #&gt; $cv
@@ -161,6 +194,13 @@ defaulting to 1.</p></td>
 #&gt; 
 #&gt; $converged
 #&gt; [1] TRUE
+#&gt; 
+#&gt; $distribution
+#&gt; A discrete distribution
+#&gt;   name: gamma
+#&gt;   parameters:
+#&gt;     shape: 0.362652647447292
+#&gt;     scale: 38.0518219274635
 #&gt; </div><div class='input'>
 </div></pre>
   </div>
@@ -169,6 +209,8 @@ defaulting to 1.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
+      <li><a href="#value">Value</a></li>
+
       <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
@@ -187,11 +229,14 @@ Thibaut Jombart <a href='mailto:thibautjombart@gmail.com'>thibautjombart@gmail.c
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="http://hadley.github.io/pkgdown/">pkgdown</a>.</p>
+  <p>Site built with <a href="http://pkgdown.r-lib.org/">pkgdown</a>.</p>
 </div>
 
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+
