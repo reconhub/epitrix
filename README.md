@@ -84,12 +84,12 @@ library(epitrix)
 
 mu <- 15.3 # mean in days days
 sigma <- 9.3 # standard deviation in days
-cv <- mu/sigma # coefficient of variation
+cv <- sigma/mu # coefficient of variation
 cv
 ```
 
 ```
-## [1] 1.645161
+## [1] 0.6078431
 ```
 
 ```r
@@ -99,10 +99,10 @@ param
 
 ```
 ## $shape
-## [1] 0.3694733
+## [1] 2.706556
 ## 
 ## $scale
-## [1] 41.4103
+## [1] 5.652941
 ```
 
 The *shape* and *scale* are parameters of a Gamma distribution we can use to
@@ -124,8 +124,8 @@ si
 ## A discrete distribution
 ##   name: gamma
 ##   parameters:
-##     shape: 0.369473279507882
-##     scale: 41.4103017689906
+##     shape: 2.70655567117586
+##     scale: 5.65294117647059
 ```
 
 ```r
@@ -135,7 +135,7 @@ head(x, 10)
 ```
 
 ```
-##  [1]  0  2  7 46  0 43 62 12 10  0
+##  [1]  8 10 15 28  7 27 32 17 16  4
 ```
 
 ```r
@@ -158,16 +158,16 @@ si_fit
 
 ```
 ## $mu
-## [1] 15.01017
+## [1] 15.21914
 ## 
 ## $cv
-## [1] 1.656824
+## [1] 0.5851581
 ## 
 ## $sd
-## [1] 24.8692
+## [1] 8.905604
 ## 
 ## $ll
-## [1] -1689.073
+## [1] -1741.393
 ## 
 ## $converged
 ## [1] TRUE
@@ -176,8 +176,8 @@ si_fit
 ## A discrete distribution
 ##   name: gamma
 ##   parameters:
-##     shape: 0.364290092380669
-##     scale: 41.2038799853595
+##     shape: 2.92047557759351
+##     scale: 5.21118646429829
 ```
 
 
@@ -229,7 +229,7 @@ r2R0(f$info$r, si$d(1:100))
 ```
 
 ```
-## [1] 1.358887
+## [1] 1.348624
 ```
 
 ```r
@@ -238,7 +238,7 @@ r2R0(f$info$r.conf, si$d(1:100))
 
 ```
 ##         2.5 %   97.5 %
-## [1,] 1.328372 1.388925
+## [1,] 1.314055 1.383674
 ```
 
 In addition, we can also use the function `lm2R0_sample` to generate samples of
@@ -251,7 +251,7 @@ head(R0_val)
 ```
 
 ```
-## [1] 1.360925 1.357800 1.360150 1.367461 1.352716 1.352790
+## [1] 1.350970 1.347374 1.350076 1.358523 1.341549 1.341634
 ```
 
 ```r

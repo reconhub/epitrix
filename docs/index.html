@@ -117,16 +117,16 @@
 
 mu &lt;-<span class="st"> </span><span class="fl">15.3</span> <span class="co"># mean in days days</span>
 sigma &lt;-<span class="st"> </span><span class="fl">9.3</span> <span class="co"># standard deviation in days</span>
-cv &lt;-<span class="st"> </span>mu/sigma <span class="co"># coefficient of variation</span>
+cv &lt;-<span class="st"> </span>sigma/mu <span class="co"># coefficient of variation</span>
 cv</code></pre></div>
-<pre><code>## [1] 1.645161</code></pre>
+<pre><code>## [1] 0.6078431</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">param &lt;-<span class="st"> </span><span class="kw"><a href="reference/gamma_tools.html">gamma_mucv2shapescale</a></span>(mu, cv) <span class="co"># convertion to Gamma parameters</span>
 param</code></pre></div>
 <pre><code>## $shape
-## [1] 0.3694733
+## [1] 2.706556
 ## 
 ## $scale
-## [1] 41.4103</code></pre>
+## [1] 5.652941</code></pre>
 <p>The <em>shape</em> and <em>scale</em> are parameters of a Gamma distribution we can use to generate delays. However, delays are typically reported per days, which implies a discretisation (from continuous time to discrete numbers). We use the package <a href="https://github.com/reconhub/distcrete"><em>distcrete</em></a> to achieve this discretisation. It generates a list of functions, including one to simulate data (<code>$r</code>), which we use to simulate 500 delays:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">si &lt;-<span class="st"> </span>distcrete::<span class="kw">distcrete</span>(<span class="st">"gamma"</span>, <span class="dt">interval =</span> <span class="dv">1</span>,
                <span class="dt">shape =</span> param$shape,
@@ -135,12 +135,12 @@ si</code></pre></div>
 <pre><code>## A discrete distribution
 ##   name: gamma
 ##   parameters:
-##     shape: 0.369473279507882
-##     scale: 41.4103017689906</code></pre>
+##     shape: 2.70655567117586
+##     scale: 5.65294117647059</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">1</span>)
 x &lt;-<span class="st"> </span>si$<span class="kw">r</span>(<span class="dv">500</span>)
 <span class="kw">head</span>(x, <span class="dv">10</span>)</code></pre></div>
-<pre><code>##  [1]  0  2  7 46  0 43 62 12 10  0</code></pre>
+<pre><code>##  [1]  8 10 15 28  7 27 32 17 16  4</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(x, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">border =</span> <span class="st">"white"</span>,
      <span class="dt">xlab =</span> <span class="st">"Days between primary and secondary onset"</span>,
      <span class="dt">main =</span> <span class="st">"Simulated serial intervals"</span>)</code></pre></div>
@@ -149,16 +149,16 @@ x &lt;-<span class="st"> </span>si$<span class="kw">r</span>(<span class="dv">50
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">si_fit &lt;-<span class="st"> </span><span class="kw"><a href="reference/fit_disc_gamma.html">fit_disc_gamma</a></span>(x)
 si_fit</code></pre></div>
 <pre><code>## $mu
-## [1] 15.01017
+## [1] 15.21914
 ## 
 ## $cv
-## [1] 1.656824
+## [1] 0.5851581
 ## 
 ## $sd
-## [1] 24.8692
+## [1] 8.905604
 ## 
 ## $ll
-## [1] -1689.073
+## [1] -1741.393
 ## 
 ## $converged
 ## [1] TRUE
@@ -167,8 +167,8 @@ si_fit</code></pre></div>
 ## A discrete distribution
 ##   name: gamma
 ##   parameters:
-##     shape: 0.364290092380669
-##     scale: 41.2038799853595</code></pre>
+##     shape: 2.92047557759351
+##     scale: 5.21118646429829</code></pre>
 </div>
 <div id="converting-a-growth-rate-r-to-a-reproduction-number-r0" class="section level3">
 <h3 class="hasAnchor">
@@ -192,14 +192,14 @@ i</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(i[<span class="dv">1</span>:<span class="dv">200</span>], <span class="dt">fit =</span> f, <span class="dt">color =</span> <span class="st">"#9fc2fc"</span>)</code></pre></div>
 <p><img src="index_files/figure-html/fit_i-1.png" width="700"></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/r2R0.html">r2R0</a></span>(f$info$r, si$<span class="kw">d</span>(<span class="dv">1</span>:<span class="dv">100</span>))</code></pre></div>
-<pre><code>## [1] 1.358887</code></pre>
+<pre><code>## [1] 1.348624</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/r2R0.html">r2R0</a></span>(f$info$r.conf, si$<span class="kw">d</span>(<span class="dv">1</span>:<span class="dv">100</span>))</code></pre></div>
 <pre><code>##         2.5 %   97.5 %
-## [1,] 1.328372 1.388925</code></pre>
+## [1,] 1.314055 1.383674</code></pre>
 <p>In addition, we can also use the function <code>lm2R0_sample</code> to generate samples of R0 values compatible with a model fit:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">R0_val &lt;-<span class="st"> </span><span class="kw"><a href="reference/r2R0.html">lm2R0_sample</a></span>(f$lm, si$<span class="kw">d</span>(<span class="dv">1</span>:<span class="dv">100</span>), <span class="dt">n =</span> <span class="dv">100</span>)
 <span class="kw">head</span>(R0_val)</code></pre></div>
-<pre><code>## [1] 1.360925 1.357800 1.360150 1.367461 1.352716 1.352790</code></pre>
+<pre><code>## [1] 1.350970 1.347374 1.350076 1.358523 1.341549 1.341634</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">hist</span>(R0_val, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">border =</span> <span class="st">"white"</span>)</code></pre></div>
 <p><img src="index_files/figure-html/sample_R0-1.png" width="700"></p>
 </div>
