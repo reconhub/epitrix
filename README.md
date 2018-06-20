@@ -4,6 +4,7 @@
 [![codecov.io](https://codecov.io/github/reconhub/epitrix/coverage.svg?branch=master)](https://codecov.io/github/reconhub/epitrix?branch=master)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/epitrix)](https://cran.r-project.org/package=epitrix)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/epitrix)](https://cran.r-project.org/package=epitrix)
+[![Downloads from Rstudio mirror](https://cranlogs.r-pkg.org/badges/grand-total/epitrix)](http://www.r-pkg.org/pkg/epitrix)
 
 
 
@@ -208,6 +209,7 @@ i
 ## $dates: 389 dates marking the left-side of bins
 ## $interval: 1 day
 ## $timespan: 389 days
+## $cumulative: FALSE
 ```
 
 ```r
