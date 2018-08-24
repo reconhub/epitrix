@@ -12,11 +12,12 @@ Suggests:
     testthat,
     roxygen2, 
     outbreaks, 
-    incidence,
+    incidence (>= 1.4.1),
     knitr,
     rmarkdown
 Imports: digest, distcrete, stringi
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
+Remotes: reconhub/incidence
 URL: http://www.repidemicsconsortium.org/epitrix
 BugReports: https://github.com/reconhub/epitrix/issues
 VignetteBuilder: knitr

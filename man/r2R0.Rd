@@ -64,7 +64,7 @@ if (require(distcrete)) {
     f
     plot(i[1:150], fit = f)
 
-    R0 <- lm2R0_sample(f$lm, w)
+    R0 <- lm2R0_sample(f$model, w)
     hist(R0, col = "grey", border = "white", main = "Distribution of R0")
     summary(R0)
   }
