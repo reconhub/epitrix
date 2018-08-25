@@ -1,3 +1,7 @@
+# epitrix 0.2.1
+
+- update documentation for compatibility with incidence 1.4.1
+
 # epitrix 0.2.0
 
 - added function `clean_labels` which can be used to standardise labels in variables,
