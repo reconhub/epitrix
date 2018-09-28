@@ -46,7 +46,7 @@ test_that("Hashing works with data.frame", {
     expect_identical(hash_names(x$first),
                      hash_names(x[, 1, drop = FALSE])
                      )
-                   
+
 })
 
 
@@ -56,8 +56,8 @@ test_that("Hashing with salting", {
     skip_on_cran()
 
     expect_true(!identical(hash_names(1), hash_names(1, salt = 1)))
-    expect_true(!identical(hash_names(1, salt = 1), hash_names(1, salt = letters)))
+    expect_true(!identical(hash_names(1, salt = 1), hash_names(1, salt = "2")))
     expect_equal_to_reference(hash_names("toto", salt = 123456),
                               file = "rds/hashref_salt.rds")
-   
+
 })

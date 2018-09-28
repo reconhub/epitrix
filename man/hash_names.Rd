@@ -2,7 +2,7 @@
 % Please edit documentation in R/hash_names.R
 \name{hash_names}
 \alias{hash_names}
-\title{Anonymise data using SHA1}
+\title{Anonymise data using scrypt}
 \usage{
 hash_names(..., size = 6, full = TRUE, salt = NULL)
 }
@@ -15,22 +15,26 @@ hash_names(..., size = 6, full = TRUE, salt = NULL)
 \code{data.frame}, including original labels, shortened hash, and full
 hash.}
 
-\item{salt}{An optional object to be used to 'salt' the hashing algorithm
-(see details). Ignored if \code{NULL} (default).}
+\item{salt}{An optional object that can be coerced to a character
+to be used to 'salt' the hashing algorithm (see details).
+Ignored if \code{NULL} (default).}
 }
 \description{
-This function uses SHA1 algorithm to anonymise data, based on user-indicated
-data fields. Data fields are concatenated first, then each entry is
-hashed. The function can either return a full detailed output, or short
-labels ready to use for 'anonymised data'. Before concatenation (using "_" as
-a separator) to form labels, inputs are modified using \code{\link{clean_labels}}.
+This function uses the scrypt algorithm from libsodium to anonymise data,
+based on user-indicated data fields. Data fields are concatenated first,
+then each entry is hashed. The function can either return a full detailed
+output, or short labels ready to use for 'anonymised data'.
+Before concatenation (using "_" as a separator) to form labels,
+inputs are modified using \code{\link{clean_labels}}.
 }
 \details{
-The argument \code{salt} can be used for salting the algorithm, i.e. adding
+The argument \code{salt} should be used for salting the algorithm, i.e. adding
 an extra input to the input fields (the 'salt') to change the resulting hash
 and prevent identification of individuals via pre-computed hash
-tables. Objects provided as \code{salt} will themselves be hashed using SHA1
-algorithm, and the full hash is appended to the labels.
+tables.
+
+It is highly recommend to choose a secret, random salt in order make it harder
+for an attacker to decode the hash.
 }
 \examples{
 
