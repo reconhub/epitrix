@@ -60,7 +60,7 @@ hash_names <- function(..., size = 6, full = TRUE, salt = NULL) {
 
 
   ## hash it all
-  hash <- vapply(lab, hmac(salt), NA_character_)
+  hash <- vapply(lab, hash(salt), NA_character_)
   hash_short <- substr(hash, 1, size)
 
   if (full) {
@@ -76,12 +76,12 @@ hash_names <- function(..., size = 6, full = TRUE, salt = NULL) {
   return(out)
 }
 
-hmac <- function(salt = NULL) {
+hash <- function(salt = NULL) {
   stopifnot(is.null(salt) || length(salt) == 1L)
-  if (!is.null(salt)) {
-    salt <- sodium::hash(charToRaw(as.character(salt)))
+  salt <- if (is.null(salt)) {
+    raw(32L)
   } else {
-    salt <- raw(32L)
+    sodium::hash(charToRaw(as.character(salt)))
   }
   function(x) {
     stopifnot(is.character(x))
