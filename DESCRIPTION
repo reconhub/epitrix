@@ -3,7 +3,8 @@ Title: Small Helpers and Tricks for Epidemics Analysis
 Version: 0.2.1
 Authors@R: c(person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut", "cre")),
              person("Anne", "Cori", email = "a.cori@imperial.ac.uk", role = c("aut")),
-             person("Zhian N.", "Kamvar", email = "zkamvar@gmail.com", role = "ctb")
+             person("Zhian N.", "Kamvar", email = "zkamvar@gmail.com", role = "ctb"),
+             person("Dirk", "Schumacher", email = "mail@dirk-schumacher.net", role = "ctb")
             ) 
 Description: A collection of small functions useful for epidemics analysis and infectious disease modelling. This includes computation of basic reproduction numbers from growth rates, generation of hashed labels to anonymise data, and fitting discretised Gamma distributions.
 Depends: R (>= 3.3.0)
