@@ -1,16 +1,19 @@
-#' Anonymise data using SHA1
+#' Anonymise data using scrypt
 #'
-#' This function uses SHA1 algorithm to anonymise data, based on user-indicated
-#' data fields. Data fields are concatenated first, then each entry is
-#' hashed. The function can either return a full detailed output, or short
-#' labels ready to use for 'anonymised data'. Before concatenation (using "_" as
-#' a separator) to form labels, inputs are modified using \code{\link{clean_labels}}.
+#' This function uses the scrypt algorithm from libsodium to anonymise data,
+#' based on user-indicated data fields. Data fields are concatenated first,
+#' then each entry is hashed. The function can either return a full detailed
+#' output, or short labels ready to use for 'anonymised data'.
+#' Before concatenation (using "_" as a separator) to form labels,
+#' inputs are modified using \code{\link{clean_labels}}.
 #'
-#' The argument \code{salt} can be used for salting the algorithm, i.e. adding
+#' The argument \code{salt} should be used for salting the algorithm, i.e. adding
 #' an extra input to the input fields (the 'salt') to change the resulting hash
 #' and prevent identification of individuals via pre-computed hash
-#' tables. Objects provided as \code{salt} will themselves be hashed using SHA1
-#' algorithm, and the full hash is appended to the labels.
+#' tables.
+#'
+#' It is highly recommend to choose a secret, random salt in order make it harder
+#' for an attacker to decode the hash.
 #'
 #' @seealso  \code{\link{clean_labels}}, used to clean labels prior to hashing.
 #'
@@ -26,8 +29,9 @@
 #'   \code{data.frame}, including original labels, shortened hash, and full
 #'   hash.
 #'
-#' @param salt An optional object to be used to 'salt' the hashing algorithm
-#'   (see details). Ignored if \code{NULL} (default).
+#' @param salt An optional object that can be coerced to a character
+#'   to be used to 'salt' the hashing algorithm (see details).
+#'   Ignored if \code{NULL} (default).
 #'
 #' @examples
 #'
@@ -56,22 +60,31 @@ hash_names <- function(..., size = 6, full = TRUE, salt = NULL) {
 
 
   ## hash it all
-  if (is.null(salt)) {
-      input <- lab
-  } else {
-      input <- paste_(lab, digest::sha1(salt))
-  }
-  hash <- vapply(input, digest::sha1, NA_character_)
+  hash <- vapply(lab, hash(salt), NA_character_)
   hash_short <- substr(hash, 1, size)
 
   if (full) {
     out <- data.frame(label = lab,
                       hash_short = hash_short,
-                      hash = hash)
+                      hash = hash,
+                      stringsAsFactors = FALSE)
     row.names(out) <- NULL
   } else {
     out <- unname(hash_short)
   }
 
   return(out)
+}
+
+hash <- function(salt = NULL) {
+  stopifnot(is.null(salt) || length(salt) == 1L)
+  salt <- if (is.null(salt)) {
+    raw(32L)
+  } else {
+    sodium::hash(charToRaw(as.character(salt)))
+  }
+  function(x) {
+    stopifnot(is.character(x))
+    sodium::bin2hex(sodium::scrypt(charToRaw(x), salt = salt))
+  }
 }
