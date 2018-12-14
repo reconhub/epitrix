@@ -19,7 +19,7 @@ Suggests:
     knitr,
     rmarkdown
 Imports: sodium, distcrete, stringi
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 URL: http://www.repidemicsconsortium.org/epitrix
 BugReports: https://github.com/reconhub/epitrix/issues
 VignetteBuilder: knitr
