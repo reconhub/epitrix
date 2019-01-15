@@ -1,3 +1,11 @@
+# epitrix 0.2.2
+
+ - Replace `digest` with `sodium` in Imports
+ - Use `sodium::scrypt()` as a more cryptographically secure hashing algorithm
+   for `hash_names()`. Thanks to @dirkschumacher for this addition. For details,
+   see https://github.com/reconhub/epitrix/pull/7. 
+ - Fix LICENSE file to show who the copyright holder is.
+
 # epitrix 0.2.1
 
 - update documentation for compatibility with incidence 1.4.1

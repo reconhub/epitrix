@@ -57,5 +57,6 @@ hash_names(first_name, last_name, salt = "foobar") # salted with an character
 \code{\link{clean_labels}}, used to clean labels prior to hashing.
 }
 \author{
-Thibaut Jombart \email{thibautjombart@gmail.com}
+Thibaut Jombart \email{thibautjombart@gmail.com},
+  Dirk Shchumacher \email{mail@dirk-schumacher.net}
 }

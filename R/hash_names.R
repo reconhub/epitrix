@@ -17,7 +17,8 @@
 #'
 #' @seealso  \code{\link{clean_labels}}, used to clean labels prior to hashing.
 #'
-#' @author Thibaut Jombart \email{thibautjombart@@gmail.com}
+#' @author Thibaut Jombart \email{thibautjombart@@gmail.com},
+#'   Dirk Shchumacher \email{mail@@dirk-schumacher.net}
 #'
 #' @export
 #'
