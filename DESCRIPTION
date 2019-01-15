@@ -1,6 +1,6 @@
 Package: epitrix
 Title: Small Helpers and Tricks for Epidemics Analysis
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: c(person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut", "cre")),
              person("Anne", "Cori", email = "a.cori@imperial.ac.uk", role = c("aut")),
              person("Zhian N.", "Kamvar", email = "zkamvar@gmail.com", role = "ctb"),
