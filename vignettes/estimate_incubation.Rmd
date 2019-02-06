@@ -76,4 +76,9 @@ Fit discrete gamma:
 ```{r}
 fit <- fit_gamma_incubation_dist(x, exposures, date_of_onset)
 print(fit)
+
+ggplot(transform(data.frame(x=c(0:10)), y=fit$distribution$d(x)), aes(x, y)) +
+    geom_col(data = incubation_period_dist, aes(incubation_period, relative_frequency)) +
+    geom_point(stat="identity", col = "red", size = 3) +
+    geom_line(stat="identity", col = "red")
 ```
