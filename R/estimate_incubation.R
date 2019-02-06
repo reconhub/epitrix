@@ -3,7 +3,7 @@
 #'
 #' @param x the linelist data (data.frame or linelist object) containing at least a column containing the exposure dates and one containing the onset dates. For exposure dates, each element can be a list containing several possible exposure dates.
 #' @param dates_exposure the name of the column containing the exposure dates.
-#' @param dates_exposure the name of the column containing the onset dates
+#' @param date_onset the name of the column containing the onset dates
 #' @return a data frame containing a column with the different incubation periods and a column containing their relative frequency
 #' @author Flavio Finger, \email{flavio.finger@lshtm.ac.uk}
 #' @export
@@ -46,7 +46,7 @@ empirical_incubation_dist  <- function(x, dates_exposure, date_of_onset) {
 }
 
 
-#' A wrapper around fit_disc_gamma to fit to fit a discrete gamma distribution to incubation periods derived from exposure and onset dates. Can take into account uncertain dates of exposure.
+#' A wrapper around fit_disc_gamma to fit a discrete gamma distribution to incubation periods derived from exposure and onset dates. Can take into account uncertain dates of exposure.
 #' @inheritParams empirical_incubation_dist
 #' @param nsamples The number of samples to draw from the empirical distribution to fit on (dafaults to 1000)
 #' @param ... passed to fit_disc_gamma
