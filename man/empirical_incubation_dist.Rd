@@ -8,11 +8,11 @@ Can take into account uncertain dates of exposure.}
 empirical_incubation_dist(x, dates_exposure, date_of_onset)
 }
 \arguments{
-\item{x}{the linelist data (data.frame or linelist object) containing at least a column containing the exposure dates and one containing the onset dates. For exposure dates, each element can be a list containing several possible exposure dates.}
+\item{x}{the linelist data (data.frame or linelist object) containing at least a column containing the exposure dates and one containing the onset dates. For exposure dates, each element can be a vector containing several possible exposure dates. Note that if the same exposure date appears twice in the list it si given twice as much weight.}
 
-\item{dates_exposure}{the name of the column containing the exposure dates.}
+\item{dates_exposure}{the name of the column containing the exposure dates (bare variable name or in quotes)}
 
-\item{dates_exposure}{the name of the column containing the onset dates}
+\item{date_onset}{the name of the column containing the onset dates (bare variable name or in quotes)}
 }
 \value{
 a data frame containing a column with the different incubation periods and a column containing their relative frequency
@@ -20,6 +20,15 @@ a data frame containing a column with the different incubation periods and a col
 \description{
 Function to extract the empirical incubation period distribution from line list data.
 Can take into account uncertain dates of exposure.
+}
+\examples{
+x <- linelist::clean_data(linelist::messy_data())
+
+mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12, rate = 3))
+exposures <- sapply(x$date_of_onset, mkexposures)
+x$dates_exposure <- exposures
+
+incubation_period_dist <- empirical_incubation_dist(x, dates_exposure, date_of_onset)
 }
 \author{
 Flavio Finger, \email{flavio.finger@lshtm.ac.uk}

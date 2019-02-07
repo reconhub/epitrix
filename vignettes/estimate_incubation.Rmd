@@ -7,7 +7,7 @@ output:
      toc: true
      toc_depth: 2
 vignette: >
-  %\VignetteIndexEntry{estimate_incubation}
+  %\VignetteIndexEntry{Estimating Incubation Period}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -28,43 +28,33 @@ Example using toy data.
 Load environment:
 
 ```{r, echo = TRUE, message=FALSE}
-library(linelist)
-library(dplyr)
-library(tidyr)
 library(magrittr)
-library(purrr)
-library(ggplot2)
+library(linelist)
 library(epitrix)
+library(distcrete)
+library(ggplot2)
 ```
 
-Make a toy linelist object with several possible exposure dates for each case:
+Make a linelist object with several possible exposure dates for each case:
 
 ```{r, echo = TRUE}
-onsets <- as.Date("2018-01-01") + base::sample(1:10, 20, replace = TRUE)
-mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12, rate = 3))
-exposures <- sapply(onsets, mkexposures)
-# exposures <- onsets - round(rgamma(20, shape = 12, rate = 3))
-genders <- c("male", "female")
-gender <- sample(genders, 20, replace = TRUE)
-case_types <- c("confirmed", "probable", "suspected", "not a case",
-                "Confirmed", "PROBABLE", "suspected  ", "Not.a.Case")
-case <- factor(sample(case_types, 20, replace = TRUE))
-toy_data <- data.frame("Date of Onset." = onsets,
-                       "SeX_ " = gender,
-                       "Épi.Case_définition" = case)
-toy_data$exposures <- exposures
+ll <- messy_data() %>% clean_data()
 
-x <- toy_data %>%
-  clean_data %>%
-  as_linelist(date_onset = "date_of_onset")
+# exposures <- x$date_of_onset - round(rgamma(20, shape = 12, rate = 3))
+# mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12, rate = 3))
+x <- 0:15
+y <- distcrete("gamma", 1, shape = 12, rate = 3, w = 0)$d(x)
+mkexposures <- function(foo) foo - base::sample(x, size = sample.int(5, size = 1), prob = y)
+exposures <- sapply(ll$date_of_onset, mkexposures)
+ll$dates_exposure <- exposures
 
-print(x)
+print(ll)
 ```
 
 Empirical distribution:
 
 ```{r}
-incubation_period_dist <- empirical_incubation_dist(x, exposures, date_of_onset)
+incubation_period_dist <- empirical_incubation_dist(ll, dates_exposure, date_of_onset)
 print(incubation_period_dist)
 
 ggplot(incubation_period_dist, aes(incubation_period, relative_frequency)) +
@@ -74,10 +64,12 @@ ggplot(incubation_period_dist, aes(incubation_period, relative_frequency)) +
 Fit discrete gamma:
 
 ```{r}
-fit <- fit_gamma_incubation_dist(x, exposures, date_of_onset)
+fit <- fit_gamma_incubation_dist(ll, dates_exposure, date_of_onset)
 print(fit)
 
-ggplot(transform(data.frame(x=c(0:10)), y=fit$distribution$d(x)), aes(x, y)) +
+x = c(0:10)
+y = fit$distribution$d(x)
+ggplot(data.frame(x=x, y=y), aes(x, y)) +
     geom_col(data = incubation_period_dist, aes(incubation_period, relative_frequency)) +
     geom_point(stat="identity", col = "red", size = 3) +
     geom_line(stat="identity", col = "red")

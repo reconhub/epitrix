@@ -4,22 +4,26 @@ Version: 0.2.2
 Authors@R: c(person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut", "cre")),
              person("Anne", "Cori", email = "a.cori@imperial.ac.uk", role = c("aut")),
              person("Zhian N.", "Kamvar", email = "zkamvar@gmail.com", role = "ctb"),
-             person("Dirk", "Schumacher", email = "mail@dirk-schumacher.net", role = "ctb")
-            ) 
+             person("Dirk", "Schumacher", email = "mail@dirk-schumacher.net", role = "ctb"),
+             person("Flavio", "Finger", email = "flavio.finger@lshtm.ac.uk", role = "ctb")
+            )
 Description: A collection of small functions useful for epidemics analysis and infectious disease modelling. This includes computation of basic reproduction numbers from growth rates, generation of hashed labels to anonymise data, and fitting discretised Gamma distributions.
 Depends: R (>= 3.3.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Suggests: 
+Suggests:
     testthat,
-    roxygen2, 
-    outbreaks, 
+    roxygen2,
+    outbreaks,
     incidence (>= 1.4.1),
     knitr,
-    rmarkdown
+    rmarkdown,
+    linelist
 Imports: sodium, distcrete, stringi
 RoxygenNote: 6.1.1
 URL: http://www.repidemicsconsortium.org/epitrix
 BugReports: https://github.com/reconhub/epitrix/issues
 VignetteBuilder: knitr
+Remotes:
+  reconhub/linelist
