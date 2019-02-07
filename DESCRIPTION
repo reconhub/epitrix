@@ -20,12 +20,16 @@ Suggests:
     knitr,
     rmarkdown,
     linelist,
+    ggplot2
+Imports:
+    sodium,
+    distcrete,
+    stringi,
     dplyr,
     magrittr,
     purrr,
     rlang,
     tidyr
-Imports: sodium, distcrete, stringi
 RoxygenNote: 6.1.1
 URL: http://www.repidemicsconsortium.org/epitrix
 BugReports: https://github.com/reconhub/epitrix/issues

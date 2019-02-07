@@ -12,7 +12,7 @@ empirical_incubation_dist(x, dates_exposure, date_of_onset)
 
 \item{dates_exposure}{the name of the column containing the exposure dates (bare variable name or in quotes)}
 
-\item{date_onset}{the name of the column containing the onset dates (bare variable name or in quotes)}
+\item{date_of_onset}{the name of the column containing the onset dates (bare variable name or in quotes)}
 }
 \value{
 a data frame containing a column with the different incubation periods and a column containing their relative frequency

@@ -3,7 +3,7 @@
 #'
 #' @param x the linelist data (data.frame or linelist object) containing at least a column containing the exposure dates and one containing the onset dates. For exposure dates, each element can be a vector containing several possible exposure dates. Note that if the same exposure date appears twice in the list it si given twice as much weight.
 #' @param dates_exposure the name of the column containing the exposure dates (bare variable name or in quotes)
-#' @param date_onset the name of the column containing the onset dates (bare variable name or in quotes)
+#' @param date_of_onset the name of the column containing the onset dates (bare variable name or in quotes)
 #' @return a data frame containing a column with the different incubation periods and a column containing their relative frequency
 #' @author Flavio Finger, \email{flavio.finger@lshtm.ac.uk}
 #' @export
@@ -56,6 +56,9 @@ empirical_incubation_dist  <- function(x, dates_exposure, date_of_onset) {
 compute_incubation <- function(dates_exposure, date_onset){
   z <- data.frame(date_onset = date_onset)
   z$dates_exposure <- dates_exposure
+  incubation_period <- NULL #entry to avoid note by R CMD check
+  weight <- NULL #entry to avoid note by R CMD check
+  relative_frequency <- NULL #entry to avoid note by R CMD check
 
   z <- z %>%
     dplyr::mutate(weight = purrr::map(dates_exposure, function(foo) 1/length(foo))) %>%

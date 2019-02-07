@@ -12,6 +12,8 @@ fit_gamma_incubation_dist(x, dates_exposure, date_of_onset,
 
 \item{dates_exposure}{the name of the column containing the exposure dates (bare variable name or in quotes)}
 
+\item{date_of_onset}{the name of the column containing the onset dates (bare variable name or in quotes)}
+
 \item{nsamples}{The number of samples to draw from the empirical distribution to fit on (dafaults to 1000)}
 
 \item{...}{passed to fit_disc_gamma}
