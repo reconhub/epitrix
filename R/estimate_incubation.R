@@ -107,9 +107,7 @@ fit_gamma_incubation_dist <- function(x, dates_exposure, date_of_onset, nsamples
         prob = incubation_period_dist$relative_frequency
       )
   } else if (nrow(incubation_period_dist) == 1) {
-    s <- rep(incubation_period_dist$incubation_period, nsamples)
-  } else {
-    stop("incubation_period_dist contains no data")
+    stop("incubation period is constant")
   }
 
   return(epitrix::fit_disc_gamma(s, ...))

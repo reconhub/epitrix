@@ -14,7 +14,6 @@ test_that("test that empirical incubation period distribution matches reference"
     incubation_period_dist <- empirical_incubation_dist(ll, dates_exposure, date_of_onset)
 
     expect_equal_to_reference(incubation_period_dist, file = "rds/disc_empirical_ref.rds")
-
 })
 
 test_that("test that fitted gamma incubation period distribution matches reference", {
@@ -31,5 +30,4 @@ test_that("test that fitted gamma incubation period distribution matches referen
     fit <- fit_gamma_incubation_dist(ll, dates_exposure, date_of_onset)
 
     expect_equal_to_reference(fit, file = "rds/incubation_disc_gamma_ref.rds")
-
 })
