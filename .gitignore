@@ -5,4 +5,4 @@ vignettes/*.html
 *.Rhistory
 *DEADJOE*
 *.swp
-
+*.tar.gz

@@ -19,7 +19,12 @@ Suggests:
     incidence (>= 1.4.1),
     knitr,
     rmarkdown,
-    linelist
+    linelist,
+    dplyr,
+    magrittr,
+    purrr,
+    rlang,
+    tidyr
 Imports: sodium, distcrete, stringi
 RoxygenNote: 6.1.1
 URL: http://www.repidemicsconsortium.org/epitrix
