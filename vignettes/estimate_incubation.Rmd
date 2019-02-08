@@ -31,7 +31,7 @@ This package contains two functions useful to compute the incubation period dist
 
 The function `empirical_incubation_dist()` computes the discrete probability distribution by giving equal weight to each patient. Thus, in the case of `N` patients, the `n` possible exposure dates of a given patient get the overall weight `1/(n*N)`. The function returns a data frame with column `incubation_period` containing the different incubation periods with a time step of one day and their `relative_frequency`.
 
-The function `fit_gamma_incubation_dist()` takes the same inputs, but directly fits a discrete gamma distribution by sampling the empirical distribution and fitting a discrete gamma distribution to it by the means of `fit_disc_gamma`.
+The function `fit_gamma_incubation_dist()` takes the same inputs, but directly samples from the empirical distribution and fits a discrete gamma distribution to it by the means of `fit_disc_gamma`.
 
 
 # Example
