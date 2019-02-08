@@ -22,8 +22,19 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Description
 
-Example using toy data.
+This package contains two functions useful to compute the incubation period distribution from outbreak data. The inputs needed for each patient are given as a `data.frame` or `linelist` object and must contain:
+
+  - the date of onset of symptoms
+  - a list/vector of possible dates of exposure.
+
+The function `empirical_incubation_dist()` computes the discrete probability distribution by giving equal weight to each patient. Thus, in the case of `N` patients, the `n` possible exposure dates of a given patient get the overall weight `1/(n*N)`. The function returns a data frame with column `incubation_period` containing the different incubation periods with a time step of one day and their `relative_frequency`.
+
+The function `fit_gamma_incubation_dist()` takes the same inputs, but directly fits a discrete gamma distribution by sampling the empirical distribution and fitting a discrete gamma distribution to it by the means of `fit_disc_gamma`.
+
+
+# Example
 
 Load environment:
 
@@ -35,7 +46,7 @@ library(distcrete)
 library(ggplot2)
 ```
 
-Make a linelist object with several possible exposure dates for each case:
+Make a linelist object containing toy data with several possible exposure dates for each case:
 
 ```{r, echo = TRUE}
 ll <- messy_data() %>% clean_data()
@@ -44,7 +55,7 @@ ll <- messy_data() %>% clean_data()
 # mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12, rate = 3))
 x <- 0:15
 y <- distcrete("gamma", 1, shape = 12, rate = 3, w = 0)$d(x)
-mkexposures <- function(foo) foo - base::sample(x, size = sample.int(5, size = 1), prob = y)
+mkexposures <- function(foo) foo - base::sample(x, size = sample.int(5, size = 1), replace = FALSE, prob = y)
 exposures <- sapply(ll$date_of_onset, mkexposures)
 ll$dates_exposure <- exposures
 

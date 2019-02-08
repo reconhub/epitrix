@@ -56,17 +56,19 @@ empirical_incubation_dist  <- function(x, dates_exposure, date_of_onset) {
 compute_incubation <- function(dates_exposure, date_onset){
   z <- data.frame(date_onset = date_onset)
   z$dates_exposure <- dates_exposure
-  incubation_period <- NULL #entry to avoid note by R CMD check
-  weight <- NULL #entry to avoid note by R CMD check
-  relative_frequency <- NULL #entry to avoid note by R CMD check
+  incubation_period <- quote(incubation_period) #to avoid note by R CMD check
+  weight <- quote(weight) #to avoid note by R CMD check
+  relative_frequency <- quote(relative_frequency) #to avoid note by R CMD check
 
   z <- z %>%
     dplyr::mutate(weight = purrr::map(dates_exposure, function(foo) 1/length(foo))) %>%
     tidyr::unnest(dates_exposure, .drop  = FALSE) %>%
     dplyr::ungroup()
 
-  z$incubation_period <- as.numeric(z$date_onset - z$dates_exposure)
-  z$weight <- as.numeric(z$weight)
+  z <- z %>% dplyr::mutate(
+    incubation_period = as.numeric(date_onset - dates_exposure),
+    weight = as.numeric(weight)
+  )
 
   z <- z %>%
     dplyr::select(incubation_period, weight) %>%
