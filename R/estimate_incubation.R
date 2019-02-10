@@ -51,7 +51,7 @@ empirical_incubation_dist  <- function(x, dates_exposure, date_of_onset) {
 #' @importFrom dplyr mutate select pull
 #' @importFrom rlang "!!"
 #' @importFrom purrr map
-#' @importFrom tidyr unnest
+#' @importFrom tidyr unnest complete full_seq
 #' @importFrom magrittr "%>%"
 compute_incubation <- function(dates_exposure, date_onset){
   z <- data.frame(date_onset = date_onset)
@@ -76,7 +76,11 @@ compute_incubation <- function(dates_exposure, date_onset){
     dplyr::group_by(incubation_period) %>%
     dplyr::summarise(relative_frequency = sum(weight)) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(relative_frequency = relative_frequency/sum(relative_frequency))
+    dplyr::mutate(relative_frequency = relative_frequency/sum(relative_frequency)) %>%
+    tidyr::complete(
+      incubation_period = tidyr::full_seq(incubation_period, 1),
+      fill = list(relative_frequency = 0)
+    )
 
   return(z)
 }
