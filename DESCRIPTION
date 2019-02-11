@@ -20,13 +20,13 @@ Suggests:
     knitr,
     rmarkdown,
     linelist,
+    magrittr,
     ggplot2
 Imports:
     sodium,
     distcrete,
     stringi,
     dplyr,
-    magrittr,
     purrr,
     rlang,
     tidyr
