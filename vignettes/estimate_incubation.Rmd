@@ -1,0 +1,85 @@
+---
+title: "Example to estimate incubation period"
+author: "Flavio Finger"
+date: "`r Sys.Date()`"
+output:
+   rmarkdown::html_vignette:
+     toc: true
+     toc_depth: 2
+vignette: >
+  %\VignetteIndexEntry{Estimating Incubation Period}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width=7,
+  fig.height=5,
+  fig.path="figs-overview/"
+)
+```
+
+# Description
+
+This package contains two functions useful to compute the incubation period distribution from outbreak data. The inputs needed for each patient are given as a `data.frame` or `linelist` object and must contain:
+
+  - the date of onset of symptoms
+  - a list/vector of possible dates of exposure.
+
+The function `empirical_incubation_dist()` computes the discrete probability distribution by giving equal weight to each patient. Thus, in the case of `N` patients, the `n` possible exposure dates of a given patient get the overall weight `1/(n*N)`. The function returns a data frame with column `incubation_period` containing the different incubation periods with a time step of one day and their `relative_frequency`.
+
+The function `fit_gamma_incubation_dist()` takes the same inputs, but directly samples from the empirical distribution and fits a discrete gamma distribution to it by the means of `fit_disc_gamma`.
+
+
+# Example
+
+Load environment:
+
+```{r, echo = TRUE, message=FALSE}
+library(magrittr)
+library(linelist)
+library(epitrix)
+library(distcrete)
+library(ggplot2)
+```
+
+Make a linelist object containing toy data with several possible exposure dates for each case:
+
+```{r, echo = TRUE}
+ll <- messy_data() %>% clean_data()
+
+x <- 0:15
+y <- distcrete("gamma", 1, shape = 12, rate = 3, w = 0)$d(x)
+mkexposures <- function(i) i - sample(x, size = sample.int(5, size = 1), replace = FALSE, prob = y)
+exposures <- sapply(ll$date_of_onset, mkexposures)
+ll$dates_exposure <- exposures
+
+print(ll)
+```
+
+Empirical distribution:
+
+```{r}
+incubation_period_dist <- empirical_incubation_dist(ll, date_of_onset, dates_exposure)
+print(incubation_period_dist)
+
+ggplot(incubation_period_dist, aes(incubation_period, relative_frequency)) +
+  geom_col()
+```
+
+Fit discrete gamma:
+
+```{r}
+fit <- fit_gamma_incubation_dist(ll, date_of_onset, dates_exposure)
+print(fit)
+
+x = c(0:10)
+y = fit$distribution$d(x)
+ggplot(data.frame(x = x, y = y), aes(x, y)) +
+  geom_col(data = incubation_period_dist, aes(incubation_period, relative_frequency)) +
+  geom_point(stat="identity", col = "red", size = 3) +
+  geom_line(stat="identity", col = "red")
+```

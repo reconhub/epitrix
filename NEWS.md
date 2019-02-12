@@ -3,7 +3,7 @@
  - Replace `digest` with `sodium` in Imports
  - Use `sodium::scrypt()` as a more cryptographically secure hashing algorithm
    for `hash_names()`. Thanks to @dirkschumacher for this addition. For details,
-   see https://github.com/reconhub/epitrix/pull/7. 
+   see https://github.com/reconhub/epitrix/pull/7.
  - Fix LICENSE file to show who the copyright holder is.
 
 # epitrix 0.2.1
@@ -15,7 +15,7 @@
 - added function `clean_labels` which can be used to standardise labels in variables,
   removing non-ascii characters, standardising separators, and more; now used in
   `hash_names`
-  
+
 
 
 # epitrix 0.1.2
@@ -49,7 +49,3 @@ First release of the package! This includes the following features:
 - `r2R0`: compute R0 from r
 
 - `lm2R0_sample`: genrate samples of R0 from a log-linear regression
-
-
-
-
