@@ -6,29 +6,42 @@
 #'
 #' @param x the linelist data (data.frame or linelist object) containing at
 #'   least a column containing the exposure dates and one containing the onset
-#'   dates. For exposure dates, each element can be a vector containing several
-#'   possible exposure dates. Note that if the same exposure date appears twice
-#'   in the list it is given twice as much weight.
-#' @param dates_exposure the name of the column containing the exposure dates
-#'   (bare variable name or in quotes)
+#'   dates. 
 #' @param date_of_onset the name of the column containing the onset dates (bare
 #'   variable name or in quotes)
+#' @param exposure the name of the column containing the exposure dates
+#'   (bare variable name or in quotes)
+#' @param exposure_end the name of a column containing dates representing the
+#'   end of the exposure period. This is `NULL` by default, indicating 
+#'   all exposures are known and in the `exposure` column.
 #' @return a data frame containing a column with the different incubation
 #'   periods and a column containing their relative frequency
+#' @note For exposure dates, each element can be a vector containing several
+#'   possible exposure dates. Note that if the same exposure date appears twice
+#'   in the list it is given twice as much weight.
 #' @author Flavio Finger, \email{flavio.finger@@lshtm.ac.uk}, Zhian N. Kamvar
 #' @export
 #' @importFrom dplyr pull
-#' @importFrom rlang "!!" enquo
+#' @importFrom rlang "!!" enquo get_expr
 #' @examples
 #' x <- linelist::clean_data(linelist::messy_data())
 #'
+#' # Linelist with a list column of potential exposure dates ------------------
 #' mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12, rate = 3))
 #' exposures <- sapply(x$date_of_onset, mkexposures)
 #' x$dates_exposure <- exposures
 #'
-#' incubation_period_dist <- empirical_incubation_dist(x, dates_exposure, date_of_onset)
+#' incubation_period_dist <- empirical_incubation_dist(x, date_of_onset, dates_exposure)
+#' incubation_period_dist
 #'
-empirical_incubation_dist  <- function(x, dates_exposure, date_of_onset) {
+#' # Linelist with exposure range ---------------------------------------------
+#' start_exposure   <- round(rgamma(nrow(x), shape = 12, rate = 3))
+#' end_exposure     <- round(rgamma(nrow(x), shape = 12, rate = 7))
+#' x$exposure_end   <- x$date_of_onset - end_exposure
+#' x$exposure_start <- x$exposure_end - start_exposure
+#' incubation_period_dist <- empirical_incubation_dist(x, date_of_onset, exposure_start, exposure_end)
+#'
+empirical_incubation_dist  <- function(x, date_of_onset, exposure, exposure_end = NULL) {
   #error checking
   if (!is.data.frame(x)) {
     stop("x is not a data.frame")
@@ -38,12 +51,49 @@ empirical_incubation_dist  <- function(x, dates_exposure, date_of_onset) {
     stop("x has no columns")
   }
 
-  dates_exposure <- rlang::enquo(dates_exposure)
+  # prepare column names for transfer
+  exposure      <- rlang::enquo(exposure)
   date_of_onset <- rlang::enquo(date_of_onset)
+  exposure_end  <- rlang::enquo(exposure_end)
+  end_is_here   <- !is.null(rlang::get_expr(exposure_end))
 
-  y <- compute_incubation(dplyr::pull(x, !!dates_exposure), dplyr::pull(x, !!date_of_onset))
+  # Make sure that all the columns actually exist
+  cols <- c(rlang::quo_text(date_of_onset), 
+            rlang::quo_text(exposure), 
+            rlang::quo_text(exposure_end)) 
+  cols <- cols[cols != "NULL"]
+  if (!all(cols %in% names(x))) {
+    msg  <- "%s is not a column in %s"
+    cols <- cols[!cols %in% names(x)]
+    msg  <- sprintf(msg, cols, deparse(substitute(x)))
+    stop(paste(msg, collapse = "\n  "))
+  }
 
-  #check if incubation period is below 0
+  # Grab the values from the columns
+  doo   <- dplyr::pull(x, !! date_of_onset)
+  expos <- dplyr::pull(x, !! exposure)
+
+  if (!inherits(doo, "Date")) {
+    msg <- "date_of_onset must be a column of Dates. I found a column of class %s"
+    stop(sprintf(msg, paste(class(doo), collapse = ", ")))
+  }
+
+  if (end_is_here) {
+    # We need to create the list for each date
+    if (is.list(expos) || !inherits(expos, "Date")) {
+      stop("if exposure_end is specified, then exposure must be a vector of Dates")
+    }
+    e     <- expos
+    ee    <- dplyr::pull(x, !! exposure_end)
+    expos <- vector(mode = "list", length = length(e))
+    for (i in seq(expos)) {
+      expos[[i]] <- seq(from = e[i], to = ee[i], by = "1 day")
+    }
+  }
+
+  y <- compute_incubation(doo, expos)
+
+  # check if incubation period is below 0
   if (any(y$incubation_period < 0)) {
     warning("negative incubation periods in data!")
   }
@@ -54,7 +104,7 @@ empirical_incubation_dist  <- function(x, dates_exposure, date_of_onset) {
 #' Compute the empirical incubation dist.
 #' Can take into account uncertain dates of exposure.
 #'
-#' @param dates_exposure list containing the exposure dates. each element can
+#' @param exposure list containing the exposure dates. each element can
 #' be a vector of several possible exposure dates.
 #' @param date_onset list containing the exposure dates. each element can be a
 #' vector of several dates.
@@ -66,32 +116,32 @@ empirical_incubation_dist  <- function(x, dates_exposure, date_of_onset) {
 #' @importFrom rlang "!!"
 #' @importFrom purrr map
 #' @importFrom tidyr unnest complete full_seq
-compute_incubation <- function(dates_exposure, date_onset){
+compute_incubation <- function(date_onset, exposure){
   z <- data.frame(date_onset = date_onset,
-                  weight = 1/lengths(dates_exposure)
+                  weight = 1/lengths(exposure)
                  )
-  z$dates_exposure <- dates_exposure
+  z$exposure <- exposure
 
   incubation_period <- quote(incubation_period) #to avoid note by R CMD check
   weight <- quote(weight) #to avoid note by R CMD check
 
-  # In case the dates_exposure is a list column, we should expand this to
+  # In case the exposure is a list column, we should expand this to
   # be able to effectively calculate the incubation period
-  z <- tidyr::unnest(z, dates_exposure, .drop  = FALSE)
-  z$incubation_period <- as.integer(z$date_onset - z$dates_exposure)
+  z <- tidyr::unnest(z, exposure, .drop  = FALSE)
+  z$incubation_period <- as.integer(z$date_onset - z$exposure)
 
   # Calculating relative frequency of incubation period ------------------------
   res  <- z[c("incubation_period", "weight")] # only columns we need
   res  <- res[order(res$incubation_period), ] # arranging the incubation periods
 
-  res  <- dplyr::group_by(res, incubation_period)
-  sres <- dplyr::summarise(res, relative_frequency = sum(!!weight))
+  res  <- dplyr::group_by(res, !! incubation_period)
+  sres <- dplyr::summarise(res, relative_frequency = sum(!! weight))
   sres <- dplyr::ungroup(sres)
   sres$relative_frequency <- sres$relative_frequency/sum(sres$relative_frequency)
   
   # ensuring that all incubation period ranges are displayed.
   sres <- tidyr::complete(sres, 
-    incubation_period = tidyr::full_seq(!!incubation_period, 1),
+    incubation_period = tidyr::full_seq(!! incubation_period, 1),
     fill = list(relative_frequency = 0)
   )
 
@@ -119,10 +169,10 @@ compute_incubation <- function(dates_exposure, date_onset){
 #' exposures <- sapply(x$date_of_onset, mkexposures)
 #' x$dates_exposure <- exposures
 #'
-#' fit <- fit_gamma_incubation_dist(x, dates_exposure, date_of_onset)
-fit_gamma_incubation_dist <- function(x, dates_exposure, date_of_onset, nsamples = 1000, ...) {
+#' fit <- fit_gamma_incubation_dist(x, date_of_onset, dates_exposure)
+fit_gamma_incubation_dist <- function(x, date_of_onset, exposure, exposure_end = NULL, nsamples = 1000, ...) {
   
-  incubation_period_dist <- empirical_incubation_dist(x, !!rlang::enquo(dates_exposure), !!rlang::enquo(date_of_onset))
+  incubation_period_dist <- empirical_incubation_dist(x, !!rlang::enquo(date_of_onset), !!rlang::enquo(exposure), !!rlang::enquo(exposure_end))
 
   if (nrow(incubation_period_dist) > 1) {
     s <- base::sample(

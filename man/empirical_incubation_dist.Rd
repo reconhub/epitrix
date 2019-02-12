@@ -4,20 +4,23 @@
 \alias{empirical_incubation_dist}
 \title{Extract empirical incubation period distribution from linelist data}
 \usage{
-empirical_incubation_dist(x, dates_exposure, date_of_onset)
+empirical_incubation_dist(x, date_of_onset, exposure,
+  exposure_end = NULL)
 }
 \arguments{
 \item{x}{the linelist data (data.frame or linelist object) containing at
 least a column containing the exposure dates and one containing the onset
-dates. For exposure dates, each element can be a vector containing several
-possible exposure dates. Note that if the same exposure date appears twice
-in the list it is given twice as much weight.}
-
-\item{dates_exposure}{the name of the column containing the exposure dates
-(bare variable name or in quotes)}
+dates.}
 
 \item{date_of_onset}{the name of the column containing the onset dates (bare
 variable name or in quotes)}
+
+\item{exposure}{the name of the column containing the exposure dates
+(bare variable name or in quotes)}
+
+\item{exposure_end}{the name of a column containing dates representing the
+end of the exposure period. This is `NULL` by default, indicating 
+all exposures are known and in the `exposure` column.}
 }
 \value{
 a data frame containing a column with the different incubation
@@ -28,14 +31,28 @@ This function takes in a linelist data frame and extracts the empirical
 incubation period distribution and can take into account uncertain dates of
 exposure.
 }
+\note{
+For exposure dates, each element can be a vector containing several
+  possible exposure dates. Note that if the same exposure date appears twice
+  in the list it is given twice as much weight.
+}
 \examples{
 x <- linelist::clean_data(linelist::messy_data())
 
+# Linelist with a list column of potential exposure dates ------------------
 mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12, rate = 3))
 exposures <- sapply(x$date_of_onset, mkexposures)
 x$dates_exposure <- exposures
 
-incubation_period_dist <- empirical_incubation_dist(x, dates_exposure, date_of_onset)
+incubation_period_dist <- empirical_incubation_dist(x, date_of_onset, dates_exposure)
+incubation_period_dist
+
+# Linelist with exposure range ---------------------------------------------
+start_exposure   <- round(rgamma(nrow(x), shape = 12, rate = 3))
+end_exposure     <- round(rgamma(nrow(x), shape = 12, rate = 7))
+x$exposure_end   <- x$date_of_onset - end_exposure
+x$exposure_start <- x$exposure_end - start_exposure
+incubation_period_dist <- empirical_incubation_dist(x, date_of_onset, exposure_start, exposure_end)
 
 }
 \author{

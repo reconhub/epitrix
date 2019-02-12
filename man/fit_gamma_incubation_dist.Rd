@@ -4,21 +4,23 @@
 \alias{fit_gamma_incubation_dist}
 \title{Fit discrite gamma distribution to incubation periods}
 \usage{
-fit_gamma_incubation_dist(x, dates_exposure, date_of_onset,
-  nsamples = 1000, ...)
+fit_gamma_incubation_dist(x, date_of_onset, exposure,
+  exposure_end = NULL, nsamples = 1000, ...)
 }
 \arguments{
 \item{x}{the linelist data (data.frame or linelist object) containing at
 least a column containing the exposure dates and one containing the onset
-dates. For exposure dates, each element can be a vector containing several
-possible exposure dates. Note that if the same exposure date appears twice
-in the list it is given twice as much weight.}
-
-\item{dates_exposure}{the name of the column containing the exposure dates
-(bare variable name or in quotes)}
+dates.}
 
 \item{date_of_onset}{the name of the column containing the onset dates (bare
 variable name or in quotes)}
+
+\item{exposure}{the name of the column containing the exposure dates
+(bare variable name or in quotes)}
+
+\item{exposure_end}{the name of a column containing dates representing the
+end of the exposure period. This is `NULL` by default, indicating 
+all exposures are known and in the `exposure` column.}
 
 \item{nsamples}{The number of samples to draw from the empirical
 distribution to fit on (dafaults to 1000)}
@@ -40,7 +42,7 @@ mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12,
 exposures <- sapply(x$date_of_onset, mkexposures)
 x$dates_exposure <- exposures
 
-fit <- fit_gamma_incubation_dist(x, dates_exposure, date_of_onset)
+fit <- fit_gamma_incubation_dist(x, date_of_onset, dates_exposure)
 }
 \author{
 Flavio Finger, \email{flavio.finger@lshtm.ac.uk}

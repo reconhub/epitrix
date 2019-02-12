@@ -51,11 +51,9 @@ Make a linelist object containing toy data with several possible exposure dates 
 ```{r, echo = TRUE}
 ll <- messy_data() %>% clean_data()
 
-# exposures <- x$date_of_onset - round(rgamma(20, shape = 12, rate = 3))
-# mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12, rate = 3))
 x <- 0:15
 y <- distcrete("gamma", 1, shape = 12, rate = 3, w = 0)$d(x)
-mkexposures <- function(foo) foo - base::sample(x, size = sample.int(5, size = 1), replace = FALSE, prob = y)
+mkexposures <- function(i) i - sample(x, size = sample.int(5, size = 1), replace = FALSE, prob = y)
 exposures <- sapply(ll$date_of_onset, mkexposures)
 ll$dates_exposure <- exposures
 
@@ -65,7 +63,7 @@ print(ll)
 Empirical distribution:
 
 ```{r}
-incubation_period_dist <- empirical_incubation_dist(ll, dates_exposure, date_of_onset)
+incubation_period_dist <- empirical_incubation_dist(ll, date_of_onset, dates_exposure)
 print(incubation_period_dist)
 
 ggplot(incubation_period_dist, aes(incubation_period, relative_frequency)) +
@@ -75,13 +73,13 @@ ggplot(incubation_period_dist, aes(incubation_period, relative_frequency)) +
 Fit discrete gamma:
 
 ```{r}
-fit <- fit_gamma_incubation_dist(ll, dates_exposure, date_of_onset)
+fit <- fit_gamma_incubation_dist(ll, date_of_onset, dates_exposure)
 print(fit)
 
 x = c(0:10)
 y = fit$distribution$d(x)
-ggplot(data.frame(x=x, y=y), aes(x, y)) +
-    geom_col(data = incubation_period_dist, aes(incubation_period, relative_frequency)) +
-    geom_point(stat="identity", col = "red", size = 3) +
-    geom_line(stat="identity", col = "red")
+ggplot(data.frame(x = x, y = y), aes(x, y)) +
+  geom_col(data = incubation_period_dist, aes(incubation_period, relative_frequency)) +
+  geom_point(stat="identity", col = "red", size = 3) +
+  geom_line(stat="identity", col = "red")
 ```
