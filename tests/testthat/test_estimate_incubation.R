@@ -94,7 +94,6 @@ test_that("empirical incubation period distribution matches reference", {
 
 
 test_that("empirical incubation period distribution matches dist reference computed by hand", {
-  skip_on_cran()
   incubation_period_dist <- empirical_incubation_dist(ll2, onset, exposure)
 
   expect_equal(incubation_period_dist, ref_inc_period)
