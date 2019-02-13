@@ -27,14 +27,14 @@ ll$boogaloo <- exposures_two
 #creating a simple line list with known incubation period dist:
 ll2 <- data.frame(
   patient_id = 1:4,
-  onset = lubridate::as_date(c("2018-1-15", "2018-1-20", "2018-1-23", "2018-1-24")
+  onset = as.Date(c("2018-1-15", "2018-1-20", "2018-1-23", "2018-1-24")
 ))
 
 ll2$exposure <- list(
-  lubridate::as_date(c("2018-1-12", "2018-1-10")),
-  lubridate::as_date(c("2018-1-12", "2018-1-14", "2018-1-17", "2018-1-19")),
-  lubridate::as_date(c("2018-1-15", "2018-1-20")),
-  lubridate::as_date(c("2018-1-23"))
+  as.Date(c("2018-1-12", "2018-1-10")),
+  as.Date(c("2018-1-12", "2018-1-14", "2018-1-17", "2018-1-19")),
+  as.Date(c("2018-1-15", "2018-1-20")),
+  as.Date(c("2018-1-23"))
 )
 
 ref_inc_period <- data.frame(
