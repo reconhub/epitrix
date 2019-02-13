@@ -38,7 +38,7 @@ ll2$exposure <- list(
 )
 
 ref_inc_period <- data.frame(
-  incubation_period = 1:8,
+  incubation_period = as.numeric(1:8),
   relative_frequency = c(5/16, 0, 5/16, 0, 1/8, 1/16, 0, 3/16)
 )
 
@@ -97,7 +97,7 @@ test_that("empirical incubation period distribution matches dist reference compu
   skip_on_cran()
   incubation_period_dist <- empirical_incubation_dist(ll2, onset, exposure)
 
-  expect_equal_to_reference(incubation_period_dist, ref_inc_period)
+  expect_equal(incubation_period_dist, ref_inc_period)
 })
 
 
