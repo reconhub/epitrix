@@ -2,17 +2,17 @@
 #'
 #' This function takes in a linelist data frame and extracts the empirical
 #' incubation period distribution and can take into account uncertain dates of
-#' exposure. 
+#' exposure.
 #'
 #' @param x the linelist data (data.frame or linelist object) containing at
 #'   least a column containing the exposure dates and one containing the onset
-#'   dates. 
+#'   dates.
 #' @param date_of_onset the name of the column containing the onset dates (bare
 #'   variable name or in quotes)
 #' @param exposure the name of the column containing the exposure dates
 #'   (bare variable name or in quotes)
 #' @param exposure_end the name of a column containing dates representing the
-#'   end of the exposure period. This is `NULL` by default, indicating 
+#'   end of the exposure period. This is `NULL` by default, indicating
 #'   all exposures are known and in the `exposure` column.
 #' @return a data frame containing a column with the different incubation
 #'   periods and a column containing their relative frequency
@@ -58,9 +58,9 @@ empirical_incubation_dist  <- function(x, date_of_onset, exposure, exposure_end 
   end_is_here   <- !is.null(rlang::get_expr(exposure_end))
 
   # Make sure that all the columns actually exist
-  cols <- c(rlang::quo_text(date_of_onset), 
-            rlang::quo_text(exposure), 
-            rlang::quo_text(exposure_end)) 
+  cols <- c(rlang::quo_text(date_of_onset),
+            rlang::quo_text(exposure),
+            rlang::quo_text(exposure_end))
   cols <- cols[cols != "NULL"]
   if (!all(cols %in% names(x))) {
     msg  <- "%s is not a column in %s"
@@ -138,10 +138,10 @@ compute_incubation <- function(date_onset, exposure){
   sres <- dplyr::summarise(res, relative_frequency = sum(!! weight))
   sres <- dplyr::ungroup(sres)
   sres$relative_frequency <- sres$relative_frequency/sum(sres$relative_frequency)
-  
+
   # ensuring that all incubation period ranges are displayed.
-  sres <- tidyr::complete(sres, 
-    incubation_period = tidyr::full_seq(!! incubation_period, 1),
+  sres <- tidyr::complete(sres,
+    incubation_period = tidyr::full_seq(c(0, !! incubation_period), 1),
     fill = list(relative_frequency = 0)
   )
 
@@ -171,17 +171,17 @@ compute_incubation <- function(date_onset, exposure){
 #'
 #' fit <- fit_gamma_incubation_dist(x, date_of_onset, dates_exposure)
 fit_gamma_incubation_dist <- function(x, date_of_onset, exposure, exposure_end = NULL, nsamples = 1000, ...) {
-  
+
   incubation_period_dist <- empirical_incubation_dist(x, !!rlang::enquo(date_of_onset), !!rlang::enquo(exposure), !!rlang::enquo(exposure_end))
 
-  if (nrow(incubation_period_dist) > 1) {
+  if (sum(incubation_period_dist$relative_frequency > 0) > 1) {
     s <- base::sample(
         incubation_period_dist$incubation_period,
         size = nsamples,
         replace = TRUE,
         prob = incubation_period_dist$relative_frequency
       )
-  } else if (nrow(incubation_period_dist) == 1) {
+  } else {
     stop("incubation period is constant")
   }
 
