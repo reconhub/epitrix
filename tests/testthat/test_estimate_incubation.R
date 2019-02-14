@@ -38,8 +38,8 @@ ll2$exposure <- list(
 )
 
 ref_inc_period <- data.frame(
-  incubation_period = as.numeric(1:8),
-  relative_frequency = c(5/16, 0, 5/16, 0, 1/8, 1/16, 0, 3/16)
+  incubation_period = as.numeric(0:8),
+  relative_frequency = c(0, 5/16, 0, 5/16, 0, 1/8, 1/16, 0, 3/16)
 )
 
 
@@ -78,7 +78,6 @@ test_that("a warning is thrown if there are negative incubation periods", {
    expect_warning(empirical_incubation_dist(ll, date_of_onset, bogo_exposure),
                   "negative incubation periods in data!")
 })
-
 
 test_that("empirical incubation period distribution can be calculated from start and end", {
   dl <- empirical_incubation_dist(ll, date_of_onset, exposure_start, exposure_end)
