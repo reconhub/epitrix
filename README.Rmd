@@ -61,7 +61,13 @@ The main features of the package include:
 - **`hash_names`**: generate unique, anonymised, reproducible labels from
     various data fields (e.g. First name, Last name, Date of birth).
 
+- **`emperical_incubation_dist()`** will estimate the empirical incubation
+  distribution if given a data frame with dates of onset and a range of
+  exposure dates.
 
+- **`fit_gamma_incubation_dist()`** wraps `empirical_incubation_dist()` and
+  `fit_disc_gamma()` to fit a discretized gamma distribution to an empirical
+  incubation distribution
 
 
 # Resources
@@ -216,12 +222,69 @@ hash_names(first_name, last_name, age,
 
 ```
 
+### Estimate incubation periods
+
+The function `empirical_incubation_dist()` computes the discrete probability distribution by giving equal weight to each patient. Thus, in the case of `N` patients, the `n` possible exposure dates of a given patient get the overall weight `1/(n*N)`. The function returns a data frame with column `incubation_period` containing the different incubation periods with a time step of one day and their `relative_frequency`.
+
+Load environment:
+
+```{r, echo = TRUE, message=FALSE}
+library(magrittr)
+library(linelist)
+library(epitrix)
+library(distcrete)
+library(ggplot2)
+```
+
+Make a linelist object containing toy data with several possible exposure dates for each case:
+
+```{r, echo = TRUE}
+ll <- messy_data() %>% clean_data()
+
+x <- 0:15
+y <- distcrete("gamma", 1, shape = 12, rate = 3, w = 0)$d(x)
+mkexposures <- function(i) i - sample(x, size = sample.int(5, size = 1), replace = FALSE, prob = y)
+exposures <- sapply(ll$date_of_onset, mkexposures)
+ll$dates_exposure <- exposures
+
+print(ll)
+```
+
+Empirical distribution:
+
+```{r}
+incubation_period_dist <- empirical_incubation_dist(ll, date_of_onset, dates_exposure)
+print(incubation_period_dist)
+
+ggplot(incubation_period_dist, aes(incubation_period, relative_frequency)) +
+  geom_col()
+```
+
+Fit discrete gamma:
+
+```{r}
+fit <- fit_gamma_incubation_dist(ll, date_of_onset, dates_exposure)
+print(fit)
+
+x = c(0:10)
+y = fit$distribution$d(x)
+ggplot(data.frame(x = x, y = y), aes(x, y)) +
+  geom_col(data = incubation_period_dist, aes(incubation_period, relative_frequency)) +
+  geom_point(stat="identity", col = "red", size = 3) +
+  geom_line(stat="identity", col = "red")
+```
+
+**Note** that if the possible exposure dates are consecutive for all patients then `empirical_incubation_dist()` and `fit_gamma_incubation_dist()` can take date ranges as inputs instead of lists of individual exposure dates (see help for details).
+
 
 ## Vignettes
 
 The [overview vignette](http://www.repidemicsconsortium.org/epitrix/articles/epitrix.html)
 essentially replicates the content of this `README`. To request or contribute
 other vignettes, see the section "*getting help, contributing*".
+
+The **estimate incubation** vignette contains worked examples for the `emperical_incubation_dist()`
+`fit_gamma_incubation_dist()`.
 
 
 ## Websites
@@ -238,7 +301,6 @@ should be posted on the [**RECON forum**](http://www.repidemicsconsortium.org/fo
 
 Contributions are welcome via **pull requests**.
 
-Please note that this project is released with a 
-[Contributor Code of Conduct](CONDUCT.md). 
+Please note that this project is released with a
+[Contributor Code of Conduct](CONDUCT.md).
 By participating in this project you agree to abide by its terms.
-

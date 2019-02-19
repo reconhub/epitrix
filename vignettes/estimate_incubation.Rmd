@@ -83,3 +83,5 @@ ggplot(data.frame(x = x, y = y), aes(x, y)) +
   geom_point(stat="identity", col = "red", size = 3) +
   geom_line(stat="identity", col = "red")
 ```
+
+**Note** that if the possible exposure dates are consecutive for all patients then `empirical_incubation_dist()` and `fit_gamma_incubation_dist()` can take date ranges as inputs instead of lists of individual exposure dates (see help for details).

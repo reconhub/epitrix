@@ -19,7 +19,7 @@ variable name or in quotes)}
 (bare variable name or in quotes)}
 
 \item{exposure_end}{the name of a column containing dates representing the
-end of the exposure period. This is `NULL` by default, indicating 
+end of the exposure period. This is `NULL` by default, indicating
 all exposures are known and in the `exposure` column.}
 
 \item{nsamples}{The number of samples to draw from the empirical
