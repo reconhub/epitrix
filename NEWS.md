@@ -1,3 +1,22 @@
+# epitrix 0.3.0
+
+## New Functions
+
+ - `emperical_incubation_dist()` will estimate the empirical incubation
+   distribution if given a data frame with dates of onset and a range of
+   exposure dates (@ffinger, #13)
+ - `fit_gamma_incubation_dist()` wraps `empirical_incubation_dist()` and 
+   `fit_disc_gamma()` to fit a discretized gamma distribution to the empirical
+   incubation distribution results (@ffinger, #13).
+
+## New Vignettes
+
+ - "Estimating Incubation Period" shows the use of empirical incubation dist.
+
+## New Imports
+
+ - functions from `dplyr`, `purrr`, `rlang`, and `tidyr` are now imported.
+
 # epitrix 0.2.2
 
  - Replace `digest` with `sodium` in Imports
