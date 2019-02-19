@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fit discretised distributions using ML — fit_disc_gamma • epitrix</title>
+<title>Fit discrite gamma distribution to incubation periods — fit_gamma_incubation_dist • epitrix</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,13 +30,11 @@
 
 
 
-<meta property="og:title" content="Fit discretised distributions using ML — fit_disc_gamma" />
+<meta property="og:title" content="Fit discrite gamma distribution to incubation periods — fit_gamma_incubation_dist" />
 
-<meta property="og:description" content="These functions performs maximum-likelihood (ML) fitting of a discretised
-distribution. This is typically useful for describing delays between
-epidemiological events, such as incubation period (infection to onset) or
-serial intervals (primary to secondary onsets). The function
-optim is used internally for fitting." />
+<meta property="og:description" content="A wrapper around fit_disc_gamma to fit a discrete gamma distribution to
+incubation periods derived from exposure and onset dates. Can take into
+account uncertain dates of exposure." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -116,108 +114,71 @@ optim is used internally for fitting." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Fit discretised distributions using ML</h1>
+    <h1>Fit discrite gamma distribution to incubation periods</h1>
     
-    <div class="hidden name"><code>fit_disc_gamma.Rd</code></div>
+    <div class="hidden name"><code>fit_gamma_incubation_dist.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>These functions performs maximum-likelihood (ML) fitting of a discretised
-distribution. This is typically useful for describing delays between
-epidemiological events, such as incubation period (infection to onset) or
-serial intervals (primary to secondary onsets). The function
-<code><a href='https://www.rdocumentation.org/packages/stats/topics/optim'>optim</a></code> is used internally for fitting.</p>
+    <p>A wrapper around fit_disc_gamma to fit a discrete gamma distribution to
+incubation periods derived from exposure and onset dates. Can take into
+account uncertain dates of exposure.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>fit_disc_gamma</span>(<span class='no'>x</span>, <span class='kw'>mu_ini</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>cv_ini</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>w</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>fit_gamma_incubation_dist</span>(<span class='no'>x</span>, <span class='no'>date_of_onset</span>, <span class='no'>exposure</span>,
+  <span class='kw'>exposure_end</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>nsamples</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A vector of numeric data to fit; NAs will be removed with a warning.</p></td>
+      <td><p>the linelist data (data.frame or linelist object) containing at
+least a column containing the exposure dates and one containing the onset
+dates.</p></td>
     </tr>
     <tr>
-      <th>mu_ini</th>
-      <td><p>The initial value for the mean 'mu', defaulting to 1.</p></td>
+      <th>date_of_onset</th>
+      <td><p>the name of the column containing the onset dates (bare
+variable name or in quotes)</p></td>
     </tr>
     <tr>
-      <th>cv_ini</th>
-      <td><p>The initial value for the coefficient of variation 'cv',
-defaulting to 1.</p></td>
+      <th>exposure</th>
+      <td><p>the name of the column containing the exposure dates
+(bare variable name or in quotes)</p></td>
     </tr>
     <tr>
-      <th>interval</th>
-      <td><p>The interval used for discretisation; see <code>distcrete</code>.</p></td>
+      <th>exposure_end</th>
+      <td><p>the name of a column containing dates representing the
+end of the exposure period. This is `NULL` by default, indicating
+all exposures are known and in the `exposure` column.</p></td>
     </tr>
     <tr>
-      <th>w</th>
-      <td><p>The centering of the interval used for discretisation; see
-<code>distcrete</code>.</p></td>
+      <th>nsamples</th>
+      <td><p>The number of samples to draw from the empirical
+distribution to fit on (dafaults to 1000)</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Further arguments passed to <code><a href='https://www.rdocumentation.org/packages/stats/topics/optim'>optim</a></code>.</p></td>
+      <td><p>passed to fit_disc_gamma</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a list with human-readable parametrisation of
-  the discretised Gamma distibution (mean, sd, cv), convergence indicators,
-  and the discretised Gamma distribution itself as a <code>distcrete</code> object
-  (from the <code>distcrete</code> package).</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>The <code>distcrete</code> package for discretising distributions, and
-<code><a href='https://www.rdocumentation.org/packages/stats/topics/optim'>optim</a></code> for details on available optimisation procedures.</p></div>
+    <p>see [fit_disc_gamma()]</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'>## generate data</span>
+    <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>linelist</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/linelist/topics/clean_data'>clean_data</a></span>(<span class='kw pkg'>linelist</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/linelist/topics/messy_data'>messy_data</a></span>())
 
-<span class='no'>mu</span> <span class='kw'>&lt;-</span> <span class='fl'>15.3</span> <span class='co'># days</span>
-<span class='no'>sigma</span> <span class='kw'>&lt;-</span> <span class='fl'>9.3</span> <span class='co'># days</span>
-<span class='no'>cv</span> <span class='kw'>&lt;-</span> <span class='no'>mu</span> / <span class='no'>sigma</span>
-<span class='no'>cv</span></div><div class='output co'>#&gt; [1] 1.645161</div><div class='input'><span class='no'>param</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='gamma_tools.html'>gamma_mucv2shapescale</a></span>(<span class='no'>mu</span>, <span class='no'>cv</span>)
+<span class='no'>mkexposures</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='no'>x</span> - <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Round'>round</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/GammaDist'>rgamma</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sample'>sample.int</a></span>(<span class='fl'>5</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>), <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>12</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>3</span>))
+<span class='no'>exposures</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>sapply</a></span>(<span class='no'>x</span>$<span class='no'>date_of_onset</span>, <span class='no'>mkexposures</span>)
+<span class='no'>x</span>$<span class='no'>dates_exposure</span> <span class='kw'>&lt;-</span> <span class='no'>exposures</span>
 
-<span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>require</a></span>(<span class='no'>distcrete</span>)) {
-<span class='no'>w</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/distcrete/topics/distcrete'>distcrete</a></span>(<span class='st'>"gamma"</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-               <span class='kw'>shape</span> <span class='kw'>=</span> <span class='no'>param</span>$<span class='no'>shape</span>,
-               <span class='kw'>scale</span> <span class='kw'>=</span> <span class='no'>param</span>$<span class='no'>scale</span>, <span class='kw'>w</span> <span class='kw'>=</span> <span class='fl'>0</span>)
-
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>w</span>$<span class='fu'>r</span>(<span class='fl'>100</span>)
-<span class='no'>x</span>
-
-<span class='fu'>fit_disc_gamma</span>(<span class='no'>x</span>)
-}</div><div class='output co'>#&gt; <span class='message'>Loading required package: distcrete</span></div><div class='output co'>#&gt; $mu
-#&gt; [1] 16.31608
-#&gt; 
-#&gt; $cv
-#&gt; [1] 1.485995
-#&gt; 
-#&gt; $sd
-#&gt; [1] 24.24562
-#&gt; 
-#&gt; $ll
-#&gt; [1] -360.217
-#&gt; 
-#&gt; $converged
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $distribution
-#&gt; A discrete distribution
-#&gt;   name: gamma
-#&gt;   parameters:
-#&gt;     shape: 0.452861339672264
-#&gt;     scale: 36.0288717346873
-#&gt; </div><div class='input'>
-</div></pre>
+<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>fit_gamma_incubation_dist</span>(<span class='no'>x</span>, <span class='no'>date_of_onset</span>, <span class='no'>dates_exposure</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -225,14 +186,12 @@ defaulting to 1.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>
-    <p>Thibaut Jombart <a href='mailto:thibautjombart@gmail.com'>thibautjombart@gmail.com</a></p>
+    <p>Flavio Finger, <a href='mailto:flavio.finger@lshtm.ac.uk'>flavio.finger@lshtm.ac.uk</a></p>
   </div>
 </div>
 
