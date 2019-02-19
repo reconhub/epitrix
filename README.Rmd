@@ -283,7 +283,7 @@ The [overview vignette](http://www.repidemicsconsortium.org/epitrix/articles/epi
 essentially replicates the content of this `README`. To request or contribute
 other vignettes, see the section "*getting help, contributing*".
 
-The [estimate incubation vignette](http://www.repidemicsconsortium.org/epitrix/articles/estimate_incubation.html) vignette contains worked examples for the `emperical_incubation_dist()`
+The [estimate incubation vignette](http://www.repidemicsconsortium.org/epitrix/articles/estimate_incubation.html) contains worked examples for the `emperical_incubation_dist()`
 `fit_gamma_incubation_dist()`.
 
 

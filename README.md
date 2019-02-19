@@ -76,7 +76,7 @@ param
 
     ## $shape
     ## [1] 2.706556
-    ## 
+    ##
     ## $scale
     ## [1] 5.652941
 
@@ -120,19 +120,19 @@ si_fit
 
     ## $mu
     ## [1] 15.21914
-    ## 
+    ##
     ## $cv
     ## [1] 0.5851581
-    ## 
+    ##
     ## $sd
     ## [1] 8.905604
-    ## 
+    ##
     ## $ll
     ## [1] -1741.393
-    ## 
+    ##
     ## $converged
     ## [1] TRUE
-    ## 
+    ##
     ## $distribution
     ## A discrete distribution
     ##   name: gamma
@@ -154,7 +154,7 @@ i
 
     ## <incidence object>
     ## [5888 cases from days 2014-04-07 to 2015-04-30]
-    ## 
+    ##
     ## $counts: matrix with 389 rows and 1 columns
     ## $n: 5888 cases in total
     ## $dates: 389 dates marking the left-side of bins
@@ -231,7 +231,7 @@ variables
 ```
 
     ## [1] "Date.of.ONSET "                "/  date of hôspitalisation  /"
-    ## [3] "-DäTÈ--OF___DîSCHARGE-"        "GEndèr/"                      
+    ## [3] "-DäTÈ--OF___DîSCHARGE-"        "GEndèr/"
     ## [5] "  Location. "
 
 ``` r
@@ -239,7 +239,7 @@ clean_labels(variables)
 ```
 
     ## [1] "date_of_onset"           "date_of_hospitalisation"
-    ## [3] "date_of_discharge"       "gender"                 
+    ## [3] "date_of_discharge"       "gender"
     ## [5] "location"
 
 ### Anonymising data
@@ -361,8 +361,8 @@ print(incubation_period_dist)
     ## # A tibble: 7 x 2
     ##   incubation_period relative_frequency
     ##               <dbl>              <dbl>
-    ## 1                 0              0    
-    ## 2                 1              0    
+    ## 1                 0              0
+    ## 2                 1              0
     ## 3                 2              0.167
     ## 4                 3              0.342
     ## 5                 4              0.192
@@ -385,19 +385,19 @@ print(fit)
 
     ## $mu
     ## [1] 4.201981
-    ## 
+    ##
     ## $cv
     ## [1] 0.2914004
-    ## 
+    ##
     ## $sd
     ## [1] 1.224459
-    ## 
+    ##
     ## $ll
     ## [1] -1620.401
-    ## 
+    ##
     ## $converged
     ## [1] TRUE
-    ## 
+    ##
     ## $distribution
     ## A discrete distribution
     ##   name: gamma
@@ -423,7 +423,7 @@ Vignettes
 
 The [overview vignette](http://www.repidemicsconsortium.org/epitrix/articles/epitrix.html) essentially replicates the content of this `README`. To request or contribute other vignettes, see the section "*getting help, contributing*".
 
-The [estimate incubation vignette](http://www.repidemicsconsortium.org/epitrix/articles/estimate_incubation.html) vignette contains worked examples for the `emperical_incubation_dist()` `fit_gamma_incubation_dist()`.
+The [estimate incubation vignette](http://www.repidemicsconsortium.org/epitrix/articles/estimate_incubation.html) contains worked examples for the `emperical_incubation_dist()` `fit_gamma_incubation_dist()`.
 
 Websites
 --------
