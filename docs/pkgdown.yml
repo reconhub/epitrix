@@ -1,6 +1,7 @@
-pandoc: 2.3.1
+pandoc: 1.19.2.4
 pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
   epitrix: epitrix.html
+  estimate_incubation: estimate_incubation.html
 
