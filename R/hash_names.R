@@ -34,6 +34,9 @@
 #'   to be used to 'salt' the hashing algorithm (see details).
 #'   Ignored if \code{NULL} (default).
 #'
+#' @param clean_labels A logical indicating if labels of variables should be
+#'   standardized; defaults to `TRUE`
+#'
 #' @examples
 #'
 #' first_name <- c("Jane", "Joe", "Raoul")
@@ -51,11 +54,13 @@
 #' hash_names(first_name, last_name, salt = 123) # salted with an integer
 #' hash_names(first_name, last_name, salt = "foobar") # salted with an character
 
-hash_names <- function(..., size = 6, full = TRUE, salt = NULL) {
+hash_names <- function(..., size = 6, full = TRUE, salt = NULL, clean_labels = TRUE) {
   x <- list(...)
   x <- lapply(x, function(e) paste(unlist(e)))
 
-  x <- lapply(x, clean_labels, sep = "")
+  if (clean_labels) {
+    x <- lapply(x, clean_labels, sep = "")
+  }
   paste_ <- function(...) paste(..., sep = "_")
   lab <- do.call(paste_, x)
 

@@ -4,7 +4,8 @@
 \alias{hash_names}
 \title{Anonymise data using scrypt}
 \usage{
-hash_names(..., size = 6, full = TRUE, salt = NULL)
+hash_names(..., size = 6, full = TRUE, salt = NULL,
+  clean_labels = TRUE)
 }
 \arguments{
 \item{...}{Data fields to be hashed.}
@@ -18,6 +19,9 @@ hash.}
 \item{salt}{An optional object that can be coerced to a character
 to be used to 'salt' the hashing algorithm (see details).
 Ignored if \code{NULL} (default).}
+
+\item{clean_labels}{A logical indicating if labels of variables should be
+standardized; defaults to `TRUE`}
 }
 \description{
 This function uses the scrypt algorithm from libsodium to anonymise data,
