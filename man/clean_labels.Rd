@@ -4,12 +4,20 @@
 \alias{clean_labels}
 \title{Standardise labels}
 \usage{
-clean_labels(x, sep = "_")
+clean_labels(x, sep = "_",
+  trans_id = "Any-Latin; de-ASCII; Latin-ASCII")
 }
 \arguments{
 \item{x}{A vector of labels, normally provided as characters.}
 
 \item{sep}{A character string used as separator, defaulting to '_'.}
+
+\item{trans_id}{a string to be passed on to \code{\link[stringi:stri_trans_general]{stringi::stri_trans_general()}}
+for conversion. Default is "Any-Latin; de-ASCII; Latin-ASCII", which will
+convert any non-latin characters to latin, then convert any German accents
+to their proper equivalents, and then converts all accented characters to
+ASCII characters. See \code{\link[stringi:stri_trans_list]{stringi::stri_trans_list()}} for a full list of
+options.}
 }
 \description{
 This function standardises labels e.g. used as variable names or character
@@ -25,7 +33,7 @@ The following changes are performed:
 \item all non-ascii characters are removed
 
 \item all diacritics are replaced with their non-accentuated equivalents,
-e.g. 'é', 'ê' and 'è' become 'e', 'ö' becomes 'o', etc.
+e.g. 'é', 'ê' and 'è' become 'e', 'ö' becomes 'oe', etc.
 
 \item all characters are set to lower case
 
@@ -38,11 +46,11 @@ in \code{sep} (defaults to '_'); heading and trailing separators are removed.
 
 clean_labels("-_-This is; A    WeÏrD**./sêntënce...")
 clean_labels("-_-This is; A    WeÏrD**./sêntënce...", sep = ".")
-input <- c("Peter and stëven", "peter-and.stëven", "pëtêr and stëven  _-")
+input <- c("ますだ, よしひこ", "Peter and stëven", "peter-and.stëven", "pëtêr and stëven  _-")
 input
 clean_labels(input)
 
 }
 \author{
-Thibaut Jombart \email{thibautjombart@gmail.com}
+Thibaut Jombart \email{thibautjombart@gmail.com}, Zhian N. Kamvar
 }

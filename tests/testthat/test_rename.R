@@ -26,5 +26,11 @@ test_that("clean_labels outputs as expected", {
 
   expect_identical(clean_labels("Pïôtr--and--ÿgòr  "),
                    clean_labels("  píotr_and_YGÓR"))
+
+  expect_identical(clean_labels("ますだ, よしひこ"),
+                   "masuda_yoshihiko")
+
+  expect_identical(clean_labels("äääß"),
+                   "aeaeaess")
 })
 

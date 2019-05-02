@@ -17,6 +17,12 @@
 
  - functions from `dplyr`, `purrr`, `rlang`, and `tidyr` are now imported.
 
+## Bug Fix
+
+ - `clean_labels()` can now handle non-latin characters and gains the `trans_id`
+   argument, which allows the user to customise the transformations 
+   (see https://github.com/reconhub/epitrix/issues/19 for details).
+
 # epitrix 0.2.2
 
  - Replace `digest` with `sodium` in Imports
