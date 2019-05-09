@@ -46,3 +46,12 @@ test_that("characters can be protected", {
                    "-_-this_is_a_weird_sentence")
 
 })
+
+test_that("special characters can be used as separators", {
+
+  expect_identical(clean_labels("You.and.me", sep = "."), "you.and.me")
+  expect_identical(clean_labels("You*and*me", sep = "*"), "you*and*me")
+  expect_identical(clean_labels("You?and?me", sep = "?"), "you?and?me")
+
+})
+

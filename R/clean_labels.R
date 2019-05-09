@@ -75,6 +75,7 @@ clean_labels <- function(x, sep = "_", transformation = "Any-Latin; Latin-ASCII"
   ## - replace accentuated characters by closest matches
   ## - replace punctuation and spaces not in the protected list with sep, cautiously
   ## - remove starting / trailing seps
+  sep <- gsub("([.*?])", "\\\\\\1", sep)
 
   out <- tolower(x)
   out <- stringi::stri_trans_general(out, id = transformation)
