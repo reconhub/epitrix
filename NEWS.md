@@ -22,6 +22,8 @@
  - `clean_labels()` can now handle non-latin characters and gains the `trans_id`
    argument, which allows the user to customise the transformations 
    (see https://github.com/reconhub/epitrix/issues/19 for details).
+ - `clean_labels()` gains the `protect` argument to protect meaningful symbols
+   in the data.
 
 # epitrix 0.2.2
 

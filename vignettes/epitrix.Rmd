@@ -171,6 +171,17 @@ clean_labels(variables)
 ```
 
 
+If you happen to have informative labels in your data that are not alphanumeric,
+you will want to protect them with the `protect` argument:
+
+```{r protect_labels}
+vars <- c("Death in Structure  > 4h", "death in Structure < 4h")
+clean_labels(vars, protect = "><")
+```
+
+If you don't use the `protect = "><"`, the two variables above would appear to
+be exactly the same.
+
 
 # Anonymising data
 

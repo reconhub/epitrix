@@ -4,18 +4,23 @@
 \alias{clean_labels}
 \title{Standardise labels}
 \usage{
-clean_labels(x, sep = "_", trans_id = "Any-Latin; Latin-ASCII")
+clean_labels(x, sep = "_", transformation = "Any-Latin; Latin-ASCII",
+  protect = "")
 }
 \arguments{
 \item{x}{A vector of labels, normally provided as characters.}
 
 \item{sep}{A character string used as separator, defaulting to '_'.}
 
-\item{trans_id}{a string to be passed on to \code{\link[stringi:stri_trans_general]{stringi::stri_trans_general()}}
+\item{transformation}{a string to be passed on to \code{\link[stringi:stri_trans_general]{stringi::stri_trans_general()}}
 for conversion. Default is "Any-Latin; Latin-ASCII", which will convert
 any non-latin characters to latin and then converts all accented
 characters to ASCII characters. See \code{\link[stringi:stri_trans_list]{stringi::stri_trans_list()}} for a
 full list of options.}
+
+\item{protect}{a character string defining the punctuation that should be
+protected. This helps prevent meaninful symbols like > and < from being
+removed.}
 }
 \description{
 This function standardises labels e.g. used as variable names or character
@@ -37,7 +42,7 @@ in \code{sep} (defaults to '_'); heading and trailing separators are removed.
 \note{
 Because of differences between the underlying transliteration engine
 (ICU), the default transformations will not transilierate German umlaute
-correctly. You can add them by specifying "de-ASCII" in the \code{trans_id}
+correctly. You can add them by specifying "de-ASCII" in the \code{transformation}
 string after "Any-Latin".
 }
 \examples{
@@ -47,11 +52,23 @@ clean_labels("-_-This is; A    WeÏrD**./sêntënce...", sep = ".")
 input <- c("ますだ, よしひこ", "Peter and stëven", "peter-and.stëven", "pëtêr and stëven  _-")
 input
 clean_labels(input)
+
+# Don't transliterate non-latin words
+clean_labels(input, transformation = "Latin-ASCII")
+
+# protect useful symbols
+clean_labels(c("energy > 9000", "energy < 9000"), protect = "><")
+
+# if you only want to clean accents, transform to lower, and transliterate,
+# you can specify "[:punct:][:space:]" for protect:
+clean_labels(input, protect = "[:punct:][:space:]")
+
+# appropriately transliterate Germanic umlaute
 if (stringi::stri_info()$ICU.system) {
   # This will only be true if you have the correct version of ICU installed
 
   clean_labels("'é', 'ê' and 'è' become 'e', 'ö' becomes 'oe', etc.", 
-               trans_id = "Any-Latin; de-ASCII; Latin-ASCII")
+               transformation = "Any-Latin; de-ASCII; Latin-ASCII")
 }
 
 }

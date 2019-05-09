@@ -1,10 +1,10 @@
 context("Testing renaming labels using clean_labels")
 
+input_1 <- "-_-This is; A    WeÏrD**./sêntënce..."
+input_2 <- c("Peter and stëven", "peter-and.stëven", "pëtêr and stëven  _-")
+
 test_that("clean_labels outputs as expected", {
   skip_on_cran()
-
-  input_1 <- "-_-This is; A    WeÏrD**./sêntënce..."
-  input_2 <- c("Peter and stëven", "peter-and.stëven", "pëtêr and stëven  _-")
   
   expect_equal_to_reference(clean_labels(input_1),
                             file = "rds/clean_labels_ref_1.rds")
@@ -35,3 +35,14 @@ test_that("clean_labels outputs as expected", {
                    "aeaeaess")
 })
 
+test_that("characters can be protected", {
+  
+  expect_identical(clean_labels(c("x > 10", "x < 10"), protect = "<>"), 
+                   c("x_>_10", "x_<_10"))
+  expect_identical(clean_labels(c("x > 10", "x < 10"), protect = ""), 
+                   c("x_10", "x_10"))
+
+  expect_identical(clean_labels(input_1, protect = "-_-"),
+                   "-_-this_is_a_weird_sentence")
+
+})
