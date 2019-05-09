@@ -7,6 +7,7 @@ addons:
       - sourceline: 'ppa:chris-lea/libsodium'
     packages:
       - libsodium-dev
+      - libicu-dev
 
 matrix:
   include:

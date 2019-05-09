@@ -129,7 +129,8 @@ characters. See details for more information on label transformation.<br /></p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>clean_labels</span>(<span class='no'>x</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"_"</span>)</pre>
+    <pre class="usage"><span class='fu'>clean_labels</span>(<span class='no'>x</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"_"</span>, <span class='kw'>transformation</span> <span class='kw'>=</span> <span class='st'>"Any-Latin; Latin-ASCII"</span>,
+  <span class='kw'>protect</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -142,25 +143,61 @@ characters. See details for more information on label transformation.<br /></p>
       <th>sep</th>
       <td><p>A character string used as separator, defaulting to '_'.</p></td>
     </tr>
+    <tr>
+      <th>transformation</th>
+      <td><p>a string to be passed on to <code><a href='https://www.rdocumentation.org/packages/stringi/topics/stri_trans_general'>stringi::stri_trans_general()</a></code>
+for conversion. Default is "Any-Latin; Latin-ASCII", which will convert
+any non-latin characters to latin and then converts all accented
+characters to ASCII characters. See <code><a href='https://www.rdocumentation.org/packages/stringi/topics/stri_trans_list'>stringi::stri_trans_list()</a></code> for a
+full list of options.</p></td>
+    </tr>
+    <tr>
+      <th>protect</th>
+      <td><p>a character string defining the punctuation that should be
+protected. This helps prevent meaninful symbols like &gt; and &lt; from being
+removed.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The following changes are performed:</p>
-<ul>
+    <p>The following changes are performed:</p><ul>
 <li><p>all non-ascii characters are removed</p></li>
 <li><p>all diacritics are replaced with their non-accentuated equivalents,
-e.g. 'é', 'ê' and 'è' become 'e', 'ö' becomes 'o', etc.</p></li>
+e.g. 'é', 'ê' and 'è' become 'e'.</p></li>
 <li><p>all characters are set to lower case</p></li>
 <li><p>separators are standardised to the use of a single character provided
 in <code>sep</code> (defaults to '_'); heading and trailing separators are removed.</p></li>
 </ul>
     
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>Because of differences between the underlying transliteration engine
+(ICU), the default transformations will not transilierate German umlaute
+correctly. You can add them by specifying "de-ASCII" in the <code>transformation</code>
+string after "Any-Latin".</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='fu'>clean_labels</span>(<span class='st'>"-_-This is; A    WeÏrD**./sêntënce..."</span>)</div><div class='output co'>#&gt; [1] "this_is_a_weird_sentence"</div><div class='input'><span class='fu'>clean_labels</span>(<span class='st'>"-_-This is; A    WeÏrD**./sêntënce..."</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"."</span>)</div><div class='output co'>#&gt; [1] "this.is.a.weird.sentence"</div><div class='input'><span class='no'>input</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Peter and stëven"</span>, <span class='st'>"peter-and.stëven"</span>, <span class='st'>"pëtêr and stëven  _-"</span>)
-<span class='no'>input</span></div><div class='output co'>#&gt; [1] "Peter and stëven"     "peter-and.stëven"     "pëtêr and stëven  _-"</div><div class='input'><span class='fu'>clean_labels</span>(<span class='no'>input</span>)</div><div class='output co'>#&gt; [1] "peter_and_steven" "peter_and_steven" "peter_and_steven"</div><div class='input'>
+<span class='fu'>clean_labels</span>(<span class='st'>"-_-This is; A    WeÏrD**./sêntënce..."</span>)</div><div class='output co'>#&gt; [1] "this_is_a_weird_sentence"</div><div class='input'><span class='fu'>clean_labels</span>(<span class='st'>"-_-This is; A    WeÏrD**./sêntënce..."</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"."</span>)</div><div class='output co'>#&gt; [1] "this.is.a.weird.sentence"</div><div class='input'><span class='no'>input</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ますだ, よしひこ"</span>, <span class='st'>"Peter and stëven"</span>, <span class='st'>"peter-and.stëven"</span>, <span class='st'>"pëtêr and stëven  _-"</span>)
+<span class='no'>input</span></div><div class='output co'>#&gt; [1] "ますだ, よしひこ"     "Peter and stëven"     "peter-and.stëven"    
+#&gt; [4] "pëtêr and stëven  _-"</div><div class='input'><span class='fu'>clean_labels</span>(<span class='no'>input</span>)</div><div class='output co'>#&gt; [1] "masuda_yoshihiko" "peter_and_steven" "peter_and_steven" "peter_and_steven"</div><div class='input'>
+<span class='co'># Don't transliterate non-latin words</span>
+<span class='fu'>clean_labels</span>(<span class='no'>input</span>, <span class='kw'>transformation</span> <span class='kw'>=</span> <span class='st'>"Latin-ASCII"</span>)</div><div class='output co'>#&gt; [1] "ますだ_よしひこ"  "peter_and_steven" "peter_and_steven" "peter_and_steven"</div><div class='input'>
+<span class='co'># protect useful symbols</span>
+<span class='fu'>clean_labels</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"energy &gt; 9000"</span>, <span class='st'>"energy &lt; 9000"</span>), <span class='kw'>protect</span> <span class='kw'>=</span> <span class='st'>"&gt;&lt;"</span>)</div><div class='output co'>#&gt; [1] "energy_&gt;_9000" "energy_&lt;_9000"</div><div class='input'>
+<span class='co'># if you only want to clean accents, transform to lower, and transliterate,</span>
+<span class='co'># you can specify "[:punct:][:space:]" for protect:</span>
+<span class='fu'>clean_labels</span>(<span class='no'>input</span>, <span class='kw'>protect</span> <span class='kw'>=</span> <span class='st'>"[:punct:][:space:]"</span>)</div><div class='output co'>#&gt; [1] "masuda, yoshihiko"    "peter and steven"     "peter-and.steven"    
+#&gt; [4] "peter and steven  _-"</div><div class='input'>
+<span class='co'># appropriately transliterate Germanic umlaute</span>
+<span class='kw'>if</span> (<span class='kw pkg'>stringi</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stringi/topics/stri_info'>stri_info</a></span>()$<span class='no'>ICU.system</span>) {
+  <span class='co'># This will only be true if you have the correct version of ICU installed</span>
+
+  <span class='fu'>clean_labels</span>(<span class='st'>"'é', 'ê' and 'è' become 'e', 'ö' becomes 'oe', etc."</span>,
+               <span class='kw'>transformation</span> <span class='kw'>=</span> <span class='st'>"Any-Latin; de-ASCII; Latin-ASCII"</span>)
+}</div><div class='output co'>#&gt; [1] "e_e_and_e_become_e_oe_becomes_oe_etc"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -169,12 +206,14 @@ in <code>sep</code> (defaults to '_'); heading and trailing separators are remov
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#details">Details</a></li>
+
+      <li><a href="#note">Note</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
 
     <h2>Author</h2>
-    <p>Thibaut Jombart <a href='mailto:thibautjombart@gmail.com'>thibautjombart@gmail.com</a></p>
+    <p>Thibaut Jombart <a href='mailto:thibautjombart@gmail.com'>thibautjombart@gmail.com</a>, Zhian N. Kamvar</p>
   </div>
 </div>
 
