@@ -9,19 +9,15 @@
 #'
 #' The following changes are performed:
 #'
-#' \itemize{
 #'
-#' \item all non-ascii characters are removed
+#'  - all non-ascii characters are removed
+#'  - all diacritics are replaced with their non-accentuated equivalents,
+#'    e.g. 'é', 'ê' and 'è' become 'e'.
+#'  - all characters are set to lower case
+#'  - separators are standardised to the use of a single character provided
+#'    in `sep` (defaults to '_'); heading and trailing separators are removed.
 #'
-#' \item all diacritics are replaced with their non-accentuated equivalents,
-#' e.g. 'é', 'ê' and 'è' become 'e', 'ö' becomes 'oe', etc.
-#'
-#' \item all characters are set to lower case
-#'
-#' \item separators are standardised to the use of a single character provided
-#' in \code{sep} (defaults to '_'); heading and trailing separators are removed.
-#'
-#' }
+#'  
 #'
 #
 #' @author Thibaut Jombart \email{thibautjombart@@gmail.com}, Zhian N. Kamvar
@@ -33,13 +29,16 @@
 #' @param sep A character string used as separator, defaulting to '_'.
 #' 
 #' @param trans_id a string to be passed on to [stringi::stri_trans_general()]
-#'   for conversion. Default is "Any-Latin; de-ASCII; Latin-ASCII", which will
-#'   convert any non-latin characters to latin, then convert any German accents
-#'   to their proper equivalents, and then converts all accented characters to
-#'   ASCII characters. See [stringi::stri_trans_list()] for a full list of 
-#'   options.
+#'   for conversion. Default is "Any-Latin; Latin-ASCII", which will convert
+#'   any non-latin characters to latin and then converts all accented
+#'   characters to ASCII characters. See [stringi::stri_trans_list()] for a
+#'   full list of options.
 #'
 #' @md
+#' @note Because of differences between the underlying transliteration engine
+#'   (ICU), the default transformations will not transilierate German umlaute
+#'   correctly. You can add them by specifying "de-ASCII" in the `trans_id` 
+#'   string after "Any-Latin".
 #'
 #' @examples
 #'
@@ -48,8 +47,14 @@
 #' input <- c("ますだ, よしひこ", "Peter and stëven", "peter-and.stëven", "pëtêr and stëven  _-")
 #' input
 #' clean_labels(input)
+#' if (stringi::stri_info()$ICU.system) {
+#'   # This will only be true if you have the correct version of ICU installed
 #'
-clean_labels <- function(x, sep = "_", trans_id = "Any-Latin; de-ASCII; Latin-ASCII") {
+#'   clean_labels("'é', 'ê' and 'è' become 'e', 'ö' becomes 'oe', etc.", 
+#'                trans_id = "Any-Latin; de-ASCII; Latin-ASCII")
+#' }
+#'
+clean_labels <- function(x, sep = "_", trans_id = "Any-Latin; Latin-ASCII") {
   x <- as.character(x)
   
   ## On the processing of the input:
