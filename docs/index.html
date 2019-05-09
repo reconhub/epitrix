@@ -88,9 +88,9 @@
 <h2 class="hasAnchor">
 <a href="#installing-the-package" class="anchor"></a>Installing the package</h2>
 <p>To install the current stable, CRAN version of the package, type:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"epitrix"</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"epitrix"</span>)</a></code></pre></div>
 <p>To benefit from the latest features and bug fixes, install the development, <em>github</em> version of the package using:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"reconhub/epitrix"</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"reconhub/epitrix"</span>)</a></code></pre></div>
 <p>Note that this requires the package <em>devtools</em> installed.</p>
 </div>
 </div>
@@ -121,41 +121,41 @@
 <h3 class="hasAnchor">
 <a href="#fitting-a-gamma-distribution-to-delay-data" class="anchor"></a>Fitting a gamma distribution to delay data</h3>
 <p>In this example, we simulate data which replicate the serial interval (SI), i.e. the delays between primary and secondary symptom onsets, in Ebola Virus Disease (EVD). We start by converting previously estimates of the mean and standard deviation of the SI (WHO Ebola Response Team (2014) NEJM 371:1481–1495) to the parameters of a Gamma distribution:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(epitrix)
-
-mu &lt;-<span class="st"> </span><span class="fl">15.3</span> <span class="co"># mean in days days</span>
-sigma &lt;-<span class="st"> </span><span class="fl">9.3</span> <span class="co"># standard deviation in days</span>
-cv &lt;-<span class="st"> </span>sigma<span class="op">/</span>mu <span class="co"># coefficient of variation</span>
-cv</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(epitrix)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">mu &lt;-<span class="st"> </span><span class="fl">15.3</span> <span class="co"># mean in days days</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">sigma &lt;-<span class="st"> </span><span class="fl">9.3</span> <span class="co"># standard deviation in days</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">cv &lt;-<span class="st"> </span>sigma<span class="op">/</span>mu <span class="co"># coefficient of variation</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">cv</a></code></pre></div>
 <pre><code>## [1] 0.6078431</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">param &lt;-<span class="st"> </span><span class="kw"><a href="reference/gamma_tools.html">gamma_mucv2shapescale</a></span>(mu, cv) <span class="co"># convertion to Gamma parameters</span>
-param</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">param &lt;-<span class="st"> </span><span class="kw"><a href="reference/gamma_tools.html">gamma_mucv2shapescale</a></span>(mu, cv) <span class="co"># convertion to Gamma parameters</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">param</a></code></pre></div>
 <pre><code>## $shape
 ## [1] 2.706556
 ## 
 ## $scale
 ## [1] 5.652941</code></pre>
 <p>The <em>shape</em> and <em>scale</em> are parameters of a Gamma distribution we can use to generate delays. However, delays are typically reported per days, which implies a discretisation (from continuous time to discrete numbers). We use the package <a href="https://github.com/reconhub/distcrete"><em>distcrete</em></a> to achieve this discretisation. It generates a list of functions, including one to simulate data (<code>$r</code>), which we use to simulate 500 delays:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">si &lt;-<span class="st"> </span>distcrete<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/distcrete/topics/distcrete">distcrete</a></span>(<span class="st">"gamma"</span>, <span class="dt">interval =</span> <span class="dv">1</span>,
-               <span class="dt">shape =</span> param<span class="op">$</span>shape,
-               <span class="dt">scale =</span> param<span class="op">$</span>scale, <span class="dt">w =</span> <span class="dv">0</span>)
-si</code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">si &lt;-<span class="st"> </span>distcrete<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/distcrete/topics/distcrete">distcrete</a></span>(<span class="st">"gamma"</span>, <span class="dt">interval =</span> <span class="dv">1</span>,</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">               <span class="dt">shape =</span> param<span class="op">$</span>shape,</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">               <span class="dt">scale =</span> param<span class="op">$</span>scale, <span class="dt">w =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">si</a></code></pre></div>
 <pre><code>## A discrete distribution
 ##   name: gamma
 ##   parameters:
 ##     shape: 2.70655567117586
 ##     scale: 5.65294117647059</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">1</span>)
-x &lt;-<span class="st"> </span>si<span class="op">$</span><span class="kw">r</span>(<span class="dv">500</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(x, <span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">x &lt;-<span class="st"> </span>si<span class="op">$</span><span class="kw">r</span>(<span class="dv">500</span>)</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(x, <span class="dv">10</span>)</a></code></pre></div>
 <pre><code>##  [1]  8 10 15 28  7 27 32 17 16  4</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/hist">hist</a></span>(x, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">border =</span> <span class="st">"white"</span>,
-     <span class="dt">xlab =</span> <span class="st">"Days between primary and secondary onset"</span>,
-     <span class="dt">main =</span> <span class="st">"Simulated serial intervals"</span>)</code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/hist">hist</a></span>(x, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">border =</span> <span class="st">"white"</span>,</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2">     <span class="dt">xlab =</span> <span class="st">"Days between primary and secondary onset"</span>,</a>
+<a class="sourceLine" id="cb11-3" data-line-number="3">     <span class="dt">main =</span> <span class="st">"Simulated serial intervals"</span>)</a></code></pre></div>
 <p><img src="index_files/figure-html/si-1.png" width="700"></p>
 <p><code>x</code> contains simulated data, for illustrative purpose. In practice, one would use real data from an ongoing outbreaks. Now we use <code>fit_disc_gamma</code> to estimate the parameters of a dicretised Gamma distribution from the data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">si_fit &lt;-<span class="st"> </span><span class="kw"><a href="reference/fit_disc_gamma.html">fit_disc_gamma</a></span>(x)
-si_fit</code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">si_fit &lt;-<span class="st"> </span><span class="kw"><a href="reference/fit_disc_gamma.html">fit_disc_gamma</a></span>(x)</a>
+<a class="sourceLine" id="cb12-2" data-line-number="2">si_fit</a></code></pre></div>
 <pre><code>## $mu
 ## [1] 15.21914
 ## 
@@ -182,11 +182,11 @@ si_fit</code></pre></div>
 <h3 class="hasAnchor">
 <a href="#converting-a-growth-rate-r-to-a-reproduction-number-r0" class="anchor"></a>Converting a growth rate (r) to a reproduction number (R0)</h3>
 <p>The package <a href="https://github.com/reconhub/incidence"><em>incidence</em></a> can fit a log-linear model to incidence curves (function <code>fit</code>), which produces a growth rate (r). This growth rate can in turn be translated into a basic reproduction number (R0) using <code>r2R0</code>. We illustrate this using simulated Ebola data from the <a href="https://github.com/reconhub/outbreaks"><em>outbreaks</em></a> package, and using the serial interval from the previous example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(outbreaks)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(incidence)
-
-i &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/incidence/topics/incidence">incidence</a></span>(ebola_sim<span class="op">$</span>linelist<span class="op">$</span>date_of_onset)
-i</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(outbreaks)</a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(incidence)</a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4">i &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/incidence/topics/incidence">incidence</a></span>(ebola_sim<span class="op">$</span>linelist<span class="op">$</span>date_of_onset)</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5">i</a></code></pre></div>
 <pre><code>## &lt;incidence object&gt;
 ## [5888 cases from days 2014-04-07 to 2015-04-30]
 ## 
@@ -196,20 +196,25 @@ i</code></pre></div>
 ## $interval: 1 day
 ## $timespan: 389 days
 ## $cumulative: FALSE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">f &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/incidence/topics/fit">fit</a></span>(i[<span class="dv">1</span><span class="op">:</span><span class="dv">150</span>]) <span class="co"># fit on first 150 days</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">f &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/incidence/topics/fit">fit</a></span>(i[<span class="dv">1</span><span class="op">:</span><span class="dv">150</span>]) <span class="co"># fit on first 150 days</span></a></code></pre></div>
 <pre><code>## Warning in fit(i[1:150]): 22 dates with incidence of 0 ignored for fitting</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(i[<span class="dv">1</span><span class="op">:</span><span class="dv">200</span>], <span class="dt">fit =</span> f, <span class="dt">color =</span> <span class="st">"#9fc2fc"</span>)</code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(i[<span class="dv">1</span><span class="op">:</span><span class="dv">200</span>], <span class="dt">fit =</span> f, <span class="dt">color =</span> <span class="st">"#9fc2fc"</span>)</a></code></pre></div>
+<pre><code>## Registered S3 methods overwritten by 'ggplot2':
+##   method         from 
+##   [.quosures     rlang
+##   c.quosures     rlang
+##   print.quosures rlang</code></pre>
 <p><img src="index_files/figure-html/fit_i-1.png" width="700"></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/r2R0.html">r2R0</a></span>(f<span class="op">$</span>info<span class="op">$</span>r, si<span class="op">$</span><span class="kw">d</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>))</code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1"><span class="kw"><a href="reference/r2R0.html">r2R0</a></span>(f<span class="op">$</span>info<span class="op">$</span>r, si<span class="op">$</span><span class="kw">d</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>))</a></code></pre></div>
 <pre><code>## [1] 1.348624</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/r2R0.html">r2R0</a></span>(f<span class="op">$</span>info<span class="op">$</span>r.conf, si<span class="op">$</span><span class="kw">d</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>))</code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="reference/r2R0.html">r2R0</a></span>(f<span class="op">$</span>info<span class="op">$</span>r.conf, si<span class="op">$</span><span class="kw">d</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>))</a></code></pre></div>
 <pre><code>##         2.5 %   97.5 %
 ## [1,] 1.314055 1.383674</code></pre>
 <p>In addition, we can also use the function <code>lm2R0_sample</code> to generate samples of R0 values compatible with a model fit:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">R0_val &lt;-<span class="st"> </span><span class="kw"><a href="reference/r2R0.html">lm2R0_sample</a></span>(f<span class="op">$</span>model, si<span class="op">$</span><span class="kw">d</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>), <span class="dt">n =</span> <span class="dv">100</span>)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(R0_val)</code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">R0_val &lt;-<span class="st"> </span><span class="kw"><a href="reference/r2R0.html">lm2R0_sample</a></span>(f<span class="op">$</span>model, si<span class="op">$</span><span class="kw">d</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">100</span>), <span class="dt">n =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb24-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(R0_val)</a></code></pre></div>
 <pre><code>## [1] 1.350970 1.347374 1.350076 1.358523 1.341549 1.341634</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/hist">hist</a></span>(R0_val, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">border =</span> <span class="st">"white"</span>)</code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/hist">hist</a></span>(R0_val, <span class="dt">col =</span> <span class="st">"grey"</span>, <span class="dt">border =</span> <span class="st">"white"</span>)</a></code></pre></div>
 <p><img src="index_files/figure-html/sample_R0-1.png" width="700"></p>
 </div>
 <div id="standardising-labels" class="section level3">
@@ -217,21 +222,21 @@ i</code></pre></div>
 <a href="#standardising-labels" class="anchor"></a>Standardising labels</h3>
 <p>If you want to use labels that will work across different computers, independent of local encoding and operating systems, <code>clean_labels</code> will make your life easier. The function transforms character strings by replacing diacritic symbols with their closest alphanumeric matches, setting all characters to lower case, and replacing various separators with a single, consistent one.</p>
 <p>For instance:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> " Thîs- is A   wêïrD LäBeL .."</span>
-x</code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">x &lt;-<span class="st"> " Thîs- is A   wêïrD LäBeL .."</span></a>
+<a class="sourceLine" id="cb27-2" data-line-number="2">x</a></code></pre></div>
 <pre><code>## [1] " Thîs- is A   wêïrD LäBeL .."</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/clean_labels.html">clean_labels</a></span>(x)</code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw"><a href="reference/clean_labels.html">clean_labels</a></span>(x)</a></code></pre></div>
 <pre><code>## [1] "this_is_a_weird_label"</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">variables &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Date.of.ONSET "</span>,
-               <span class="st">"/  date of hôspitalisation  /"</span>,
-               <span class="st">"-DäTÈ--OF___DîSCHARGE-"</span>,
-               <span class="st">"GEndèr/"</span>,
-               <span class="st">"  Location. "</span>)
-variables</code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">variables &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Date.of.ONSET "</span>,</a>
+<a class="sourceLine" id="cb31-2" data-line-number="2">               <span class="st">"/  date of hôspitalisation  /"</span>,</a>
+<a class="sourceLine" id="cb31-3" data-line-number="3">               <span class="st">"-DäTÈ--OF___DîSCHARGE-"</span>,</a>
+<a class="sourceLine" id="cb31-4" data-line-number="4">               <span class="st">"GEndèr/"</span>,</a>
+<a class="sourceLine" id="cb31-5" data-line-number="5">               <span class="st">"  Location. "</span>)</a>
+<a class="sourceLine" id="cb31-6" data-line-number="6">variables</a></code></pre></div>
 <pre><code>## [1] "Date.of.ONSET "                "/  date of hôspitalisation  /"
 ## [3] "-DäTÈ--OF___DîSCHARGE-"        "GEndèr/"                      
 ## [5] "  Location. "</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="reference/clean_labels.html">clean_labels</a></span>(variables)</code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" data-line-number="1"><span class="kw"><a href="reference/clean_labels.html">clean_labels</a></span>(variables)</a></code></pre></div>
 <pre><code>## [1] "date_of_onset"           "date_of_hospitalisation"
 ## [3] "date_of_discharge"       "gender"                 
 ## [5] "location"</code></pre>
@@ -245,12 +250,12 @@ variables</code></pre></div>
 <li><p>given different inputs, the output will always be different; even minor differences in input will result in entirely different outputs</p></li>
 <li><p>given an output, it is very hard to infer the input (it requires hacking skills); if security is challenged, the hashing algorithm can be ‘salted’ to strengthen security</p></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">first_name &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Jane"</span>, <span class="st">"Joe"</span>, <span class="st">"Raoul"</span>, <span class="st">"Raoul"</span>)
-last_name &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Doe"</span>, <span class="st">"Smith"</span>, <span class="st">"Dupont"</span>, <span class="st">"Dupond"</span>)
-age &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">25</span>, <span class="dv">69</span>, <span class="dv">36</span>, <span class="dv">36</span>)
-
-## detailed output by default
-<span class="kw"><a href="reference/hash_names.html">hash_names</a></span>(first_name, last_name, age)</code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1">first_name &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Jane"</span>, <span class="st">"Joe"</span>, <span class="st">"Raoul"</span>, <span class="st">"Raoul"</span>)</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2">last_name &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"Doe"</span>, <span class="st">"Smith"</span>, <span class="st">"Dupont"</span>, <span class="st">"Dupond"</span>)</a>
+<a class="sourceLine" id="cb35-3" data-line-number="3">age &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">25</span>, <span class="dv">69</span>, <span class="dv">36</span>, <span class="dv">36</span>)</a>
+<a class="sourceLine" id="cb35-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb35-5" data-line-number="5"><span class="co">## detailed output by default</span></a>
+<a class="sourceLine" id="cb35-6" data-line-number="6"><span class="kw"><a href="reference/hash_names.html">hash_names</a></span>(first_name, last_name, age)</a></code></pre></div>
 <pre><code>##             label hash_short
 ## 1     jane_doe_25     6485f2
 ## 2    joe_smith_69     ea1ccc
@@ -261,9 +266,9 @@ age &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumen
 ## 2 ea1cccce320aa45a0d694ea12c30ff6b4b52c67f69d58b23dad5441ea17c5807
 ## 3 f60676d1c11ae5badc0e5ec4dfde06eaba817a78f3d54eb327a25df485ec1efd
 ## 4 cd7104e7e7009bfd988d5a4b46a930424908736065573e51a85d16575ed7c2a5</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## short labels for practical use
-<span class="kw"><a href="reference/hash_names.html">hash_names</a></span>(first_name, last_name, age,
-           <span class="dt">size =</span> <span class="dv">8</span>, <span class="dt">full =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="co">## short labels for practical use</span></a>
+<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="kw"><a href="reference/hash_names.html">hash_names</a></span>(first_name, last_name, age,</a>
+<a class="sourceLine" id="cb37-3" data-line-number="3">           <span class="dt">size =</span> <span class="dv">8</span>, <span class="dt">full =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## [1] "6485f296" "ea1cccce" "f60676d1" "cd7104e7"</code></pre>
 </div>
 <div id="estimate-incubation-periods" class="section level3">
@@ -271,91 +276,94 @@ age &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumen
 <a href="#estimate-incubation-periods" class="anchor"></a>Estimate incubation periods</h3>
 <p>The function <code><a href="reference/empirical_incubation_dist.html">empirical_incubation_dist()</a></code> computes the discrete probability distribution by giving equal weight to each patient. Thus, in the case of <code>N</code> patients, the <code>n</code> possible exposure dates of a given patient get the overall weight <code>1/(n*N)</code>. The function returns a data frame with column <code>incubation_period</code> containing the different incubation periods with a time step of one day and their <code>relative_frequency</code>.</p>
 <p>Load environment:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(magrittr)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(linelist)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(epitrix)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(distcrete)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(magrittr)</a>
+<a class="sourceLine" id="cb39-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(linelist)</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(epitrix)</a>
+<a class="sourceLine" id="cb39-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(distcrete)</a>
+<a class="sourceLine" id="cb39-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a></code></pre></div>
 <p>Make a linelist object containing toy data with several possible exposure dates for each case:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ll &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/linelist/topics/messy_data">messy_data</a></span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/linelist/topics/clean_data">clean_data</a></span>()
-
-x &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">15</span>
-y &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/distcrete/topics/distcrete">distcrete</a></span>(<span class="st">"gamma"</span>, <span class="dv">1</span>, <span class="dt">shape =</span> <span class="dv">12</span>, <span class="dt">rate =</span> <span class="dv">3</span>, <span class="dt">w =</span> <span class="dv">0</span>)<span class="op">$</span><span class="kw">d</span>(x)
-mkexposures &lt;-<span class="st"> </span><span class="cf">function</span>(i) i <span class="op">-</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(x, <span class="dt">size =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample.int</a></span>(<span class="dv">5</span>, <span class="dt">size =</span> <span class="dv">1</span>), <span class="dt">replace =</span> <span class="ot">FALSE</span>, <span class="dt">prob =</span> y)
-exposures &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(ll<span class="op">$</span>date_of_onset, mkexposures)
-ll<span class="op">$</span>dates_exposure &lt;-<span class="st"> </span>exposures
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(ll)</code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">ll &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/linelist/topics/messy_data">messy_data</a></span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/linelist/topics/clean_data">clean_data</a></span>()</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb40-3" data-line-number="3">x &lt;-<span class="st"> </span><span class="dv">0</span><span class="op">:</span><span class="dv">15</span></a>
+<a class="sourceLine" id="cb40-4" data-line-number="4">y &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/distcrete/topics/distcrete">distcrete</a></span>(<span class="st">"gamma"</span>, <span class="dv">1</span>, <span class="dt">shape =</span> <span class="dv">12</span>, <span class="dt">rate =</span> <span class="dv">3</span>, <span class="dt">w =</span> <span class="dv">0</span>)<span class="op">$</span><span class="kw">d</span>(x)</a>
+<a class="sourceLine" id="cb40-5" data-line-number="5">mkexposures &lt;-<span class="st"> </span><span class="cf">function</span>(i) i <span class="op">-</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(x, <span class="dt">size =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample.int</a></span>(<span class="dv">5</span>, <span class="dt">size =</span> <span class="dv">1</span>), <span class="dt">replace =</span> <span class="ot">FALSE</span>, <span class="dt">prob =</span> y)</a>
+<a class="sourceLine" id="cb40-6" data-line-number="6">exposures &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">sapply</a></span>(ll<span class="op">$</span>date_of_onset, mkexposures)</a>
+<a class="sourceLine" id="cb40-7" data-line-number="7">ll<span class="op">$</span>dates_exposure &lt;-<span class="st"> </span>exposures</a>
+<a class="sourceLine" id="cb40-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb40-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(ll)</a></code></pre></div>
 <pre><code>##        id date_of_onset  discharge gender epi_case_definition messy_dates
-## 1  vetnhi    2018-01-08 2018-01-18 female            probable  1989-12-24
-## 2  spmizq    2018-01-05 2018-01-15 female           suspected        &lt;NA&gt;
-## 3  fjnwdf    2018-01-04 2018-01-14 female           confirmed  2001-12-01
-## 4  epnekp    2018-01-05 2018-01-15   male           suspected  2018-10-17
-## 5  imybnl    2018-01-10 2018-01-20 female           suspected  2018-10-19
-## 6  xwetko    2018-01-11 2018-01-21   male           suspected        &lt;NA&gt;
-## 7  cdywen    2018-01-09 2018-01-19   male           confirmed  2018-10-19
-## 8  yieymf    2018-01-11 2018-01-21   male           suspected  1989-12-24
-## 9  aqkxns    2018-01-07 2018-01-17 female           confirmed  2018-10-17
-## 10 ajkijq    2018-01-06 2018-01-16   male            probable  2001-12-01
-## 11 asvncx    2018-01-11 2018-01-21 female           suspected  1989-12-24
-## 12 kmsghs    2018-01-03 2018-01-13   male          not_a_case  2018-10-18
-## 13 uaoqyr    2018-01-02 2018-01-12 female            probable  1989-12-24
-## 14 gkddqj    2018-01-02 2018-01-12   male           confirmed        &lt;NA&gt;
-## 15 kyjfra    2018-01-08 2018-01-18 female            probable        &lt;NA&gt;
-## 16 runith    2018-01-08 2018-01-18 female           confirmed        &lt;NA&gt;
-## 17 ucumvt    2018-01-10 2018-01-20 female          not_a_case        &lt;NA&gt;
-## 18 xhlhiw    2018-01-03 2018-01-13   male           confirmed  2001-12-01
-## 19 ckkleg    2018-01-03 2018-01-13 female           suspected        &lt;NA&gt;
-## 20 rvkehu    2018-01-11 2018-01-21 female           confirmed        &lt;NA&gt;
+## 1  zhugcj    2018-01-08 2018-01-18   male          not_a_case  1989-12-24
+## 2  aeedki    2018-01-10 2018-01-20 female           suspected  2018-10-17
+## 3  bjbblf    2018-01-07 2018-01-17 female          not_a_case  1989-12-24
+## 4  nzigse    2018-01-11 2018-01-21   male           confirmed  2018-10-17
+## 5  qivlvy    2018-01-09 2018-01-19   male            probable  2018-10-19
+## 6  mlchbw    2018-01-06 2018-01-16 female           suspected  2001-12-01
+## 7  zvipzg    2018-01-10 2018-01-20 female           suspected  2001-12-01
+## 8  ewggll    2018-01-07 2018-01-17 female            probable  2018-10-19
+## 9  zbttys    2018-01-07 2018-01-17 female          not_a_case  2018-10-19
+## 10 ithycv    2018-01-09 2018-01-19 female            probable  2018-10-19
+## 11 uupgyj    2018-01-06 2018-01-16 female            probable  1989-12-24
+## 12 szcymp    2018-01-09 2018-01-19   male           suspected  2001-12-01
+## 13 snsjbp    2018-01-04 2018-01-14   male           suspected        &lt;NA&gt;
+## 14 ksxcgv    2018-01-09 2018-01-19 female          not_a_case  2018-10-19
+## 15 wxlhwm    2018-01-06 2018-01-16   male           confirmed  2001-12-01
+## 16 turjbi    2018-01-04 2018-01-14 female          not_a_case        &lt;NA&gt;
+## 17 sljxly    2018-01-04 2018-01-14 female          not_a_case        &lt;NA&gt;
+## 18 wfhwmk    2018-01-06 2018-01-16 female            probable  2018-10-17
+## 19 mbhlsv    2018-01-04 2018-01-14 female           suspected  2018-10-19
+## 20 wtcduu    2018-01-10 2018-01-20 female           suspected        &lt;NA&gt;
 ##          lat      lon                    dates_exposure
-## 1  12.112116 48.44879                      17533, 17534
-## 2  12.374859 49.02630 17534, 17531, 17533, 17532, 17530
-## 3  11.793991 49.07498        17530, 17531, 17532, 17533
-## 4  10.812131 48.45831               17531, 17533, 17532
-## 5  14.429412 48.63159        17538, 17536, 17537, 17539
-## 6  12.782375 47.41953               17536, 17539, 17538
-## 7  10.112404 49.58419                      17536, 17535
-## 8  14.612247 46.23601 17540, 17538, 17539, 17536, 17537
-## 9   9.520330 46.11938 17535, 17536, 17534, 17532, 17533
-## 10 12.197359 46.70828                      17534, 17535
-## 11 12.424835 48.90967               17538, 17539, 17536
-## 12 11.123185 46.89224 17530, 17531, 17529, 17532, 17528
-## 13 13.575334 47.61588                      17530, 17531
-## 14  9.989198 48.08273                             17530
-## 15 16.038594 47.51612 17533, 17537, 17536, 17535, 17534
-## 16 13.734819 45.91526               17536, 17537, 17535
-## 17 16.399725 49.16759        17539, 17536, 17538, 17537
-## 18 14.288394 47.92317        17530, 17532, 17531, 17528
-## 19  9.624398 48.53042                      17531, 17529
-## 20 14.295292 48.00491                             17539</code></pre>
+## 1  10.416562 48.68798               17538, 17533, 17537
+## 2  14.819341 48.59420                             17538
+## 3  10.784489 47.72968                             17534
+## 4  12.231752 49.55408        17540, 17537, 17539, 17538
+## 5  13.165470 47.48926                      17536, 17538
+## 6  12.032235 47.70816                      17532, 17534
+## 7   8.830518 49.10144        17539, 17538, 17537, 17536
+## 8  15.335174 48.45867 17534, 17533, 17535, 17536, 17537
+## 9  12.846348 48.85191        17534, 17532, 17531, 17535
+## 10 14.060843 49.46620 17535, 17537, 17536, 17538, 17534
+## 11 13.009818 48.24386                             17535
+## 12 11.939537 48.64942                             17537
+## 13 16.029733 47.35888               17531, 17532, 17530
+## 14 14.630919 48.46446                      17537, 17536
+## 15  9.986956 47.69080 17532, 17535, 17534, 17533, 17536
+## 16 10.685640 49.27602                             17531
+## 17 15.603110 47.95239               17532, 17531, 17529
+## 18 11.188718 48.03010                      17531, 17532
+## 19 13.031127 47.99642        17531, 17530, 17533, 17532
+## 20 10.143990 45.96543 17538, 17537, 17539, 17540, 17536</code></pre>
 <p>Empirical distribution:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">incubation_period_dist &lt;-<span class="st"> </span><span class="kw"><a href="reference/empirical_incubation_dist.html">empirical_incubation_dist</a></span>(ll, date_of_onset, dates_exposure)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(incubation_period_dist)</code></pre></div>
-<pre><code>## # A tibble: 5 x 2
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1">incubation_period_dist &lt;-<span class="st"> </span><span class="kw"><a href="reference/empirical_incubation_dist.html">empirical_incubation_dist</a></span>(ll, date_of_onset, dates_exposure)</a>
+<a class="sourceLine" id="cb42-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(incubation_period_dist)</a></code></pre></div>
+<pre><code>## # A tibble: 8 x 2
 ##   incubation_period relative_frequency
 ##               &lt;dbl&gt;              &lt;dbl&gt;
-## 1                 2              0.167
-## 2                 3              0.342
-## 3                 4              0.192
-## 4                 5              0.179
-## 5                 6              0.121</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(incubation_period_dist, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(incubation_period, relative_frequency)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span>()</code></pre></div>
+## 1                 0             0     
+## 2                 1             0.0467
+## 3                 2             0.169 
+## 4                 3             0.273 
+## 5                 4             0.273 
+## 6                 5             0.144 
+## 7                 6             0.0808
+## 8                 7             0.0125</code></pre>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(incubation_period_dist, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(incubation_period, relative_frequency)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_col</a></span>()</a></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <p>Fit discrete gamma:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit &lt;-<span class="st"> </span><span class="kw"><a href="reference/fit_gamma_incubation_dist.html">fit_gamma_incubation_dist</a></span>(ll, date_of_onset, dates_exposure)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(fit)</code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" data-line-number="1">fit &lt;-<span class="st"> </span><span class="kw"><a href="reference/fit_gamma_incubation_dist.html">fit_gamma_incubation_dist</a></span>(ll, date_of_onset, dates_exposure)</a>
+<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(fit)</a></code></pre></div>
 <pre><code>## $mu
-## [1] 4.201981
+## [1] 4.068634
 ## 
 ## $cv
-## [1] 0.2914004
+## [1] 0.3322478
 ## 
 ## $sd
-## [1] 1.224459
+## [1] 1.351795
 ## 
 ## $ll
-## [1] -1620.401
+## [1] -1714.162
 ## 
 ## $converged
 ## [1] TRUE
@@ -364,14 +372,14 @@ ll<span class="op">$</span>dates_exposure &lt;-<span class="st"> </span>exposure
 ## A discrete distribution
 ##   name: gamma
 ##   parameters:
-##     shape: 11.7765912294898
-##     scale: 0.356807952644933</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span>)
-y =<span class="st"> </span>fit<span class="op">$</span>distribution<span class="op">$</span><span class="kw">d</span>(x)
-<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y), <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(x, y)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span>(<span class="dt">data =</span> incubation_period_dist, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(incubation_period, relative_frequency)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">stat=</span><span class="st">"identity"</span>, <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="dt">stat=</span><span class="st">"identity"</span>, <span class="dt">col =</span> <span class="st">"red"</span>)</code></pre></div>
+##     shape: 9.05890591579835
+##     scale: 0.449130877853043</code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" data-line-number="1">x =<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span><span class="op">:</span><span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">y =<span class="st"> </span>fit<span class="op">$</span>distribution<span class="op">$</span><span class="kw">d</span>(x)</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y), <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(x, y)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_bar">geom_col</a></span>(<span class="dt">data =</span> incubation_period_dist, <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(incubation_period, relative_frequency)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb47-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_point">geom_point</a></span>(<span class="dt">stat=</span><span class="st">"identity"</span>, <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb47-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>(<span class="dt">stat=</span><span class="st">"identity"</span>, <span class="dt">col =</span> <span class="st">"red"</span>)</a></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 <p><strong>Note</strong> that if the possible exposure dates are consecutive for all patients then <code><a href="reference/empirical_incubation_dist.html">empirical_incubation_dist()</a></code> and <code><a href="reference/fit_gamma_incubation_dist.html">fit_gamma_incubation_dist()</a></code> can take date ranges as inputs instead of lists of individual exposure dates (see help for details).</p>
 </div>
@@ -380,7 +388,7 @@ y =<span class="st"> </span>fit<span class="op">$</span>distribution<span class=
 <h2 class="hasAnchor">
 <a href="#vignettes" class="anchor"></a>Vignettes</h2>
 <p>The <a href="http://www.repidemicsconsortium.org/epitrix/articles/epitrix.html">overview vignette</a> essentially replicates the content of this <code>README</code>. To request or contribute other vignettes, see the section “<em>getting help, contributing</em>”.</p>
-<p>The <strong>estimate incubation</strong> vignette contains worked examples for the <code>emperical_incubation_dist()</code> <code><a href="reference/fit_gamma_incubation_dist.html">fit_gamma_incubation_dist()</a></code>.</p>
+<p>The <a href="http://www.repidemicsconsortium.org/epitrix/articles/estimate_incubation.html">estimate incubation vignette</a> contains worked examples for the <code>emperical_incubation_dist()</code> <code><a href="reference/fit_gamma_incubation_dist.html">fit_gamma_incubation_dist()</a></code>.</p>
 </div>
 <div id="websites" class="section level2">
 <h2 class="hasAnchor">
