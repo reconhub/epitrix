@@ -4,7 +4,7 @@
 \alias{hash_names}
 \title{Anonymise data using scrypt}
 \usage{
-hash_names(..., size = 6, full = TRUE, hashfun = sodium::scrypt,
+hash_names(..., size = 6, full = TRUE, hashfun = "secure",
   salt = NULL, clean_labels = TRUE)
 }
 \arguments{
@@ -16,11 +16,13 @@ hash_names(..., size = 6, full = TRUE, hashfun = sodium::scrypt,
 \code{data.frame}, including original labels, shortened hash, and full
 hash.}
 
-\item{hashfun}{a hashing function that takes and returns a [raw][base::raw] vector of
-bytes that can be converted to character with [rawToChar()]. Defaults to
-[sodium::scrypt()], which is very secure, but computer intensive. For EDA
-that lives in one place, an algorithm like [sodium::sha256()] will
-suffice, but is less secure.}
+\item{hashfun}{This defines the hashing function to be used. If you specify
+"secure" (default), it will use [sodium::scrypt()], which will be secure,
+but will be slow for large data sets. For fast hashing with no colisions,
+you can sepecify "fast", and it will use [sodium::sha256()], which is
+several orders of magnitude faster than [sodium::scrypt()]. You can also
+specify a hashing function that takes and returns a [raw][base::raw]
+vector of bytes that can be converted to character with [rawToChar()].}
 
 \item{salt}{An optional object that can be coerced to a character
 to be used to 'salt' the hashing algorithm (see details).
@@ -52,20 +54,23 @@ first_name <- c("Jane", "Joe", "Raoul")
 last_name <- c("Doe", "Smith", "Dupont")
 age <- c(25, 69, 36)
 
-hash_names(first_name, last_name, age)
+# secure hashing
+hash_names(first_name, last_name, age, hashfun = "secure")
 
+# fast hashing
 hash_names(first_name, last_name, age,
-           size = 8, full = FALSE)
+           size = 8, full = FALSE, hashfun = "fast")
 
 
 ## salting the hashing (more secure!)
+
 hash_names(first_name, last_name) # unsalted - less secure
 hash_names(first_name, last_name, salt = 123) # salted with an integer
 hash_names(first_name, last_name, salt = "foobar") # salted with an character
 
 ## using a different hash algorithm if you want things to run faster
 
-hash_names(first_name, last_name, hashfun = sodium::sha256) # use sha256 algorithm
+hash_names(first_name, last_name, hashfun = "fast") # use sha256 algorithm
 }
 \seealso{
 [clean_labels()], used to clean labels prior to hashing\cr

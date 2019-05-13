@@ -68,6 +68,7 @@ test_that("Hashing will work with a different function", {
 
   skip_on_cran()
 
-  expect_false(identical(hash_names(1, salt = 32L), hash_names(1, salt = 32L, hashfun = sodium::sha256)))
+  expect_identical(hash_names(1, hashfun = "fast"), hash_names(1, hashfun = sodium::sha256))
+  expect_identical(hash_names(1, hashfun = "secure"), hash_names(1, hashfun = sodium::scrypt))
 
 })
