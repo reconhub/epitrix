@@ -9,6 +9,13 @@
    `fit_disc_gamma()` to fit a discretized gamma distribution to the empirical
    incubation distribution results (@ffinger, #13).
 
+## New Features
+
+ - `clean_labels()` gains the `protect` argument to protect meaningful symbols
+   in the data.
+ - `hash_names()` now has the `hashfun` option that allows users to specify
+   either a "fast" or "secure" hashing function to use (@zkamvar, #21).
+
 ## New Vignettes
 
  - "Estimating Incubation Period" shows the use of empirical incubation dist.
@@ -22,8 +29,6 @@
  - `clean_labels()` can now handle non-latin characters and gains the `trans_id`
    argument, which allows the user to customise the transformations 
    (see https://github.com/reconhub/epitrix/issues/19 for details).
- - `clean_labels()` gains the `protect` argument to protect meaningful symbols
-   in the data.
 
 # epitrix 0.2.2
 
