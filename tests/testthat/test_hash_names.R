@@ -55,9 +55,19 @@ test_that("Hashing works with data.frame", {
 test_that("Hashing with salting", {
     skip_on_cran()
 
-    expect_true(!identical(hash_names(1), hash_names(1, salt = 1)))
-    expect_true(!identical(hash_names(1, salt = 1), hash_names(1, salt = "2")))
+    expect_false(identical(hash_names(1), hash_names(1, salt = 1)))
+    expect_false(identical(hash_names(1, salt = 1), hash_names(1, salt = "2")))
     expect_equal_to_reference(hash_names("toto", salt = 123456),
                               file = "rds/hashref_salt.rds")
+
+})
+
+
+
+test_that("Hashing will work with a different function", {
+
+  skip_on_cran()
+
+  expect_false(identical(hash_names(1, salt = 32L), hash_names(1, salt = 32L, hashfun = sodium::sha256)))
 
 })
