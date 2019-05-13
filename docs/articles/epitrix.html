@@ -79,7 +79,7 @@
       <h1>Overview of the epitrix package</h1>
                         <h4 class="author">Thibaut Jombart</h4>
             
-            <h4 class="date">2019-05-09</h4>
+            <h4 class="date">2019-05-13</h4>
       
       
       <div class="hidden name"><code>epitrix.Rmd</code></div>
@@ -253,21 +253,25 @@
 <a class="sourceLine" id="cb9-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">## detailed output by default</span></a>
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="kw"><a href="../reference/hash_names.html">hash_names</a></span>(first_name, last_name, age)</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;             label hash_short</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; 1     jane_doe_25     6485f2</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; 2    joe_smith_69     ea1ccc</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; 3 raoul_dupont_36     f60676</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; 4 raoul_dupond_36     cd7104</span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;                                                               hash</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; 1 6485f29654c5a9d55625cd6efeb96d569917e1c272790959ad3fa132c6d51648</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="co">#&gt; 2 ea1cccce320aa45a0d694ea12c30ff6b4b52c67f69d58b23dad5441ea17c5807</span></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co">#&gt; 3 f60676d1c11ae5badc0e5ec4dfde06eaba817a78f3d54eb327a25df485ec1efd</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; 4 cd7104e7e7009bfd988d5a4b46a930424908736065573e51a85d16575ed7c2a5</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;             label hash_short                                                             hash</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; 1     jane_doe_25     6485f2 6485f29654c5a9d55625cd6efeb96d569917e1c272790959ad3fa132c6d51648</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; 2    joe_smith_69     ea1ccc ea1cccce320aa45a0d694ea12c30ff6b4b52c67f69d58b23dad5441ea17c5807</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; 3 raoul_dupont_36     f60676 f60676d1c11ae5badc0e5ec4dfde06eaba817a78f3d54eb327a25df485ec1efd</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; 4 raoul_dupond_36     cd7104 cd7104e7e7009bfd988d5a4b46a930424908736065573e51a85d16575ed7c2a5</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">## short labels for practical use, using a faster (but less secure) algorithm</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="kw"><a href="../reference/hash_names.html">hash_names</a></span>(first_name, last_name, age,</a>
+<a class="sourceLine" id="cb9-16" data-line-number="16">           <span class="dt">size =</span> <span class="dv">8</span>, <span class="dt">full =</span> <span class="ot">FALSE</span>, <span class="dt">hashfun =</span> sodium<span class="op">::</span>sha256)</a>
+<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; [1] "f3bb3fb9" "1a62b1ef" "3f2a0e20" "3aad952f"</span></a>
 <a class="sourceLine" id="cb9-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">## short labels for practical use</span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">## adding a salt for extra security</span></a>
 <a class="sourceLine" id="cb9-20" data-line-number="20"><span class="kw"><a href="../reference/hash_names.html">hash_names</a></span>(first_name, last_name, age,</a>
-<a class="sourceLine" id="cb9-21" data-line-number="21">           <span class="dt">size =</span> <span class="dv">8</span>, <span class="dt">full =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt; [1] "6485f296" "ea1cccce" "f60676d1" "cd7104e7"</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-21" data-line-number="21">           <span class="dt">salt =</span> <span class="st">"Keep it secret"</span>)</a>
+<a class="sourceLine" id="cb9-22" data-line-number="22"><span class="co">#&gt;             label hash_short                                                             hash</span></a>
+<a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt; 1     jane_doe_25     374951 374951505153661b59661942f27736bd86f93779662c552beed1e00b3d47d47a</span></a>
+<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt; 2    joe_smith_69     4ca079 4ca079f3e3338ede974d8ecbcf474a2cf5c400da32a5f6ae116817f5d294083b</span></a>
+<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt; 3 raoul_dupont_36     1980c7 1980c7a52740917865d613d2250d549833ec82245b105229f06dc6c9df792b95</span></a>
+<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; 4 raoul_dupond_36     faf491 faf491d52d05d2ae1cef7ef5277903cdadfee9b9d6aae88c60f3400ab08dc98f</span></a></code></pre></div>
 </div>
   </div>
 

@@ -37,7 +37,7 @@ based on user-indicated data fields. Data fields are concatenated first,
 then each entry is hashed. The function can either return a full detailed
 output, or short labels ready to use for 'anonymised data'.
 Before concatenation (using &quot;_&quot; as a separator) to form labels,
-inputs are modified using clean_labels." />
+inputs are modified using [clean_labels()]" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -129,12 +129,12 @@ based on user-indicated data fields. Data fields are concatenated first,
 then each entry is hashed. The function can either return a full detailed
 output, or short labels ready to use for 'anonymised data'.
 Before concatenation (using "_" as a separator) to form labels,
-inputs are modified using <code><a href='clean_labels.html'>clean_labels</a></code>.</p>
+inputs are modified using [clean_labels()]</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>hash_names</span>(<span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>salt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>clean_labels</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    <pre class="usage"><span class='fu'>hash_names</span>(<span class='no'>...</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>6</span>, <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>hashfun</span> <span class='kw'>=</span> <span class='st'>"secure"</span>,
+  <span class='kw'>salt</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>clean_labels</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,10 +154,20 @@ inputs are modified using <code><a href='clean_labels.html'>clean_labels</a></co
 hash.</p></td>
     </tr>
     <tr>
+      <th>hashfun</th>
+      <td><p>This defines the hashing function to be used. If you specify
+"secure" (default), it will use [sodium::scrypt()], which will be secure,
+but will be slow for large data sets. For fast hashing with no colisions,
+you can sepecify "fast", and it will use [sodium::sha256()], which is
+several orders of magnitude faster than [sodium::scrypt()]. You can also
+specify a hashing function that takes and returns a [raw][base::raw]
+vector of bytes that can be converted to character with [rawToChar()].</p></td>
+    </tr>
+    <tr>
       <th>salt</th>
       <td><p>An optional object that can be coerced to a character
 to be used to 'salt' the hashing algorithm (see details).
-Ignored if <code>NULL</code> (default).</p></td>
+Ignored if `NULL`.</p></td>
     </tr>
     <tr>
       <th>clean_labels</th>
@@ -168,7 +178,7 @@ standardized; defaults to `TRUE`</p></td>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The argument <code>salt</code> should be used for salting the algorithm, i.e. adding
+    <p>The argument `salt` should be used for salting the algorithm, i.e. adding
 an extra input to the input fields (the 'salt') to change the resulting hash
 and prevent identification of individuals via pre-computed hash
 tables.</p>
@@ -177,7 +187,8 @@ for an attacker to decode the hash.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='clean_labels.html'>clean_labels</a></code>, used to clean labels prior to hashing.</p></div>
+    <div class='dont-index'><p>[clean_labels()], used to clean labels prior to hashing<br />
+ [sodium::hash()] for available hashing functions.</p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -186,7 +197,8 @@ for an attacker to decode the hash.</p>
 <span class='no'>last_name</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Doe"</span>, <span class='st'>"Smith"</span>, <span class='st'>"Dupont"</span>)
 <span class='no'>age</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>25</span>, <span class='fl'>69</span>, <span class='fl'>36</span>)
 
-<span class='fu'>hash_names</span>(<span class='no'>first_name</span>, <span class='no'>last_name</span>, <span class='no'>age</span>)</div><div class='output co'>#&gt;             label hash_short
+<span class='co'># secure hashing</span>
+<span class='fu'>hash_names</span>(<span class='no'>first_name</span>, <span class='no'>last_name</span>, <span class='no'>age</span>, <span class='kw'>hashfun</span> <span class='kw'>=</span> <span class='st'>"secure"</span>)</div><div class='output co'>#&gt;             label hash_short
 #&gt; 1     jane_doe_25     6485f2
 #&gt; 2    joe_smith_69     ea1ccc
 #&gt; 3 raoul_dupont_36     f60676
@@ -194,10 +206,12 @@ for an attacker to decode the hash.</p>
 #&gt; 1 6485f29654c5a9d55625cd6efeb96d569917e1c272790959ad3fa132c6d51648
 #&gt; 2 ea1cccce320aa45a0d694ea12c30ff6b4b52c67f69d58b23dad5441ea17c5807
 #&gt; 3 f60676d1c11ae5badc0e5ec4dfde06eaba817a78f3d54eb327a25df485ec1efd</div><div class='input'>
+<span class='co'># fast hashing</span>
 <span class='fu'>hash_names</span>(<span class='no'>first_name</span>, <span class='no'>last_name</span>, <span class='no'>age</span>,
-           <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] "6485f296" "ea1cccce" "f60676d1"</div><div class='input'>
+           <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>8</span>, <span class='kw'>full</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>hashfun</span> <span class='kw'>=</span> <span class='st'>"fast"</span>)</div><div class='output co'>#&gt; [1] "f3bb3fb9" "1a62b1ef" "3f2a0e20"</div><div class='input'>
 
 <span class='co'>## salting the hashing (more secure!)</span>
+
 <span class='fu'>hash_names</span>(<span class='no'>first_name</span>, <span class='no'>last_name</span>) <span class='co'># unsalted - less secure</span></div><div class='output co'>#&gt;          label hash_short
 #&gt; 1     jane_doe     304b8f
 #&gt; 2    joe_smith     1b2f7a
@@ -219,7 +233,17 @@ for an attacker to decode the hash.</p>
 #&gt;                                                               hash
 #&gt; 1 cd525deb528a070fe124e03922f12555b40f3b012ce09b79a97b256ce1b5b8fb
 #&gt; 2 ad9dd482fb90e7e8e50567b9e9664013b064fc9dbfa7f9646642bab85cbd8cf9
-#&gt; 3 e5aba9f7a4feed03c7dc66533d01dc6768236105daf2768c9c7769fee54735d1</div></pre>
+#&gt; 3 e5aba9f7a4feed03c7dc66533d01dc6768236105daf2768c9c7769fee54735d1</div><div class='input'>
+<span class='co'>## using a different hash algorithm if you want things to run faster</span>
+
+<span class='fu'>hash_names</span>(<span class='no'>first_name</span>, <span class='no'>last_name</span>, <span class='kw'>hashfun</span> <span class='kw'>=</span> <span class='st'>"fast"</span>) <span class='co'># use sha256 algorithm</span></div><div class='output co'>#&gt;          label hash_short
+#&gt; 1     jane_doe     a79b84
+#&gt; 2    joe_smith     661b7f
+#&gt; 3 raoul_dupont     66ec68
+#&gt;                                                               hash
+#&gt; 1 a79b84d8a9787704e9760eb81286676ef64ece85ea780a0793f3de8e698185f9
+#&gt; 2 661b7ffc27bc217bdd04a085b2cafe698d36496d0d3c372a89d4f77f0115ad8c
+#&gt; 3 66ec68882bd0f52e6861078067003c291290504f3f87298d091999668b5901cf</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -235,7 +259,8 @@ for an attacker to decode the hash.</p>
 
     <h2>Author</h2>
     <p>Thibaut Jombart <a href='mailto:thibautjombart@gmail.com'>thibautjombart@gmail.com</a>,
-  Dirk Shchumacher <a href='mailto:mail@dirk-schumacher.net'>mail@dirk-schumacher.net</a></p>
+  Dirk Shchumacher <a href='mailto:mail@dirk-schumacher.net'>mail@dirk-schumacher.net</a>,
+  Zhian N. Kamvar <a href='mailto:zkamvar@gmail.com'>zkamvar@gmail.com</a></p>
   </div>
 </div>
 
