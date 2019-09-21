@@ -7,6 +7,7 @@
 #' \code{\link{optim}} is used internally for fitting.
 #'
 #' @author Thibaut Jombart \email{thibautjombart@@gmail.com}
+#' @author Charlie Whittaker \email{charles.whittaker16@@imperial.com}
 #'
 #' @export
 #'
