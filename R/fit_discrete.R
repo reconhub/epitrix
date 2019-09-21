@@ -18,10 +18,11 @@
 #'
 #' @param x A vector of numeric data to fit; NAs will be removed with a warning.
 #'
-#' @param mu_ini The initial value for the mean 'mu', defaulting to 1.
+#' @param mu_ini The initial value for the mean 'mu', defaulting to the empirically
+#'   calculated value,
 #'
 #' @param cv_ini The initial value for the coefficient of variation 'cv',
-#' defaulting to 1.
+#' defaulting to the empirically calculated value.
 #'
 #' @param interval The interval used for discretisation; see \code{\link{distcrete}}.
 #'
@@ -57,7 +58,7 @@
 #' }
 #'
 
-fit_disc_gamma <- function(x, mu_ini = 1, cv_ini = 1, interval = 1,
+fit_disc_gamma <- function(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
                            w = 0, ...) {
 
   ## Default policy: if 'x' includes NAs, we remove them and issue a warning.
@@ -67,7 +68,16 @@ fit_disc_gamma <- function(x, mu_ini = 1, cv_ini = 1, interval = 1,
     x <- stats::na.omit(x)
     warning(n_na, " NAs were removed from the data before fitting.")
   }
-
+  
+  ## Default policy: if 'mu_ini' and 'cv_ini' are not specified, calculate
+  ## the empirical values for the mean and coefficient of variation
+  
+  if (is.null(mu_ini)) {
+    mu_ini <- mean(x, na.rm = TRUE)
+  }
+  if (is.null(cv_ini)) {
+    cv_ini <- sd(x, na.rm = TRUE)/mu_ini
+  }
   
   ## Fitting is achieved by minimizing the deviance. We return the a series of
   ## outputs including human-readable parametrisation of the discretised gamma
