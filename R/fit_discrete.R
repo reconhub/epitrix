@@ -20,7 +20,7 @@
 #' @param x A vector of numeric data to fit; NAs will be removed with a warning.
 #'
 #' @param mu_ini The initial value for the mean 'mu', defaulting to the empirically
-#'   calculated value,
+#'   calculated value. 
 #'
 #' @param cv_ini The initial value for the coefficient of variation 'cv',
 #' defaulting to the empirically calculated value.
@@ -77,7 +77,7 @@ fit_disc_gamma <- function(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
     mu_ini <- mean(x, na.rm = TRUE)
   }
   if (is.null(cv_ini)) {
-    cv_ini <- sd(x, na.rm = TRUE)/mu_ini
+    cv_ini <- sd(x, na.rm = TRUE) / mu_ini
   }
   
   ## Fitting is achieved by minimizing the deviance. We return the a series of
