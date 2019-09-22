@@ -83,16 +83,16 @@ fit_disc_gamma <- function(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
   }
   
   ## Default policy: if 'mu_ini' and 'cv_ini' are not specified, calculate
-  ## the empirical values for the mean and coefficient of variation
+  ## the empirical values for the mean and coefficient of variation. If mean
+  ## is 0, throw an error highlighting that the gamma distribution is 
+  ## inappropriate here.
   
   if (is.null(mu_ini)) {
     mu_ini <- mean(x, na.rm = TRUE)
   }
   if (is.null(cv_ini)) {
     if (mu_ini == 0) {
-      warning("Mean of data is 0. Defaulting to value of 1 for cv_ini. Consider 
-              whether gamma distribution appropriate")
-      cv_ini <- 1
+      stop("Mean of data is 0. Gamma distribution is not appropriate.")
     } else {
       cv_ini <- sd(x, na.rm = TRUE) / mu_ini
     }
