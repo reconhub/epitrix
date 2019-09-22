@@ -12,7 +12,7 @@ fit_disc_gamma(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
 \item{x}{A vector of numeric data to fit; NAs will be removed with a warning.}
 
 \item{mu_ini}{The initial value for the mean 'mu', defaulting to the empirically
-calculated value,}
+calculated value.}
 
 \item{cv_ini}{The initial value for the coefficient of variation 'cv',
 defaulting to the empirically calculated value.}

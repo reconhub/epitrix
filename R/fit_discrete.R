@@ -70,6 +70,18 @@ fit_disc_gamma <- function(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
     warning(n_na, " NAs were removed from the data before fitting.")
   }
   
+  ## Default policy: if 'x' includes negative values, throw error
+  
+  if (any(x < 0)) {
+    stop("Data contains values < 0. Discretised gamma distribution cannot be fitted.")
+  }
+  
+  ## Default policy: if mean of 'x' is not finite, throw error
+  
+  if (!is.finite(mean(x, na.rm = TRUE))) {
+    stop("Mean of the data not finite. Remove instances of Inf.")
+  }
+  
   ## Default policy: if 'mu_ini' and 'cv_ini' are not specified, calculate
   ## the empirical values for the mean and coefficient of variation
   
@@ -77,10 +89,16 @@ fit_disc_gamma <- function(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
     mu_ini <- mean(x, na.rm = TRUE)
   }
   if (is.null(cv_ini)) {
-    cv_ini <- sd(x, na.rm = TRUE) / mu_ini
+    if (mu_ini == 0) {
+      warning("Mean of data is 0. Defaulting to value of 1 for cv_ini. Consider 
+              whether gamma distribution appropriate")
+      cv_ini <- 1
+    } else {
+      cv_ini <- sd(x, na.rm = TRUE) / mu_ini
+    }
   }
   
-  ## Fitting is achieved by minimizing the deviance. We return the a series of
+  ## Fitting is achieved by minimizing the deviance. We return a series of
   ## outputs including human-readable parametrisation of the discretised gamma
   ## distribution, the final log-likelihood, and the distcrete object itself,
   ## which effectively is the fitted distribution.
