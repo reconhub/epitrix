@@ -92,7 +92,7 @@ fit_disc_gamma <- function(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
   }
   if (is.null(cv_ini)) {
     if (mu_ini == 0) {
-      warning("Mean of data is 0. Gamma distribution is not appropriate.")
+      warning("Mean of data is 0. Defaulting to 1 for starting values of mu_ini and cv_ini.")
       mu_ini <- 1
       cv_ini <- 1
     } else {
