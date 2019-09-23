@@ -5,15 +5,17 @@
 \alias{fit_discrete}
 \title{Fit discretised distributions using ML}
 \usage{
-fit_disc_gamma(x, mu_ini = 1, cv_ini = 1, interval = 1, w = 0, ...)
+fit_disc_gamma(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
+  w = 0, ...)
 }
 \arguments{
 \item{x}{A vector of numeric data to fit; NAs will be removed with a warning.}
 
-\item{mu_ini}{The initial value for the mean 'mu', defaulting to 1.}
+\item{mu_ini}{The initial value for the mean 'mu', defaulting to the empirically
+calculated value.}
 
 \item{cv_ini}{The initial value for the coefficient of variation 'cv',
-defaulting to 1.}
+defaulting to the empirically calculated value.}
 
 \item{interval}{The interval used for discretisation; see \code{\link{distcrete}}.}
 
@@ -63,4 +65,6 @@ The \code{distcrete} package for discretising distributions, and
 }
 \author{
 Thibaut Jombart \email{thibautjombart@gmail.com}
+
+Charlie Whittaker \email{charles.whittaker16@imperial.com}
 }

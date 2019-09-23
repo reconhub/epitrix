@@ -7,6 +7,7 @@
 #' \code{\link{optim}} is used internally for fitting.
 #'
 #' @author Thibaut Jombart \email{thibautjombart@@gmail.com}
+#' @author Charlie Whittaker \email{charles.whittaker16@@imperial.com}
 #'
 #' @export
 #'
@@ -18,10 +19,11 @@
 #'
 #' @param x A vector of numeric data to fit; NAs will be removed with a warning.
 #'
-#' @param mu_ini The initial value for the mean 'mu', defaulting to 1.
+#' @param mu_ini The initial value for the mean 'mu', defaulting to the empirically
+#'   calculated value. 
 #'
 #' @param cv_ini The initial value for the coefficient of variation 'cv',
-#' defaulting to 1.
+#' defaulting to the empirically calculated value.
 #'
 #' @param interval The interval used for discretisation; see \code{\link{distcrete}}.
 #'
@@ -57,7 +59,7 @@
 #' }
 #'
 
-fit_disc_gamma <- function(x, mu_ini = 1, cv_ini = 1, interval = 1,
+fit_disc_gamma <- function(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
                            w = 0, ...) {
 
   ## Default policy: if 'x' includes NAs, we remove them and issue a warning.
@@ -67,9 +69,38 @@ fit_disc_gamma <- function(x, mu_ini = 1, cv_ini = 1, interval = 1,
     x <- stats::na.omit(x)
     warning(n_na, " NAs were removed from the data before fitting.")
   }
-
   
-  ## Fitting is achieved by minimizing the deviance. We return the a series of
+  ## Default policy: if 'x' includes negative values, throw error
+  
+  if (any(x < 0)) {
+    stop("Data contains values < 0. Discretised gamma distribution cannot be fitted.")
+  }
+  
+  ## Default policy: if mean of 'x' is not finite, throw error
+  
+  if (!is.finite(mean(x, na.rm = TRUE))) {
+    stop("Mean of the data not finite. Remove instances of Inf.")
+  }
+  
+  ## Default policy: if 'mu_ini' and 'cv_ini' are not specified, calculate
+  ## the empirical values for the mean and coefficient of variation. If mean
+  ## is 0, throw an error highlighting that the gamma distribution is 
+  ## inappropriate here.
+  
+  if (is.null(mu_ini)) {
+    mu_ini <- mean(x, na.rm = TRUE)
+  }
+  if (is.null(cv_ini)) {
+    if (mu_ini == 0) {
+      warning("Mean of data is 0. Defaulting to 1 for starting values of mu_ini and cv_ini.")
+      mu_ini <- 1
+      cv_ini <- 1
+    } else {
+      cv_ini <- sd(x, na.rm = TRUE) / mu_ini
+    }
+  }
+  
+  ## Fitting is achieved by minimizing the deviance. We return a series of
   ## outputs including human-readable parametrisation of the discretised gamma
   ## distribution, the final log-likelihood, and the distcrete object itself,
   ## which effectively is the fitted distribution.
