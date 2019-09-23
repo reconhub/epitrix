@@ -92,7 +92,9 @@ fit_disc_gamma <- function(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
   }
   if (is.null(cv_ini)) {
     if (mu_ini == 0) {
-      stop("Mean of data is 0. Gamma distribution is not appropriate.")
+      warning("Mean of data is 0. Gamma distribution is not appropriate.")
+      mu_ini <- 1
+      cv_ini <- 1
     } else {
       cv_ini <- sd(x, na.rm = TRUE) / mu_ini
     }
