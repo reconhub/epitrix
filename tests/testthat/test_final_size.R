@@ -25,3 +25,14 @@ test_that("R02AR works as expected", {
   expect_equal(R02AR(Inf), 1)
   expect_equal(R02AR(- log(1 - 0.5) / 0.5), 0.5)
 })
+
+
+test_that("R02herd_immunity_threshold works as expected", {
+  expect_error(R02herd_immunity_threshold(-1), "R0 should contain numeric values >= 0")
+  expect_error(R02herd_immunity_threshold(c(1, -1)), 
+               "R0 should contain numeric values >= 0")
+  expect_equal(R02herd_immunity_threshold(0), 0)
+  expect_equal(R02herd_immunity_threshold(1), 0)
+  expect_equal(R02herd_immunity_threshold(Inf), 1)
+  expect_equal(R02herd_immunity_threshold(2), 0.5)
+})
