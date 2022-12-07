@@ -4,8 +4,14 @@
 \alias{hash_names}
 \title{Anonymise data using scrypt}
 \usage{
-hash_names(..., size = 6, full = TRUE, hashfun = "secure",
-  salt = NULL, clean_labels = TRUE)
+hash_names(
+  ...,
+  size = 6,
+  full = TRUE,
+  hashfun = "secure",
+  salt = NULL,
+  clean_labels = TRUE
+)
 }
 \arguments{
 \item{...}{Data fields to be hashed.}

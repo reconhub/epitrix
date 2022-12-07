@@ -31,7 +31,7 @@ Imports:
     purrr,
     rlang,
     tidyr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.2.2
 URL: http://www.repidemicsconsortium.org/epitrix
 BugReports: https://github.com/reconhub/epitrix/issues
 VignetteBuilder: knitr

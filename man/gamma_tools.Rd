@@ -10,8 +10,15 @@ gamma_shapescale2mucv(shape, scale)
 
 gamma_mucv2shapescale(mu, cv)
 
-gamma_log_likelihood(x, mu, cv, discrete = TRUE, interval = 1, w = 0,
-  anchor = 0.5)
+gamma_log_likelihood(
+  x,
+  mu,
+  cv,
+  discrete = TRUE,
+  interval = 1,
+  w = 0,
+  anchor = 0.5
+)
 }
 \arguments{
 \item{shape}{The shape parameter of the Gamma distribution.}

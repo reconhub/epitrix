@@ -4,8 +4,14 @@
 \alias{fit_gamma_incubation_dist}
 \title{Fit discrite gamma distribution to incubation periods}
 \usage{
-fit_gamma_incubation_dist(x, date_of_onset, exposure,
-  exposure_end = NULL, nsamples = 1000, ...)
+fit_gamma_incubation_dist(
+  x,
+  date_of_onset,
+  exposure,
+  exposure_end = NULL,
+  nsamples = 1000,
+  ...
+)
 }
 \arguments{
 \item{x}{the linelist data (data.frame or linelist object) containing at

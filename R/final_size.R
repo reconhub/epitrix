@@ -26,3 +26,6 @@ AR2R0 <- function(AR) {
     R0[non_0_1] <- - log(1 - AR[non_0_1]) / AR[non_0_1]
     return(R0)
 }
+
+## TODO: add the reverse function R0 to AR with a grid search
+## TODO: add a similar function with herd immunity threshold
