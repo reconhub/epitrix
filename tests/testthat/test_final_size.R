@@ -11,3 +11,17 @@ test_that("AR2R0 works as expected", {
   expect_equal(AR2R0(1), Inf)
   expect_equal(AR2R0(0.5), - log(1 - 0.5) / 0.5)
 })
+
+
+test_that("R02AR works as expected", {
+  expect_error(R02AR(-1), "R0 should contain numeric values >= 0")
+  expect_error(R02AR(c(1, -1)), 
+               "R0 should contain numeric values >= 0")
+  expect_error(R02AR(1, tol = c(0.01, 0.1)), 
+               "tol must be a single numeric value")
+  expect_error(R02AR(1, tol = 0), 
+               "tol must be > 0.")
+  expect_equal(R02AR(0), 0)
+  expect_equal(R02AR(Inf), 1)
+  expect_equal(R02AR(- log(1 - 0.5) / 0.5), 0.5)
+})
