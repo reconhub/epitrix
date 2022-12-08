@@ -1,8 +1,8 @@
 #' Extract empirical incubation period distribution from linelist data
 #'
 #' This function takes in a linelist data frame and extracts the empirical
-#' incubation period distribution and can take into account uncertain dates of
-#' exposure.
+#' incubation period distribution and can take into account uncertainty in the
+#' dates of exposure.
 #'
 #' @param x the linelist data (data.frame or linelist object) containing at
 #'   least a column containing the exposure dates and one containing the onset
@@ -24,14 +24,15 @@
 #' @importFrom dplyr pull
 #' @importFrom rlang "!!" enquo get_expr
 #' @examples
-#' x <- linelist::clean_data(linelist::messy_data())
+#' random_dates <- as.Date("2020-01-01") + sample(0:30, 50, replace = TRUE)
+#' x <- tiblle::tibble(date_of_onset = random_dates)
 #'
 #' # Linelist with a list column of potential exposure dates ------------------
 #' mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12, rate = 3))
 #' exposures <- sapply(x$date_of_onset, mkexposures)
-#' x$dates_exposure <- exposures
+#' x$date_exposure <- exposures
 #'
-#' incubation_period_dist <- empirical_incubation_dist(x, date_of_onset, dates_exposure)
+#' incubation_period_dist <- empirical_incubation_dist(x, date_of_onset, date_exposure)
 #' incubation_period_dist
 #'
 #' # Linelist with exposure range ---------------------------------------------
@@ -40,7 +41,13 @@
 #' x$exposure_end   <- x$date_of_onset - end_exposure
 #' x$exposure_start <- x$exposure_end - start_exposure
 #' incubation_period_dist <- empirical_incubation_dist(x, date_of_onset, exposure_start, exposure_end)
-#'
+#' incubation_period_dist
+#' plot(incubation_period_dist,
+#'      type = "h", lwd = 10, lend = 2, col = "#49D193",
+#'      xlab = "Days since exposure",
+#'      ylab = "Probability",
+#'      main = "Incubation time distribution")
+#' 
 empirical_incubation_dist  <- function(x, date_of_onset, exposure, exposure_end = NULL) {
   #error checking
   if (!is.data.frame(x)) {
@@ -101,6 +108,10 @@ empirical_incubation_dist  <- function(x, date_of_onset, exposure, exposure_end 
   return(y)
 }
 
+
+
+
+
 #' Compute the empirical incubation dist.
 #' Can take into account uncertain dates of exposure.
 #'
@@ -127,7 +138,7 @@ compute_incubation <- function(date_onset, exposure){
 
   # In case the exposure is a list column, we should expand this to
   # be able to effectively calculate the incubation period
-  z <- tidyr::unnest(z, exposure, .drop  = FALSE)
+  z <- tidyr::unnest(z, exposure)
   z$incubation_period <- as.integer(z$date_onset - z$exposure)
 
   # Calculating relative frequency of incubation period ------------------------
@@ -148,6 +159,10 @@ compute_incubation <- function(date_onset, exposure){
   return(sres)
 }
 
+
+
+
+
 #' Fit discrite gamma distribution to incubation periods
 #'
 #' A wrapper around fit_disc_gamma to fit a discrete gamma distribution to
@@ -163,16 +178,28 @@ compute_incubation <- function(date_onset, exposure){
 #' @export
 #' @importFrom rlang "!!" enquo
 #' @examples
-#' x <- linelist::clean_data(linelist::messy_data())
+#'
+#' random_dates <- as.Date("2020-01-01") + sample(0:30, 50, replace = TRUE)
+#' x <- data.frame(date_of_onset = random_dates)
 #'
 #' mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12, rate = 3))
 #' exposures <- sapply(x$date_of_onset, mkexposures)
-#' x$dates_exposure <- exposures
+#' x$date_exposure <- exposures
 #'
-#' fit <- fit_gamma_incubation_dist(x, date_of_onset, dates_exposure)
+#' fit <- fit_gamma_incubation_dist(x, date_of_onset, date_exposure)
+#' plot(0:20, fit$distribution$d(0:20),
+#'      type = "h", lwd = 10, lend = 2, col = "#49D193",
+#'      xlab = "Days since exposure",
+#'      ylab = "Probability",
+#'      main = "Incubation time distribution")
+#' 
 fit_gamma_incubation_dist <- function(x, date_of_onset, exposure, exposure_end = NULL, nsamples = 1000, ...) {
 
-  incubation_period_dist <- empirical_incubation_dist(x, !!rlang::enquo(date_of_onset), !!rlang::enquo(exposure), !!rlang::enquo(exposure_end))
+  incubation_period_dist <- empirical_incubation_dist(
+    x,
+    !!rlang::enquo(date_of_onset),
+    !!rlang::enquo(exposure),
+    !!rlang::enquo(exposure_end))
 
   if (sum(incubation_period_dist$relative_frequency > 0) > 1) {
     s <- base::sample(
