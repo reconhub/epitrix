@@ -1,4 +1,3 @@
-context("Testing renaming labels using clean_labels")
 
 input_1 <- "-_-This is; A    WeÏrD**./sêntënce..."
 input_2 <- c("Peter and stëven", "peter-and.stëven", "pëtêr and stëven  _-")
