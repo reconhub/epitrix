@@ -5,9 +5,12 @@ input_2 <- c("Peter and stëven", "peter-and.stëven", "pëtêr and stëven  _-"
 
 test_that("clean_labels outputs as expected", {
   skip_on_cran()
-  expect_snapshot_value(clean_labels(input_1))
-  expect_snapshot_value(clean_labels(input_2))
-  expect_snapshot_value(clean_labels(input_1, sep = " // "))
+  correct_1 <- "this_is_a_weird_sentence"
+  correct_2 <- c("peter_and_steven", "peter_and_steven", "peter_and_steven")
+  correct_3 <- "this // is // a // weird // sentence"
+  expect_identical(clean_labels(input_1), correct_1)
+  expect_identical(clean_labels(input_2), correct_2)
+  expect_identical(clean_labels(input_1, sep = " // "), correct_3)
   expect_equal(length(clean_labels(NULL)), 0L)
   expect_true(is.na(clean_labels(NA)))
   expect_identical(clean_labels("fooBaR "), clean_labels("foobar"))
