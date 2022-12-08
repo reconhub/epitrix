@@ -1,7 +1,8 @@
 context("Testing incubation period estimation")
 
-set.seed(1)
-ll <- linelist::clean_data(linelist::messy_data())
+random_dates <- as.Date("2020-01-01") + sample(0:30, 50, replace = TRUE)
+ll <- data.frame(date_of_onset = random_dates)
+
 # Creating a list column of exposures
 x <- 0:15
 y <- distcrete::distcrete("gamma", 1, shape = 12, rate = 3, w = 0)$d(x)
@@ -9,14 +10,17 @@ mkexposures <- function(foo) foo - base::sample(x, size = sample.int(5, size = 1
 exposures <- sapply(ll$date_of_onset, mkexposures)
 ll$exposure <- exposures
 ll$constant_exposure <- ll$date_of_onset - 1
+
 # Adding negative data
 ll$bogo_exposure <- exposures
 ll$bogo_exposure[[5]] <- ll$bogo_exposure[[5]] + 100
+
 # Creating a column for start and end periods
 start_exposure    <- round(rgamma(nrow(ll), shape = 12, rate = 3))
 end_exposure      <- round(rgamma(nrow(ll), shape = 12, rate = 7))
 ll$exposure_end   <- ll$date_of_onset - end_exposure
 ll$exposure_start <- ll$exposure_end - start_exposure
+
 # Creating a list of sequential dates, in random order
 exposures_two <- vector(mode = "list", length = nrow(ll))
 for (i in seq_along(exposures)) {
@@ -85,26 +89,10 @@ test_that("empirical incubation period distribution can be calculated from start
   expect_identical(dr, dl)
 })
 
-test_that("empirical incubation period distribution matches reference", {
-  skip_on_cran()
-  skip("This fails because of R 3.6.... find a better way to test it")
-  incubation_period_dist <- empirical_incubation_dist(ll, date_of_onset, exposure)
-  expect_equal_to_reference(incubation_period_dist, file = "rds/disc_empirical_ref.rds")
-})
-
 
 test_that("empirical incubation period distribution matches dist reference computed by hand", {
   incubation_period_dist <- empirical_incubation_dist(ll2, onset, exposure)
-
-  expect_equal(incubation_period_dist, ref_inc_period)
-})
-
-
-test_that("fitted gamma incubation period distribution matches reference", {
-  skip_on_cran()
-  skip("This fails because of R 3.6.... find a better way to test it")
-  fit <- fit_gamma_incubation_dist(ll, date_of_onset, exposure)
-  expect_equal_to_reference(fit, file = "rds/incubation_disc_gamma_ref.rds")
+  expect_equal(incubation_period_dist$relative_frequency, ref_inc_period$relative_frequency)
 })
 
 
