@@ -1,4 +1,3 @@
-context("Testing incubation period estimation")
 
 random_dates <- as.Date("2020-01-01") + sample(0:30, 50, replace = TRUE)
 ll <- data.frame(date_of_onset = random_dates)

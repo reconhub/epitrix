@@ -1,4 +1,3 @@
-context("Testing conversion from r to R0")
 
 test_that("r to R0 gives expected results", {
   skip_on_cran()
@@ -12,7 +11,7 @@ test_that("r to R0 gives expected results", {
                             scale = param$scale, w = 0)
 
   res <- r2R0(c(-1, -0.001, 0, 0.001, 1), w)
-  expect_equal_to_reference(res, file = "rds/r2R0_ref_1.rds")
+  expect_snapshot(res)
 
   w <- c(0, 1)
   x <- 1:20
@@ -21,11 +20,11 @@ test_that("r to R0 gives expected results", {
 
   set.seed(1)
   R0 <- lm2R0_sample(lm1, w)
-  expect_equal_to_reference(R0, file = "rds/lm2R0_ref_1.rds")
+  expect_snapshot(R0)
 
   w <- distcrete::distcrete("exp", rate = 0.1, interval = 1)
   R0 <- lm2R0_sample(lm1, w)
-  expect_equal_to_reference(R0, file = "rds/lm2R0_ref_2.rds")
+  expect_snapshot(R0)
 
 })
 

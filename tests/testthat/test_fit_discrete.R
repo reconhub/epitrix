@@ -41,7 +41,7 @@ test_that("Test error when data mean is 0", {
   skip_on_cran()
   
   x <- rep(0, 100)
-  expect_warning(fit_disc_gamma(x), "Mean of data is 0. Defaulting to 1 for starting values of mu_ini and cv_ini.")    
+  expect_error(fit_disc_gamma(x), "Mean of data is 0")
   
 })
 
