@@ -4,8 +4,12 @@
 \alias{clean_labels}
 \title{Standardise labels}
 \usage{
-clean_labels(x, sep = "_", transformation = "Any-Latin; Latin-ASCII",
-  protect = "")
+clean_labels(
+  x,
+  sep = "_",
+  transformation = "Any-Latin; Latin-ASCII",
+  protect = ""
+)
 }
 \arguments{
 \item{x}{A vector of labels, normally provided as characters.}

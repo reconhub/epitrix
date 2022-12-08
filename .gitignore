@@ -6,3 +6,4 @@ vignettes/*.html
 *DEADJOE*
 *.swp
 *.tar.gz
+.Rproj.user

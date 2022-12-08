@@ -5,8 +5,7 @@
 \alias{fit_discrete}
 \title{Fit discretised distributions using ML}
 \usage{
-fit_disc_gamma(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
-  w = 0, ...)
+fit_disc_gamma(x, mu_ini = NULL, cv_ini = NULL, interval = 1, w = 0, ...)
 }
 \arguments{
 \item{x}{A vector of numeric data to fit; NAs will be removed with a warning.}

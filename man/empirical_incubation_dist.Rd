@@ -4,8 +4,7 @@
 \alias{empirical_incubation_dist}
 \title{Extract empirical incubation period distribution from linelist data}
 \usage{
-empirical_incubation_dist(x, date_of_onset, exposure,
-  exposure_end = NULL)
+empirical_incubation_dist(x, date_of_onset, exposure, exposure_end = NULL)
 }
 \arguments{
 \item{x}{the linelist data (data.frame or linelist object) containing at
