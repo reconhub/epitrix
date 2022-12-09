@@ -5,6 +5,7 @@
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/epitrix)](https://cran.r-project.org/package=epitrix)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/epitrix)](https://cran.r-project.org/package=epitrix)
 [![Downloads from Rstudio mirror](https://cranlogs.r-pkg.org/badges/grand-total/epitrix)](http://www.r-pkg.org/pkg/epitrix)
+[![Codecov test coverage](https://codecov.io/gh/reconhub/epitrix/branch/master/graph/badge.svg)](https://app.codecov.io/gh/reconhub/epitrix?branch=master)
 <!-- badges: end -->
 
 

@@ -1,3 +1,19 @@
+# epitrix 0.4.0
+
+## New Functions
+
+* `AR2R0`: calculate the R0 corresponding to a give attack rate
+* `R02AR`: calculate the attack rate corresponding to a give R0
+* `R02herd_immunity_threshold`: calculate the herd immunity threshold for a given R0
+* `sim_linelist`: simulates a simple linelist (with no epi model implied) `data.frame`
+
+## Bug fixes
+
+* removed the dependency on the *linelist* package by RECON 
+* updated testing infrastructure to testthat 3rd edition
+* replaced appveyor and travis by github actions for continuous integration
+
+
 # epitrix 0.3.0
 
 ## New Functions
