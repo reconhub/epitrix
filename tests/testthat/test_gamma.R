@@ -1,4 +1,3 @@
-context("Testing gamma tools")
 
 test_that("Switch between alternative parametrisation", {
     skip_on_cran()

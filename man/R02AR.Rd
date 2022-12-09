@@ -7,14 +7,15 @@
 R02AR(R0, tol = 0.01)
 }
 \arguments{
-\item{R0}{a value or vector of values represengint the basic reproduction 
+\item{R0}{a value or vector of values representing the basic reproduction 
 number, must be >=0}
 
 \item{tol}{a single >=0 value giving the tolerance for the calculated attack 
 rate}
 }
 \value{
-AR, the attack rate
+AR, the attack rate, calculated using the relationship: 
+R0 = -log(1-AR)/AR
 }
 \description{
 Title Calculate attack rate from basic reproduction number

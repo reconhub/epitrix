@@ -1,6 +1,6 @@
 Package: epitrix
 Title: Small Helpers and Tricks for Epidemics Analysis
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: c(person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", role = c("aut", "cre")),
              person("Anne", "Cori", email = "a.cori@imperial.ac.uk", role = c("aut")),
              person("Zhian N.", "Kamvar", email = "zkamvar@gmail.com", role = "ctb"),
@@ -20,9 +20,10 @@ Suggests:
     incidence (>= 1.4.1),
     knitr,
     rmarkdown,
-    linelist,
     magrittr,
-    ggplot2
+    ggplot2,
+    tibble,
+    covr
 Imports:
     sodium,
     distcrete,
@@ -32,6 +33,7 @@ Imports:
     rlang,
     tidyr
 RoxygenNote: 7.2.2
+Config/testthat/edition: 3
 URL: http://www.repidemicsconsortium.org/epitrix
 BugReports: https://github.com/reconhub/epitrix/issues
 VignetteBuilder: knitr

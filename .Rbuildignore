@@ -15,3 +15,5 @@ README.html
 ^figure/
 ^docs$
 ^logo
+^LICENSE\.md$
+^\.github$

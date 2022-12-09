@@ -1,4 +1,3 @@
-context("Testing relationship between R0 and final size")
 
 test_that("AR2R0 works as expected", {
   expect_error(AR2R0(-1), "AR should contain numeric values between 0 and 1")

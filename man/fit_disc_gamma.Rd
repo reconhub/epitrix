@@ -42,7 +42,7 @@ serial intervals (primary to secondary onsets). The function
 
 mu <- 15.3 # days
 sigma <- 9.3 # days
-cv <- mu / sigma
+cv <- sigma / mu
 cv
 param <- gamma_mucv2shapescale(mu, cv)
 

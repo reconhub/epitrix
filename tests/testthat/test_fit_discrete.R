@@ -1,4 +1,3 @@
-context("Testing gamma fitting")
 
 test_that("Switch between alternative parametrisation", {
     skip_on_cran()
@@ -6,8 +5,7 @@ test_that("Switch between alternative parametrisation", {
     set.seed(1)
     x <- rexp(100, 0.1)
     res <- fit_disc_gamma(x)
-
-    expect_equal_to_reference(res, file = "rds/disc_gamma_ref.rds")
+    expect_snapshot(res)
 
 })
 
@@ -43,7 +41,7 @@ test_that("Test error when data mean is 0", {
   skip_on_cran()
   
   x <- rep(0, 100)
-  expect_warning(fit_disc_gamma(x), "Mean of data is 0. Defaulting to 1 for starting values of mu_ini and cv_ini.")    
+  expect_error(fit_disc_gamma(x), "Mean of data is 0")
   
 })
 
