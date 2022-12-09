@@ -22,7 +22,8 @@ Suggests:
     rmarkdown,
     linelist,
     magrittr,
-    ggplot2
+    ggplot2,
+    tibble
 Imports:
     sodium,
     distcrete,

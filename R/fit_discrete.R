@@ -94,7 +94,7 @@ fit_disc_gamma <- function(x, mu_ini = NULL, cv_ini = NULL, interval = 1,
     if (mu_ini == 0) {
       stop("Mean of data is 0.")
     } else {
-      cv_ini <- sd(x, na.rm = TRUE) / mu_ini
+      cv_ini <- stats::sd(x, na.rm = TRUE) / mu_ini
     }
   }
   

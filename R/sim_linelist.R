@@ -42,7 +42,7 @@ sim_linelist <- function(n = 1,
   out$date_of_onset <- sample(pool_onset, n, replace = TRUE)
 
   ## dates of reporting
-  out$date_of_report <- out$date_of_onset + rpois(n, report_delay)
+  out$date_of_report <- out$date_of_onset + stats::rpois(n, report_delay)
   
   ## gender
   pool_gender <- c("male", "female")

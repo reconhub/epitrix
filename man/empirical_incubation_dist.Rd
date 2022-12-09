@@ -27,8 +27,8 @@ a data frame containing a column with the different incubation
 }
 \description{
 This function takes in a linelist data frame and extracts the empirical
-incubation period distribution and can take into account uncertain dates of
-exposure.
+incubation period distribution and can take into account uncertainty in the
+dates of exposure.
 }
 \note{
 For exposure dates, each element can be a vector containing several
@@ -36,14 +36,16 @@ For exposure dates, each element can be a vector containing several
   in the list it is given twice as much weight.
 }
 \examples{
-x <- linelist::clean_data(linelist::messy_data())
+if (require(tibble)) {
+random_dates <- as.Date("2020-01-01") + sample(0:30, 50, replace = TRUE)
+x <- tibble(date_of_onset = random_dates)
 
 # Linelist with a list column of potential exposure dates ------------------
 mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12, rate = 3))
 exposures <- sapply(x$date_of_onset, mkexposures)
-x$dates_exposure <- exposures
+x$date_exposure <- exposures
 
-incubation_period_dist <- empirical_incubation_dist(x, date_of_onset, dates_exposure)
+incubation_period_dist <- empirical_incubation_dist(x, date_of_onset, date_exposure)
 incubation_period_dist
 
 # Linelist with exposure range ---------------------------------------------
@@ -52,7 +54,13 @@ end_exposure     <- round(rgamma(nrow(x), shape = 12, rate = 7))
 x$exposure_end   <- x$date_of_onset - end_exposure
 x$exposure_start <- x$exposure_end - start_exposure
 incubation_period_dist <- empirical_incubation_dist(x, date_of_onset, exposure_start, exposure_end)
-
+incubation_period_dist
+plot(incubation_period_dist,
+     type = "h", lwd = 10, lend = 2, col = "#49D193",
+     xlab = "Days since exposure",
+     ylab = "Probability",
+     main = "Incubation time distribution")
+}
 }
 \author{
 Flavio Finger, \email{flavio.finger@lshtm.ac.uk}, Zhian N. Kamvar

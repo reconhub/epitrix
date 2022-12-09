@@ -95,7 +95,6 @@ gamma_shapescale2mucv(shape, scale) # compare with mu, cv
 gamma_sample <- rgamma(n = 10000, shape = shape, scale = scale)
 mean(gamma_sample) # compare to mu
 sd(gamma_sample) / mean(gamma_sample) # compare to cv
-
 }
 \author{
 Code by Anne Cori \email{a.cori@imperial.ac.uk}, packaging by

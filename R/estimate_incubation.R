@@ -24,8 +24,9 @@
 #' @importFrom dplyr pull
 #' @importFrom rlang "!!" enquo get_expr
 #' @examples
+#' if (require(tibble)) {
 #' random_dates <- as.Date("2020-01-01") + sample(0:30, 50, replace = TRUE)
-#' x <- tiblle::tibble(date_of_onset = random_dates)
+#' x <- tibble(date_of_onset = random_dates)
 #'
 #' # Linelist with a list column of potential exposure dates ------------------
 #' mkexposures <- function(x) x - round(rgamma(sample.int(5, size = 1), shape = 12, rate = 3))
@@ -47,7 +48,7 @@
 #'      xlab = "Days since exposure",
 #'      ylab = "Probability",
 #'      main = "Incubation time distribution")
-#' 
+#' }
 empirical_incubation_dist  <- function(x, date_of_onset, exposure, exposure_end = NULL) {
   #error checking
   if (!is.data.frame(x)) {

@@ -8,6 +8,13 @@
 #' with the alternative parametrisation (mean, cv). See 'details' for a guide of
 #' which parametrisation to use.
 #'
+#'
+#' @export
+#'
+#' @param shape The shape parameter of the Gamma distribution.
+#' 
+#' @param scale The scale parameter of the Gamma distribution.
+#'
 #' @details The gamma distribution is described in \code{?dgamma} is
 #' parametrised using shape and scale (or rate). However, these parameters are
 #' naturally correlated, which make them poor choices whenever trying to fit
@@ -54,16 +61,6 @@
 #' gamma_sample <- rgamma(n = 10000, shape = shape, scale = scale)
 #' mean(gamma_sample) # compare to mu
 #' sd(gamma_sample) / mean(gamma_sample) # compare to cv
-#'
-
-
-
-#' @export
-#' @rdname gamma_tools
-#' @aliases gamma_shapescale2mucv
-#'
-#' @param shape The shape parameter of the Gamma distribution.
-#' @param scale The scale parameter of the Gamma distribution.
 
 gamma_shapescale2mucv <- function(shape, scale) {
     mu <- shape * scale

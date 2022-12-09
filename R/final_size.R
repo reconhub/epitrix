@@ -7,9 +7,8 @@
 #'
 #' @examples
 #' 
-#' ## Calculate R0 for a specific value of the attack rate
-#' AR2R0(0.5) # returns the basic reproduction number which would yield an 
-#' attack rate of 50%
+#' ## Calculate R0 for an attack rate of 50%
+#' AR2R0(0.5)
 #' 
 #' ## plot the relationship between R0 and attack rate
 #' x <- seq(0.01, 1, 0.01)
