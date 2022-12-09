@@ -1,3 +1,20 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r readmesetup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+
+# Welcome to the *epitrix* package!
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/reconhub/epitrix/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/reconhub/epitrix/actions/workflows/R-CMD-check.yaml)
@@ -10,8 +27,6 @@
 
 
 
-
-# Welcome to the *epitrix* package!
 
 This package implements small helper functions usefull in infectious disease
 modelling and epidemics analysis.
@@ -231,9 +246,9 @@ The function `empirical_incubation_dist()` computes the discrete probability dis
 
 Load environment:
 
-```{r, echo = TRUE, message=FALSE}
+```{r, echo = TRUE, message = FALSE}
 library(magrittr)
-library(linelist)
+library(tibble)
 library(epitrix)
 library(distcrete)
 library(ggplot2)
@@ -242,7 +257,8 @@ library(ggplot2)
 Make a linelist object containing toy data with several possible exposure dates for each case:
 
 ```{r, echo = TRUE}
-ll <- messy_data() %>% clean_data()
+ll <- sim_linelist(30) %>%
+  tibble()
 
 x <- 0:15
 y <- distcrete("gamma", 1, shape = 12, rate = 3, w = 0)$d(x)

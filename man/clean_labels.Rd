@@ -50,7 +50,7 @@ correctly. You can add them by specifying "de-ASCII" in the \code{transformation
 string after "Any-Latin".
 }
 \examples{
-if(grepl("utf-8", tolower(Sys.getlocale()))) {
+if(.Platform$OS.type == "unix") {
 clean_labels("-_-This is; A    WeÏrD**./sêntënce...")
 clean_labels("-_-This is; A    WeÏrD**./sêntënce...", sep = ".")
 input <- c("ますだ, よしひこ",
