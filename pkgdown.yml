@@ -1,0 +1,8 @@
+pandoc: 2.19.2
+pkgdown: 2.0.6
+pkgdown_sha: ~
+articles:
+  epitrix: epitrix.html
+  estimate_incubation: estimate_incubation.html
+last_built: 2022-12-09T13:45Z
+
