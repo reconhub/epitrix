@@ -41,7 +41,7 @@
 #'   string after "Any-Latin".
 #'
 #' @examples
-#' if(.Platform$OS.type == "unix") {
+#' \dontrun{
 #' clean_labels("-_-This is; A    WeÏrD**./sêntënce...")
 #' clean_labels("-_-This is; A    WeÏrD**./sêntënce...", sep = ".")
 #' input <- c("ますだ, よしひこ",
