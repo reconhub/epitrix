@@ -29,6 +29,7 @@
 #'   any non-latin characters to latin and then converts all accented
 #'   characters to ASCII characters. See [stringi::stri_trans_list()] for a
 #'   full list of options.
+#' 
 #' @param protect a character string defining the punctuation that should be
 #'   protected. This helps prevent meaninful symbols like > and < from being
 #'   removed.
@@ -40,10 +41,13 @@
 #'   string after "Any-Latin".
 #'
 #' @examples
-#'
+#' if(grepl("utf-8", tolower(Sys.getlocale()))) {
 #' clean_labels("-_-This is; A    WeÏrD**./sêntënce...")
 #' clean_labels("-_-This is; A    WeÏrD**./sêntënce...", sep = ".")
-#' input <- c("ますだ, よしひこ", "Peter and stëven", "peter-and.stëven", "pëtêr and stëven  _-")
+#' input <- c("ますだ, よしひこ",
+#'            "Peter and stëven",
+#'            "peter-and.stëven",
+#'            "pëtêr and stëven  _-")
 #' input
 #' clean_labels(input)
 #' 
@@ -64,7 +68,7 @@
 #'   clean_labels("'é', 'ê' and 'è' become 'e', 'ö' becomes 'oe', etc.", 
 #'                transformation = "Any-Latin; de-ASCII; Latin-ASCII")
 #' }
-#'
+#'}
 clean_labels <- function(x, sep = "_", transformation = "Any-Latin; Latin-ASCII",
                          protect = "") {
   x <- as.character(x)

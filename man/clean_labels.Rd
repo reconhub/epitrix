@@ -50,10 +50,13 @@ correctly. You can add them by specifying "de-ASCII" in the \code{transformation
 string after "Any-Latin".
 }
 \examples{
-
+if(grepl("utf-8", tolower(Sys.getlocale()))) {
 clean_labels("-_-This is; A    WeÏrD**./sêntënce...")
 clean_labels("-_-This is; A    WeÏrD**./sêntënce...", sep = ".")
-input <- c("ますだ, よしひこ", "Peter and stëven", "peter-and.stëven", "pëtêr and stëven  _-")
+input <- c("ますだ, よしひこ",
+           "Peter and stëven",
+           "peter-and.stëven",
+           "pëtêr and stëven  _-")
 input
 clean_labels(input)
 
@@ -74,7 +77,7 @@ if (stringi::stri_info()$ICU.system) {
   clean_labels("'é', 'ê' and 'è' become 'e', 'ö' becomes 'oe', etc.", 
                transformation = "Any-Latin; de-ASCII; Latin-ASCII")
 }
-
+}
 }
 \author{
 Thibaut Jombart \email{thibautjombart@gmail.com}, Zhian N. Kamvar
