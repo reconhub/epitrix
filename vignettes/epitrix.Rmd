@@ -68,7 +68,7 @@ library(epitrix)
 
 mu <- 15.3 # mean in days days
 sigma <- 9.3 # standard deviation in days
-cv <- mu/sigma # coefficient of variation
+cv <- sigma / mu # coefficient of variation
 cv
 param <- gamma_mucv2shapescale(mu, cv) # convertion to Gamma parameters
 param
