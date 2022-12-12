@@ -114,6 +114,10 @@
 <li><p><strong><code>hash_names</code></strong>: generate unique, anonymised, reproducible labels from various data fields (e.g. First name, Last name, Date of birth).</p></li>
 <li><p><strong><code>emperical_incubation_dist()</code></strong> will estimate the empirical incubation distribution if given a data frame with dates of onset and a range of exposure dates.</p></li>
 <li><p><strong><code><a href="reference/fit_gamma_incubation_dist.html">fit_gamma_incubation_dist()</a></code></strong> wraps <code><a href="reference/empirical_incubation_dist.html">empirical_incubation_dist()</a></code> and <code><a href="reference/fit_disc_gamma.html">fit_disc_gamma()</a></code> to fit a discretized gamma distribution to an empirical incubation distribution</p></li>
+<li><p><strong><code><a href="reference/AR2R0.html">AR2R0()</a></code></strong> calculates the R0 corresponding to a give attack rate</p></li>
+<li><p><strong><code><a href="reference/R02AR.html">R02AR()</a></code></strong> calculates the attack rate corresponding to a give R0</p></li>
+<li><p><strong><code><a href="reference/R02herd_immunity_threshold.html">R02herd_immunity_threshold()</a></code></strong> calculates the herd immunity threshold for a given R0</p></li>
+<li><p><strong><code><a href="reference/sim_linelist.html">sim_linelist()</a></code></strong> simulates a simple linelist (with no epi model implied) <code>data.frame</code> which can be used for illustrating other functions</p></li>
 </ul>
 </div>
 <div class="section level1">
@@ -210,7 +214,12 @@
 <span><span class="co">#&gt; $cumulative: FALSE</span></span>
 <span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://www.repidemicsconsortium.org/incidence/reference/fit.html" class="external-link">fit</a></span><span class="op">(</span><span class="va">i</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">150</span><span class="op">]</span><span class="op">)</span> <span class="co"># fit on first 150 days</span></span>
 <span><span class="co">#&gt; Warning in fit(i[1:150]): 22 dates with incidence of 0 ignored for fitting</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">i</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span><span class="op">]</span>, fit <span class="op">=</span> <span class="va">f</span>, color <span class="op">=</span> <span class="st">"#9fc2fc"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">i</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">200</span><span class="op">]</span>, fit <span class="op">=</span> <span class="va">f</span>, color <span class="op">=</span> <span class="st">"#9fc2fc"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in</span></span>
+<span><span class="co">#&gt; ggplot2 3.3.4.</span></span>
+<span><span class="co">#&gt; ℹ Please use "none" instead.</span></span>
+<span><span class="co">#&gt; ℹ The deprecated feature was likely used in the incidence package.</span></span>
+<span><span class="co">#&gt;   Please report the issue at &lt;]8;;https://github.com/reconhub/incidence/issueshttps://github.com/reconhub/incidence/issues]8;;&gt;.</span></span></code></pre></div>
 <p><img src="reference/figures/README-fit_i-1.png" width="100%"></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
