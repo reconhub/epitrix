@@ -73,6 +73,17 @@ The main features of the package include:
     discretized gamma distribution to an empirical incubation
     distribution
 
+  - **`AR2R0()`** calculates the R0 corresponding to a give attack rate
+
+  - **`R02AR()`** calculates the attack rate corresponding to a give R0
+
+  - **`R02herd_immunity_threshold()`** calculates the herd immunity
+    threshold for a given R0
+
+  - **`sim_linelist()`** simulates a simple linelist (with no epi model
+    implied) `data.frame` which can be used for illustrating other
+    functions
+
 # Resources
 
 ## Worked examples
@@ -193,6 +204,11 @@ i
 f <- fit(i[1:150]) # fit on first 150 days
 #> Warning in fit(i[1:150]): 22 dates with incidence of 0 ignored for fitting
 plot(i[1:200], fit = f, color = "#9fc2fc")
+#> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in
+#> ggplot2 3.3.4.
+#> ℹ Please use "none" instead.
+#> ℹ The deprecated feature was likely used in the incidence package.
+#>   Please report the issue at <]8;;https://github.com/reconhub/incidence/issueshttps://github.com/reconhub/incidence/issues]8;;>.
 ```
 
 <img src="man/figures/README-fit_i-1.png" width="100%" />
