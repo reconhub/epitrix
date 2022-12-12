@@ -87,11 +87,21 @@ The main features of the package include:
   `fit_disc_gamma()` to fit a discretized gamma distribution to an empirical
   incubation distribution
 
+- **`AR2R0()`** calculates the R0 corresponding to a give attack rate
+
+- **`R02AR()`** calculates the attack rate corresponding to a give R0
+
+- **`R02herd_immunity_threshold()`** calculates the herd immunity threshold for
+  a given R0
+
+- **`sim_linelist()`** simulates a simple linelist (with no epi model implied)
+  `data.frame` which can be used for illustrating other functions
+
+
 
 # Resources
 
 ## Worked examples
-
 
 ### Fitting a gamma distribution to delay data
 
@@ -242,7 +252,12 @@ hash_names(first_name, last_name, age,
 
 ### Estimate incubation periods
 
-The function `empirical_incubation_dist()` computes the discrete probability distribution by giving equal weight to each patient. Thus, in the case of `N` patients, the `n` possible exposure dates of a given patient get the overall weight `1/(n*N)`. The function returns a data frame with column `incubation_period` containing the different incubation periods with a time step of one day and their `relative_frequency`.
+The function `empirical_incubation_dist()` computes the discrete probability
+distribution by giving equal weight to each patient. Thus, in the case of `N`
+patients, the `n` possible exposure dates of a given patient get the overall
+weight `1/(n*N)`. The function returns a data frame with column
+`incubation_period` containing the different incubation periods with a time step
+of one day and their `relative_frequency`.
 
 Load environment:
 
