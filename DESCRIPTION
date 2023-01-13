@@ -34,8 +34,6 @@ Imports:
     tidyr
 RoxygenNote: 7.2.3
 Config/testthat/edition: 3
-URL: http://www.repidemicsconsortium.org/epitrix
+URL: http://www.repidemicsconsortium.org/epitrix/
 BugReports: https://github.com/reconhub/epitrix/issues
 VignetteBuilder: knitr
-Remotes:
-  reconhub/linelist

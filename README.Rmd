@@ -163,7 +163,7 @@ The package [*incidence*](https://github.com/reconhub/incidence) can fit a
 log-linear model to incidence curves (function `fit`), which produces a growth
 rate (r). This growth rate can in turn be translated into a basic reproduction
 number (R0) using `r2R0`. We illustrate this using simulated Ebola data from the
-[*outbreaks*](https://github.com/reconhub/outbreaks) package, and using the
+[*outbreaks*](https://github.com/reconverse/outbreaks) package, and using the
 serial interval from the previous example:
 
 ```{r fit_i}
