@@ -8,7 +8,7 @@ Authors@R: c(person("Thibaut", "Jombart", email = "thibautjombart@gmail.com", ro
              person("Flavio", "Finger", email = "flavio.finger@lshtm.ac.uk", role = "aut"),
              person("Charlie", "Whittaker", email = "charles.whittaker16@imperial.ac.uk", role = "ctb")
             )
-Description: A collection of small functions useful for epidemics analysis and infectious disease modelling. This includes computation of basic reproduction numbers from growth rates, generation of hashed labels to anonymise data, and fitting discretised Gamma distributions.
+Description: A collection of small functions useful for epidemics analysis and infectious disease modelling. This includes computation of basic reproduction numbers from growth rates, generation of hashed labels to anonymize data, and fitting discretized Gamma distributions.
 Depends: R (>= 3.3.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
