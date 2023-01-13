@@ -12,7 +12,8 @@
 * removed the dependency on the *linelist* package by RECON 
 * updated testing infrastructure to testthat 3rd edition
 * replaced appveyor and travis by github actions for continuous integration
-
+* fixed LaTeX conversion issues due to non-latin symbols in the example of
+  `clean_labels()`
 
 # epitrix 0.3.0
 
