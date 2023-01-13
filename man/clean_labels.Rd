@@ -53,8 +53,7 @@ string after "Any-Latin".
 \dontrun{
 clean_labels("-_-This is; A    WeÏrD**./sêntënce...")
 clean_labels("-_-This is; A    WeÏrD**./sêntënce...", sep = ".")
-input <- c("ますだ, よしひこ",
-           "Peter and stëven",
+input <- c("Peter and stëven",
            "peter-and.stëven",
            "pëtêr and stëven  _-")
 input
