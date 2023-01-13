@@ -130,7 +130,7 @@ of the mean and standard deviation of the SI (WHO Ebola Response Team
 (2014) NEJM 371:1481–1495) to the parameters of a Gamma
 distribution:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.repidemicsconsortium.org/epitrix" class="external-link">epitrix</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://www.repidemicsconsortium.org/epitrix/" class="external-link">epitrix</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fl">15.3</span> <span class="co"># mean in days days</span></span>
 <span><span class="va">sigma</span> <span class="op">&lt;-</span> <span class="fl">9.3</span> <span class="co"># standard deviation in days</span></span>
@@ -208,7 +208,7 @@ fit a log-linear model to incidence curves (function <code>fit</code>),
 which produces a growth rate (r). This growth rate can in turn be
 translated into a basic reproduction number (R0) using
 <code>r2R0</code>. We illustrate this using simulated Ebola data from
-the <a href="https://github.com/reconhub/outbreaks" class="external-link"><em>outbreaks</em></a>
+the <a href="https://github.com/reconverse/outbreaks" class="external-link"><em>outbreaks</em></a>
 package, and using the serial interval from the previous example:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
